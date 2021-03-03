@@ -273,6 +273,7 @@ export class CoreLoginCredentialsPage implements OnDestroy {
         }).catch((error) => {
             this.loginHelper.treatUserTokenError(siteUrl, error, username, password);
             if (error.loggedout) {
+                console.log("3");//DEBUG
                 this.navCtrl.setRoot('CoreLoginSitesPage');
             } else if (error.errorcode == 'forcepasswordchangenotice') {
                 // Reset password field.
@@ -366,5 +367,10 @@ export class CoreLoginCredentialsPage implements OnDestroy {
      */
     ngOnDestroy(): void {
         this.valueChangeSubscription && this.valueChangeSubscription.unsubscribe();
+    }
+
+    goToMIDALogin(){
+        const params = { siteUrl: this.siteUrl };
+        this.navCtrl.push('LoginMidaPage', params)
     }
 }

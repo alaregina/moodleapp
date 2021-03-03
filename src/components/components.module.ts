@@ -53,6 +53,8 @@ import { CoreInfiniteLoadingComponent } from './infinite-loading/infinite-loadin
 import { CoreUserAvatarComponent } from './user-avatar/user-avatar';
 import { CoreStyleComponent } from './style/style';
 import { CoreBSTooltipComponent } from './bs-tooltip/bs-tooltip';
+import { JuicehomeComponent } from './juicehome/juicehome';
+import { SideMenuComponent } from './side-menu/side-menu';
 
 @NgModule({
     declarations: [
@@ -91,7 +93,9 @@ import { CoreBSTooltipComponent } from './bs-tooltip/bs-tooltip';
         CoreInfiniteLoadingComponent,
         CoreUserAvatarComponent,
         CoreStyleComponent,
-        CoreBSTooltipComponent
+        CoreBSTooltipComponent,
+        JuicehomeComponent,
+    SideMenuComponent
     ],
     entryComponents: [
         CoreContextMenuPopoverComponent,
@@ -138,7 +142,9 @@ import { CoreBSTooltipComponent } from './bs-tooltip/bs-tooltip';
         CoreInfiniteLoadingComponent,
         CoreUserAvatarComponent,
         CoreStyleComponent,
-        CoreBSTooltipComponent
+        CoreBSTooltipComponent,
+        JuicehomeComponent,
+    SideMenuComponent
     ]
 })
 export class CoreComponentsModule {}

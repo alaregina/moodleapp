@@ -93,7 +93,6 @@ export class CoreLoginInitPage {
 
             return this.loginHelper.goToSiteInitialPage();
         }
-
         return this.navCtrl.setRoot('CoreLoginSitesPage');
     }
 }

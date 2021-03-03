@@ -85,6 +85,7 @@ export class CoreH5PPlayerComponent implements OnInit, OnChanges, OnDestroy {
     async play(e: MouseEvent): Promise<void> {
         e.preventDefault();
         e.stopPropagation();
+        console.log("play");
 
         this.displayOptions = CoreH5P.instance.h5pPlayer.getDisplayOptionsFromUrlParams(this.urlParams);
         this.showPackage = true;
@@ -107,6 +108,7 @@ export class CoreH5PPlayerComponent implements OnInit, OnChanges, OnDestroy {
     async download(e: Event): Promise<void> {
         e && e.preventDefault();
         e && e.stopPropagation();
+        console.log("download");
 
         if (!CoreApp.instance.isOnline()) {
             CoreDomUtils.instance.showErrorModal('core.networkerrormsg', true);
@@ -140,6 +142,7 @@ export class CoreH5PPlayerComponent implements OnInit, OnChanges, OnDestroy {
      * @return Promise resolved when done.
      */
     protected async attemptDownloadInBg(): Promise<void> {
+        console.log("attemptDownloadInBg");
         if (this.urlParams && this.src && this.siteCanDownload && CoreH5P.instance.canGetTrustedH5PFileInSite() &&
                 CoreApp.instance.isOnline()) {
 
@@ -159,6 +162,7 @@ export class CoreH5PPlayerComponent implements OnInit, OnChanges, OnDestroy {
      * @return Promise resolved when done.
      */
     protected async checkCanDownload(): Promise<void> {
+        console.log("checkCanDownload");
         this.observer && this.observer.off();
         this.urlParams = CoreUrlUtils.instance.extractUrlParams(this.src);
 

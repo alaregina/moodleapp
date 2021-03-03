@@ -50,7 +50,7 @@
             </div>
 
             <!-- Multiple sections. -->
-            <div *ngIf="selectedSection && selectedSection.id == allSectionsId">
+            <div *ngIf="selectedSection && selectedSection.id == allSectionsId" class='DEBUG'>
                 <core-dynamic-component [component]="allSectionsComponent" [data]="data">
                     <ng-container *ngFor="let section of sections; index as i">
                         <ng-container *ngIf="i <= showSectionId">

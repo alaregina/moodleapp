@@ -1,14 +1,18 @@
 <ion-header>
     <ion-navbar core-back-button>
-        <ion-title>
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <!-- <ion-title>
             <core-format-text [text]="siteName" contextLevel="system" [contextInstanceId]="0"></core-format-text>
             <img src="assets/img/login_logo.png" class="core-header-logo" [alt]="siteName">
-        </ion-title>
-
+        </ion-title> -->
+        
         <ion-buttons end>
             <button *ngIf="searchEnabled" ion-button icon-only (click)="openSearch()" [attr.aria-label]="'core.courses.searchcourses' | translate">
                 <ion-icon name="search"></ion-icon>
             </button>
+            
             <core-context-menu>
                 <core-context-menu-item *ngIf="(downloadCourseEnabled || downloadCoursesEnabled)" [priority]="500" [content]="'addon.storagemanager.managestorage' | translate" (action)="manageCoursesStorage()" iconAction="cube"></core-context-menu-item>
 
@@ -24,6 +28,7 @@
 </ion-header>
 <ion-content>
     <core-tabs [selectedIndex]="firstSelectedTab" [hideUntil]="tabsReady">
+        
         <!-- Site home tab. -->
         <core-tab [show]="siteHomeEnabled" [title]="'core.sitehome.sitehome' | translate">
             <ng-template>
@@ -32,6 +37,18 @@
                         <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
                     </ion-refresher>
                     <core-sitehome-index [downloadEnabled]="downloadEnabled"></core-sitehome-index>
+                </ion-content>
+            </ng-template>
+        </core-tab>
+
+        <!-- JUICE home tab. -->
+        <core-tab title='Home'>
+            <ng-template>
+                <ion-content>
+                    <ion-refresher [enabled]="!!siteHomeComponent && siteHomeComponent.dataLoaded" (ionRefresh)="siteHomeComponent.doRefresh($event)">
+                        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
+                    </ion-refresher>
+                    <juicehome></juicehome>
                 </ion-content>
             </ng-template>
         </core-tab>

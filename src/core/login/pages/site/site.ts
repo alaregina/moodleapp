@@ -238,13 +238,13 @@ export class CoreLoginSitePage {
                     return this.loginHelper.goToSiteInitialPage();
                 }, (error) => {
                     this.loginHelper.treatUserTokenError(siteData.url, error, siteData.username, siteData.password);
-                    if (error.loggedout) {
+                    if (error.loggedout) {console.log("5");//DEBUG
                         this.navCtrl.setRoot('CoreLoginSitesPage');
                     }
                 });
             }, (error) => {
                 this.loginHelper.treatUserTokenError(siteData.url, error, siteData.username, siteData.password);
-                if (error.loggedout) {
+                if (error.loggedout) {console.log("6");//DEBUG
                     this.navCtrl.setRoot('CoreLoginSitesPage');
                 }
             }).finally(() => {

@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Code based on https://github.com/martinpritchardelevate/ionic-split-pane-demo
+
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { CoreCoursesDashboardPage } from './dashboard';
+import { SideMenuComponent } from './side-menu';
 import { CoreComponentsModule } from '@components/components.module';
+import { IonicModule } from 'ionic-angular';
 import { CoreDirectivesModule } from '@directives/directives.module';
-import { CoreCoursesComponentsModule } from '../../components/components.module';
-import { CoreSiteHomeComponentsModule } from '@core/sitehome/components/components.module';
-import { CoreBlockComponentsModule } from '@core/block/components/components.module';
-import { JuicehomeComponent } from '@components/juicehome/juicehome'
+import { UserProfilePage } from 'pages/user-profile/user-profile';
 
 @NgModule({
     declarations: [
-        CoreCoursesDashboardPage
+        SideMenuComponent,
     ],
     imports: [
         CoreComponentsModule,
         CoreDirectivesModule,
-        CoreCoursesComponentsModule,
-        CoreSiteHomeComponentsModule,
-        CoreBlockComponentsModule,
-        IonicPageModule.forChild(CoreCoursesDashboardPage),
+        UserProfilePage,
+        IonicModule,
         TranslateModule.forChild()
     ],
+    exports: [
+        SideMenuComponent
+    ]
 })
-export class CoreCoursesDashboardPageModule {}
+export class SideMenuComponentModule { }

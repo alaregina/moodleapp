@@ -49,6 +49,10 @@ ion-app.app-root page-core-mainmenu-more {
 		color: $core-more-icon;
 	}
 
+    ion-navbar ion-buttons button ion-icon {
+		color: unset;
+	}
+
     .item-divider {
         &.item-ios {
             background-color: $core-more-divider-ios;

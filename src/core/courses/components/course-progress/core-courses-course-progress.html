@@ -12,6 +12,8 @@
             <h2>
                 <core-icon name="fa-star" *ngIf="course.isfavourite"></core-icon>
                 <core-format-text [text]="course.fullname" contextLevel="course" [contextInstanceId]="course.id"></core-format-text>
+                <br>
+                {{'core.courses.completedactivities' | translate}} : {{completedActivities}}/{{totalActivities}}
             </h2>
         </div>
 

@@ -134,7 +134,7 @@ export class MoodleMobileApp implements OnInit {
             // Go to sites page when user is logged out.
             // Due to DeepLinker, we need to use the ViewCtrl instead of name.
             // Otherwise some pages are re-created when they shouldn't.
-            this.appProvider.getRootNavController().setRoot(CoreLoginSitesPage);
+            this.appProvider.getRootNavController().setRoot("LandingPage");//CHANGED MATTEO
 
             // Unload lang custom strings.
             this.langProvider.clearCustomStrings();

@@ -22,6 +22,14 @@ import { CoreCourseProvider } from '../../providers/course';
 import { CoreCourseModuleHandlerButton } from '../../providers/module-delegate';
 import { CoreCourseModulePrefetchDelegate, CoreCourseModulePrefetchHandler } from '../../providers/module-prefetch-delegate';
 
+//TRY DOWNLOAD
+import { AddonModH5PActivity, AddonModH5PActivityData, AddonModH5PActivityProvider } from '@addon/mod/h5pactivity/providers/h5pactivity';
+import { CoreFilepool } from '@providers/filepool';
+import { CoreH5P } from '@core/h5p/providers/h5p';
+import { CoreConstants } from '@core/constants';
+import { CoreApp } from '@providers/app';
+import { CoreWSExternalFile } from '@providers/ws';
+
 /**
  * Component to display a module entry in a list of modules.
  *
@@ -57,6 +65,14 @@ export class CoreCourseModuleComponent implements OnInit, OnDestroy {
     spinner: boolean; // Whether to display a loading spinner.
     downloadEnabled: boolean; // Whether the download of sections and modules is enabled.
 
+    //TRY DOWNLOAD
+    h5pActivity: AddonModH5PActivityData; // The H5P activity object.
+    trackComponent: string;
+    state: string; // State of the file.
+    deployedFile: CoreWSExternalFile; // The H5P deployed file.
+    //TRI DOWNLOAD
+
+
     protected prefetchHandler: CoreCourseModulePrefetchHandler;
     protected statusObserver;
     protected statusCalculated = false;
@@ -74,6 +90,8 @@ export class CoreCourseModuleComponent implements OnInit, OnDestroy {
      * Component being initialized.
      */
     ngOnInit(): void {
+        if(this.module.modname=="h5pactivity")
+            this.downloadH5P();
         // Handler data must be defined. If it isn't, set it to prevent errors.
         if (this.module && !this.module.handlerData) {
             this.module.handlerData = {};
@@ -107,6 +125,60 @@ export class CoreCourseModuleComponent implements OnInit, OnDestroy {
 
         this.module.modnametranslated = this.courseProvider.translateModuleName(this.module.modname) || '';
     }
+
+    downloadH5P() {
+        console.log(this.module);
+    }
+
+    //TRY DOWNLOAD
+
+    // /**
+    //  * Get the activity data.
+    //  *
+    //  * @param refresh If it's refreshing content.
+    //  * @param sync If it should try to sync.
+    //  * @param showErrors If show errors to the user of hide them.
+    //  * @return Promise resolved when done.
+    //  */
+    // protected async fetchContent(refresh: boolean = false, sync: boolean = false, showErrors: boolean = false): Promise<void> {
+    //     try {
+    //         this.h5pActivity = await AddonModH5PActivity.instance.getH5PActivity(this.courseId, this.module.id, {
+    //             siteId: this.siteId,
+    //         });
+
+    //         //this.dataRetrieved.emit(this.h5pActivity);
+    //         //this.description = this.h5pActivity.intro;
+    //         //this.displayOptions = CoreH5PHelper.decodeDisplayOptions(this.h5pActivity.displayoptions);
+
+    //         // if (sync) {
+    //         //     await this.syncActivity(showErrors);
+    //         // }
+
+    //         await Promise.all([
+    //             // this.checkHasOffline(),
+    //             this.fetchAccessInfo(),
+    //             this.fetchDeployedFileData(),
+    //         ]);
+
+    //         //this.trackComponent = this.accessInfo.cansubmit ? AddonModH5PActivityProvider.TRACK_COMPONENT : '';
+
+    //         // if (this.h5pActivity.package && this.h5pActivity.package[0]) {
+    //         //     // The online player should use the original file, not the trusted one.
+    //         //     this.onlinePlayerUrl = CoreH5P.instance.h5pPlayer.calculateOnlinePlayerUrl(
+    //         //                 this.site.getURL(), this.h5pActivity.package[0].fileurl, this.displayOptions, this.trackComponent);
+    //         // }
+    //         if ((this.state == CoreConstants.NOT_DOWNLOADED || this.state == CoreConstants.OUTDATED) &&
+    //                 CoreFilepool.instance.shouldDownload(this.deployedFile.filesize) && CoreApp.instance.isOnline()) {
+    //             // Package is small, download it automatically. Don't block this function for this.
+    //             this.downloadAutomatically();
+    //         }
+    //     } finally {
+    //         //this.fillContextMenu(refresh);
+    //     }
+    // }
+
+
+    //TRY DOWNLOAD
 
     /**
      * Function called when the module is clicked.

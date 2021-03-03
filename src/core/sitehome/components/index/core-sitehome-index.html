@@ -9,7 +9,6 @@
 
                     <core-course-module *ngFor="let module of section.modules" [module]="module" [courseId]="siteHomeId" [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
                 </ng-container>
-
                 <!-- Site home items: news, categories, courses, etc. -->
                 <ng-container *ngIf="items.length > 0">
                     <ion-item-divider *ngIf="section && section.hasContent"></ion-item-divider>

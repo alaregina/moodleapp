@@ -52,7 +52,8 @@ export class CoreCoursesCourseProgressComponent implements OnInit, OnDestroy {
     showSpinner = false;
     downloadCourseEnabled: boolean;
     courseOptionMenuEnabled: boolean;
-
+    completedActivities: number;
+    totalActivities: number;
     protected isDestroyed = false;
     protected courseStatusObserver;
     protected siteUpdatedObserver;
@@ -66,8 +67,12 @@ export class CoreCoursesCourseProgressComponent implements OnInit, OnDestroy {
     /**
      * Component being initialized.
      */
-    ngOnInit(): void {
-
+    ngOnInit(): void {//MODIFIED
+        this.courseProvider.getActivitiesCompletionStatus(this.course.id).then((result: {})=>{
+            var activities = Object.values(result)
+            this.totalActivities = activities.length
+            this.completedActivities = activities.filter((x:any)=>x.state==1).length
+        })
         this.downloadCourseEnabled = !this.coursesProvider.isDownloadCourseDisabledInSite();
 
         if (this.downloadCourseEnabled) {

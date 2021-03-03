@@ -35,5 +35,6 @@
     "selfenrolment": "Self enrolment",
     "sendpaymentbutton": "Send payment via PayPal",
     "show": "Restore to view",
-    "totalcoursesearchresults": "Total courses: {{$a}}"
+    "totalcoursesearchresults": "Total courses: {{$a}}",
+    "completedactivities": "Completed activities"
 }

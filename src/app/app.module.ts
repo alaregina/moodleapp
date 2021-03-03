@@ -162,6 +162,8 @@ import { AddonFilterModule } from '@addon/filter/filter.module';
 import { AddonModH5PActivityModule } from '@addon/mod/h5pactivity/h5pactivity.module';
 
 import { setSingletonsInjector } from '@singletons/core.singletons';
+import { LoginMidaProvider } from '../providers/login-mida/login-mida';
+import { UserProfilePageModule } from '../pages/user-profile/user-profile.module';
 
 // For translate loader. AoT requires an exported function for factories.
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
@@ -312,6 +314,7 @@ export const WP_PROVIDER: any = null;
         AddonStorageManagerModule,
         AddonFilterModule,
         AddonModH5PActivityModule,
+        UserProfilePageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -359,6 +362,7 @@ export const WP_PROVIDER: any = null;
         {provide: COMPILER_OPTIONS, useValue: {}, multi: true},
         {provide: JitCompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
         {provide: LocationStrategy, useClass: MockLocationStrategy},
+    LoginMidaProvider,
     ]
 })
 export class AppModule {

@@ -288,6 +288,7 @@ export class AddonModH5PActivityIndexComponent extends CoreCourseModuleMainActiv
      * @return Promise resolved when done.
      */
     protected async downloadAutomatically(): Promise<void> {
+        console.log("addon.mod.h5pactivity.index.downloadAutomatically");
         try {
             await this.downloadDeployedFile();
 
