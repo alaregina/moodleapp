@@ -1323,3 +1323,21 @@ ion-app.app-root {
     }
   }
 }
+
+.small-modal{
+  .modal-wrapper {
+      position: absolute;
+      bottom: 0;
+      min-height: initial;
+      top: initial;
+      height: 60%;
+      width: 100%;
+      background-color: white;
+  }
+}
+
+ion-app.modal-opened{
+  ng-component{
+    opacity:0.5;
+  }
+}

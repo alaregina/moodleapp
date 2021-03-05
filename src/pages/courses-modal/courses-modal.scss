@@ -1,0 +1,30 @@
+page-courses-modal {
+
+    ion-slides{
+        height: auto!important;
+    }
+
+    ion-content.modal-courses{
+        background-color: white;
+        border-top-left-radius: 10%;
+        border-top-right-radius: 10%;
+    }
+
+    span.view-all{
+        color:#00a18f;
+    }
+
+    ion-row.header{
+        ion-col h4{
+            margin:0px;
+        }
+    }
+
+    ion-col.close-button{
+        text-align:center;
+        h3{
+            margin: 0px;
+            width: 100%;
+        }
+    }
+}

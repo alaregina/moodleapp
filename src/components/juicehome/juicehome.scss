@@ -1,3 +1,64 @@
 juicehome {
 
+    .text-small{
+        font-size: small;
+    }
+
+    h1 small{
+        font-size: small;
+        color: $red;
+    }
+
+    div.points h1{
+        margin-top: 0px;
+        b{
+            font-size: xx-large;
+            color: $red;
+        }
+    } 
+
+    h1.name {
+        margin-bottom: 0px;
+        b{
+            font-size: xx-large;
+        }
+    }
+    
+    h1 strong{
+        font-size: x-large;
+    }
+
+    ion-card{
+        width: 100%!important;
+        border-radius: 4%!important;
+        background-color: white!important;
+    }
+    ion-card[selected=true]{
+        background-color: #00a18f!important;
+        color: white;
+        ion-card-header h1 strong{
+            color: white;
+        }
+    }
+
+    ion-card-content{
+        border-top: 2px solid $gray;
+    }
+
+    .user-header{
+        margin-left: 10px;
+    }
+    .goccia-rossa{
+        display: block;
+        width: 30px;
+        height: 30px;
+        background-image: url(../../assets/img/goccia.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        float: left;
+    }
+
+    div.select-category b{
+        margin-left:10px;
+    }
 }

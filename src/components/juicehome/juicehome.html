@@ -1,2 +1,35 @@
-<!-- Generated template for the JuicehomeComponent component -->
-
+<ion-content>
+    <ion-refresher [enabled]="categoriesLoaded" (ionRefresh)="refreshCategories($event)">
+        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
+    </ion-refresher>
+    <core-loading [hideUntil]="userLoaded">
+        <div class="user-header">
+            <h1 class="name"><b>{{ user.fullname }}</b></h1>
+            <div class="points">
+                <span class="goccia-rossa"></span>
+                <h1><b>6431</b></h1>
+            </div>
+        </div>
+    </core-loading>
+    <core-loading [hideUntil]="categoriesLoaded">
+        <div *ngIf="categories?.length > 0">
+            <ion-grid>
+                <ion-col col-12>
+                    <div class="select-category">
+                        <b>Seleziona una categoria</b>
+                    </div>
+                </ion-col>
+                <ion-col col-6 *ngFor="let category of categories">
+                    <ion-card text-center (click)="openCategory(category.id)" [attr.selected]="category.id==selectedCategory">
+                        <ion-card-header>
+                          <h1><strong>{{category.name | uppercase}}</strong></h1>
+                        </ion-card-header>
+                        <ion-card-content>
+                          {{category.coursecount}} Corsi
+                        </ion-card-content>
+                      </ion-card>
+                </ion-col>
+            </ion-grid>
+        </div>
+    </core-loading>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-content class="modal-courses">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 class="close-button">
+          <h3 (click)="dismiss()">
+              <core-icon name="fa-angle-up" item-start></core-icon>
+          </h3>
+          
+          <!-- <ion-icon name="chevron-up-outline"></ion-icon> -->
+        </ion-col>
+      </ion-row>
+      <ion-row class="header">
+        <ion-col col-4>
+          <h4>{{'core.courses.evidence' | translate}}</h4>
+        </ion-col>
+        <ion-col col-4>
+          
+        </ion-col>
+        <ion-col col-4>
+          <span class="view-all">{{'core.courses.viewall' | translate}}</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    <core-loading [hideUntil]="coursesLoaded">
+      <ion-slides>
+        <ion-slide *ngFor="let course of courses">
+          <course-card [course]="course">
+
+          </course-card>
+        </ion-slide>
+      </ion-slides>
+  </core-loading>
+</ion-content>

@@ -20,6 +20,7 @@ import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 import { CoreCourseModulePrefetchDelegate } from '@core/course/providers/module-prefetch-delegate';
 import { CoreBlockCourseBlocksComponent } from '@core/block/components/course-blocks/course-blocks';
 import { CoreSite } from '@classes/site';
+import { CoreCoursesProvider } from '@core/courses/providers/courses';
 
 /**
  * Component that displays site home index.
@@ -38,10 +39,10 @@ export class CoreSiteHomeIndexComponent implements OnInit {
     items: any[] = [];
     siteHomeId: number;
     currentSite: CoreSite;
-
+    categories: any[];
     constructor(private domUtils: CoreDomUtilsProvider, sitesProvider: CoreSitesProvider,
             private courseProvider: CoreCourseProvider, private courseHelper: CoreCourseHelperProvider,
-            private prefetchDelegate: CoreCourseModulePrefetchDelegate) {
+            private prefetchDelegate: CoreCourseModulePrefetchDelegate, private coursesProvider:CoreCoursesProvider) {
         this.currentSite = sitesProvider.getCurrentSite();
         this.siteHomeId = this.currentSite.getSiteHomeId();
     }

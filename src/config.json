@@ -81,7 +81,7 @@
         93.75
     ],
     "customurlscheme": "moodlemobile",
-    "siteurl": "localhost/moodle",
+    "siteurl": "lms.2piuconsulting.net",
     "sitename": "lms2piu",
     "multisitesdisplay": "",
     "sitefindersettings": {},
