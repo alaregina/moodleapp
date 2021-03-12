@@ -32,7 +32,16 @@ addon-qtype-ddwtos {
         word-wrap: break-word;
     }
     .draghome, .drag.unplaced{
-        border: 1px solid $gray-darker;
+        border: 0px;
+        font-size: 1.7rem;
+        height: auto!important;
+        width: auto!important;
+        padding: 10px;
+        margin-left: 10px;
+        //position: unset!important;
+        //left: unset!important;
+        //top: unset!important;
+        font-weight:lighter;
     }
     .draghome {
         visibility: hidden;
@@ -85,6 +94,7 @@ addon-qtype-ddwtos {
         .group#{$i + 1} {
             background: nth($core-dd-question-colors, $i + 1);
             color: $text-color;
+            height:auto!important;
         }
     }
 

@@ -9,24 +9,21 @@
     <!-- Default course format. -->
     <core-dynamic-component [component]="courseFormatComponent" [data]="data">
         <core-loading [hideUntil]="loaded">
-            <!-- Section selector. -->
-            <core-dynamic-component [component]="sectionSelectorComponent" [data]="data">
-                <div text-wrap *ngIf="displaySectionSelector && sections && hasSeveralSections" padding class="clearfix" ion-row justify-content-between class="safe-padding-horizontal core-button-selector-row" [class.core-section-download]="downloadEnabled">
-                    <button float-start ion-button icon-start icon-end (click)="showSectionSelector($event)" color="light" class="core-button-select button-no-uppercase" ion-col [attr.aria-label]="('core.course.sections' | translate) + ': ' + (selectedSection && (selectedSection.formattedName || selectedSection.name))" aria-haspopup="true" [attr.aria-expanded]="sectionSelectorExpanded" aria-controls="core-course-section-selector" id="core-course-section-button">
-                        <core-icon name="fa-folder"></core-icon>
-                        <span class="core-button-select-text">{{selectedSection && (selectedSection.formattedName || selectedSection.name) || 'core.course.sections' | translate }}</span>
-                        <ion-icon name="arrow-dropdown" ios="md-arrow-dropdown"></ion-icon>
-                    </button>
-                    <!-- Section download. -->
-                    <ng-container *ngTemplateOutlet="sectionDownloadTemplate; context: {section: selectedSection}"></ng-container>
-                </div>
-            </core-dynamic-component>
-
             <!-- Course summary. By default we only display the course progress. -->
             <core-dynamic-component [component]="courseSummaryComponent" [data]="data">
+                
                 <ion-list no-lines *ngIf="course.imageThumb || (selectedSection && (selectedSection.id == allSectionsId && course.progress != null && course.progress >= 0) || (selectedSection.id != allSectionsId && (selectedSection.availabilityinfo || selectedSection.visible === 0)))" class="core-format-progress-list">
                     <div *ngIf="course.imageThumb" class="core-course-thumb">
                         <img [src]="course.imageThumb" core-external-content alt=""/>
+                    </div>
+                    <div class="course-general-info">
+                        <div *ngIf="!!course.displayname" class="course-title">
+                            <span>
+                                {{course.displayname}}
+                            </span>
+    
+                        </div>
+                        <div *ngIf="!!course.summary" [innerHTML]="course.summary"></div>
                     </div>
                     <ng-container *ngIf="selectedSection">
                         <ion-item class="core-course-progress" *ngIf="selectedSection.id == allSectionsId && course.progress != null && course.progress >= 0 && course.completionusertracked !== false">
@@ -38,19 +35,52 @@
                             <ion-badge color="secondary" *ngIf="selectedSection.availabilityinfo" text-wrap><core-format-text [text]=" selectedSection.availabilityinfo" contextLevel="course" [contextInstanceId]="courseId"></core-format-text></ion-badge>
                         </ion-item>
                     </ng-container>
+                    <ion-badge color="secondary" *ngIf="warningSectionUnavailable" text-wrap>{{ 'core.notavailablecourse' | translate }}</ion-badge>
                 </ion-list>
+              
             </core-dynamic-component>
+            <!-- Section selector. -->
+            <!-- <core-dynamic-component [component]="sectionSelectorComponent" [data]="data">
+                <div text-wrap *ngIf="displaySectionSelector && sections && hasSeveralSections" padding class="clearfix" ion-row justify-content-between class="safe-padding-horizontal core-button-selector-row" [class.core-section-download]="downloadEnabled">
+                    <button float-start ion-button icon-start icon-end (click)="showSectionSelector($event)" color="light" class="core-button-select button-no-uppercase" ion-col [attr.aria-label]="('core.course.sections' | translate) + ': ' + (selectedSection && (selectedSection.formattedName || selectedSection.name))" aria-haspopup="true" [attr.aria-expanded]="sectionSelectorExpanded" aria-controls="core-course-section-selector" id="core-course-section-button">
+                        <core-icon name="fa-folder"></core-icon>
+                        <span class="core-button-select-text">{{selectedSection && (selectedSection.formattedName || selectedSection.name) || 'core.course.sections' | translate }}</span>
+                        <ion-icon name="arrow-dropdown" ios="md-arrow-dropdown"></ion-icon>
+                    </button>
+                    <ng-container *ngTemplateOutlet="sectionDownloadTemplate; context: {section: selectedSection}"></ng-container>
+                </div>
+            </core-dynamic-component> -->
+            <!-- section selector -->
+             <div class="section-slider" *ngIf="!!sections" >
+                <ion-slides id="slides" #slides pager spaceBetween="10" slidesPerView="2.3" loop="false">
+                    <ion-slide *ngFor="let section of sections | slice:1" [class.item-dimmed]="section.visible === 0 || section.uservisible === false" >
+                        <div class="section-button" [attr.selected]="(section.id==selectedSection.id) ? true:false" (click)="!(section.visible === 0 || section.uservisible === false) ? sectionChanged(section): unauthorized(section)" *ngIf="!section.hiddenbynumsections && section.id != stealthModulesSectionId">
+                            <p>{{section.name}}</p>
+                        </div>
+                    </ion-slide>
+                </ion-slides>
+    
+             </div>
 
+             <!-- <svg class="Rectangle_3_bk" viewBox="0 0 428 896">
+                <linearGradient id="Rectangle_3_bk" spreadMethod="pad" x1="0.5" x2="0.5" y1="0.148" y2="1.707">
+                    <stop offset="0" stop-color="#fff" stop-opacity="0.969"></stop>
+                    <stop offset="0.8131" stop-color="#fff" stop-opacity="0.969"></stop>
+                    <stop offset="1" stop-color="#fff" stop-opacity="0.98"></stop>
+                </linearGradient>
+                <path style="fill:white;" class="Rectangle_3_bk_Class" d="M 407.3236694335938 0 C 418.7428894042969 0 428 8.954304695129395 428 20 L 428 896 L 0 896 L 0 20 C 0 8.954304695129395 9.257107734680176 0 20.67632865905762 0 L 407.3236694335938 0 Z">
+                </path>
+            </svg> -->
             <!-- Single section. -->
-            <div *ngIf="selectedSection && selectedSection.id != allSectionsId">
+            <div *ngIf="selectedSection && selectedSection.id != allSectionsId" class="section">
                 <core-dynamic-component [component]="singleSectionComponent" [data]="data">
                     <ng-container *ngTemplateOutlet="sectionTemplate; context: {section: selectedSection}"></ng-container>
                     <core-empty-box *ngIf="!selectedSection.hasContent" icon="qr-scanner" [message]="'core.course.nocontentavailable' | translate"></core-empty-box>
                 </core-dynamic-component>
             </div>
-
+            
             <!-- Multiple sections. -->
-            <div *ngIf="selectedSection && selectedSection.id == allSectionsId" class='DEBUG'>
+            <div *ngIf="selectedSection && selectedSection.id == allSectionsId" class="section">
                 <core-dynamic-component [component]="allSectionsComponent" [data]="data">
                     <ng-container *ngFor="let section of sections; index as i">
                         <ng-container *ngIf="i <= showSectionId">
@@ -62,7 +92,7 @@
                 <core-infinite-loading [enabled]="canLoadMore" (action)="showMoreActivities($event)"></core-infinite-loading>
             </div>
 
-            <ion-buttons padding end class="core-course-section-nav-buttons safe-padding-horizontal" *ngIf="displaySectionSelector && sections && sections.length">
+            <!-- <ion-buttons padding end class="core-course-section-nav-buttons safe-padding-horizontal" *ngIf="displaySectionSelector && sections && sections.length">
                 <button *ngIf="previousSection" ion-button color="light" icon-only (click)="sectionChanged(previousSection)" title="{{ 'core.previous' | translate }}">
                     <ion-icon name="arrow-back" md="ios-arrow-back"></ion-icon>
                     <core-format-text class="accesshide" [text]="previousSection.formattedName || previousSection.name" contextLevel="course" [contextInstanceId]="course.id"></core-format-text>
@@ -71,7 +101,7 @@
                     <core-format-text class="accesshide" [text]="nextSection.formattedName || nextSection.name" contextLevel="course" [contextInstanceId]="course.id"></core-format-text>
                     <ion-icon name="arrow-forward" md="ios-arrow-forward"></ion-icon>
                 </button>
-            </ion-buttons>
+            </ion-buttons> -->
         </core-loading>
     </core-dynamic-component>
 </core-block-course-blocks>
@@ -79,6 +109,14 @@
 <!-- Template to render a section. -->
 <ng-template #sectionTemplate let-section="section">
     <section ion-list *ngIf="!section.hiddenbynumsections && section.id != allSectionsId && section.id != stealthModulesSectionId">
+        <div class="section-slider">
+            <ion-slides #contents id="contents" pager spaceBetween="0" slidesPerView="4" loop="false">
+                <ion-slide class="content-slide" *ngFor="let content of sectionContents; first as isFirst; last as isLast" (click)="selectedContent=content" [attr.selected]="selectedContent==content">
+                    <p class="content-selection-text">{{content}}</p>
+                    <div [class.selection-bar-first]="isFirst" [class.selection-bar-last]="isLast" class="selection-bar"></div>
+                </ion-slide>
+            </ion-slides>
+        </div>
         <!-- Title is only displayed when viewing all sections. -->
         <ion-item-divider text-wrap color="light" *ngIf="selectedSection.id == allSectionsId && section.name" [class.core-section-download]="downloadEnabled" [class.item-dimmed]="section.visible === 0 || section.uservisible === false">
             <core-format-text [text]="section.name" contextLevel="course" [contextInstanceId]="course.id"></core-format-text>
@@ -96,7 +134,7 @@
         </ion-item>
 
         <ng-container *ngFor="let module of section.modules">
-            <core-course-module *ngIf="module.visibleoncoursepage !== 0" [module]="module" [courseId]="course.id" [downloadEnabled]="downloadEnabled" [section]="section"
+            <core-course-module *ngIf="module.visibleoncoursepage !== 0 && module.category==selectedContent" [module]="module" [courseId]="course.id" [downloadEnabled]="downloadEnabled" [section]="section"
                     (completionChanged)="onCompletionChange($event)" (statusChanged)="onModuleStatusChange($event)"></core-course-module>
         </ng-container>
     </section>

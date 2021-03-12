@@ -1330,9 +1330,23 @@ ion-app.app-root {
       bottom: 0;
       min-height: initial;
       top: initial;
+      left:0px;
       height: 60%;
       width: 100%;
-      background-color: white;
+      background-color: transparent;
+  }
+}
+
+.large-modal{
+  .modal-wrapper {
+      position: absolute;
+      bottom: 0;
+      min-height: initial;
+      top: initial;
+      left:0px;
+      height: 90%;
+      width: 100%;
+      background-color: transparent;
   }
 }
 

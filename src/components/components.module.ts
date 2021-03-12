@@ -55,7 +55,6 @@ import { CoreStyleComponent } from './style/style';
 import { CoreBSTooltipComponent } from './bs-tooltip/bs-tooltip';
 import { JuicehomeComponent } from './juicehome/juicehome';
 import { SideMenuComponent } from './side-menu/side-menu';
-import { CourseCardComponent } from './course-card/course-card';
 
 @NgModule({
     declarations: [
@@ -96,8 +95,7 @@ import { CourseCardComponent } from './course-card/course-card';
         CoreStyleComponent,
         CoreBSTooltipComponent,
         JuicehomeComponent,
-        SideMenuComponent,
-        CourseCardComponent
+        SideMenuComponent
     ],
     entryComponents: [
         CoreContextMenuPopoverComponent,
@@ -146,8 +144,7 @@ import { CourseCardComponent } from './course-card/course-card';
         CoreStyleComponent,
         CoreBSTooltipComponent,
         JuicehomeComponent,
-        SideMenuComponent,
-        CourseCardComponent
+        SideMenuComponent
     ]
 })
 export class CoreComponentsModule {}

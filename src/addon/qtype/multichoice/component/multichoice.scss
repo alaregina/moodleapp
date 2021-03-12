@@ -10,4 +10,47 @@ ion-app.app-root addon-qtype-multichoice {
         display: inline;
         padding: 0 .7em;
     }
+
+    ion-item.item-radio div.item-inner{
+        background-color: white;
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-top:2%;
+        margin-bottom: 2%;
+    }
+    ion-item.item-radio-checked {
+        background-color: transparent;
+        div.item-inner{
+            background-color: $ottanium;
+            border-radius: 20px;
+            margin-right: 10px;
+            *{
+                color: white;
+            }
+        }
+    }
+    .item-radio.item-md ion-label {
+        margin-left: 5%;
+    }
+
+    span.answernumber{
+        float: left;
+        text-transform: uppercase;
+        font-weight: bolder;
+        margin-right: 3%;
+        font-size: 2rem;
+    }
+
+    div.item-inner div.input-wrapper ion-label{
+        margin-bottom:0px;
+        // core-format-text p{
+        //     font-weight: bold;
+        //     font-size: 2rem;
+        // }
+    } 
+
+    div.item-inner div.input-wrapper ion-label core-format-text div.flex-fill *{
+        font-weight: lighter;
+        font-size: x-large;
+    }
 }

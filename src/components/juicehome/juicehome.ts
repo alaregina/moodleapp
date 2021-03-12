@@ -1,5 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 import { CoreCoursesProvider } from '@core/courses/providers/courses';
+import { CoreCoursesHelperProvider } from '@core/courses/providers/helper';
 import { CoreUserProvider } from '@core/user/providers/user';
 import { CoreSitesProvider } from '@providers/sites';
 import { CoreDomUtilsProvider } from '@providers/utils/dom';
@@ -29,6 +31,8 @@ export class JuicehomeComponent implements AfterViewInit {
   user: any = {};
   selectedCategory: number = -1;
   modal: Modal;
+
+
   constructor(private navCtrl: NavController, 
     private domUtils: CoreDomUtilsProvider, 
     private utils: CoreUtilsProvider, 
@@ -94,26 +98,120 @@ export class JuicehomeComponent implements AfterViewInit {
           });
       });
   }
-/**
+  
+  /**
      * Open a category.
      *
      * @param categoryId The category ID.
      */
-    async openCategory(categoryId: number) {
-      if (this.selectedCategory == categoryId)
-      {
+   async openCategory(categoryId: number) {
+    if (this.selectedCategory == categoryId)
+    {
+      this.selectedCategory = -1;
+      this.modal.dismiss();
+    } else {
+      this.selectedCategory = categoryId;
+      document.getElementsByTagName("ion-app")[0].classList.add("modal-opened");
+      this.modal = this.modalController.create(CoursesModalPage, { categoryId: categoryId }, {cssClass: "small-modal", showBackdrop:true, enableBackdropDismiss: true})
+      this.modal.onDidDismiss(()=>{
         this.selectedCategory = -1;
-        this.modal.dismiss();
-      } else {
-        this.selectedCategory = categoryId;
-        document.getElementsByTagName("ion-app")[0].classList.add("modal-opened");
-        this.modal = this.modalController.create(CoursesModalPage, { categoryId: categoryId }, {cssClass: "small-modal"})
-        this.modal.onDidDismiss(()=>{
-          this.selectedCategory = -1;
-          document.getElementsByTagName("ion-app")[0].classList.remove("modal-opened");
-        })
-        await this.modal.present()
-      }
-      //this.navCtrl.push('CoreCoursesCategoriesPage', { categoryId: categoryId });
-  }
+        document.getElementsByTagName("ion-app")[0].classList.remove("modal-opened");
+      })
+      await this.modal.present()
+    }
+    //this.navCtrl.push('CoreCoursesCategoriesPage', { categoryId: categoryId });
+}
+
+
+
+//     /**
+//      * Open a category.
+//      *
+//      * @param categoryId The category ID.
+//      */
+//     async openCategory(categoryId: number) {
+//       if (this.selectedCategory == categoryId)
+//       {
+//         this.selectedCategory = null;
+//       } else {
+//         this.selectedCategory = categoryId;
+//         this.fetchCourses().finally(()=>{
+//           this.coursesLoaded = true;
+//         })
+//       }
+//       //this.navCtrl.push('CoreCoursesCategoriesPage', { categoryId: categoryId });
+//   }
+
+//   dismiss(){
+//     // this.viewCtrl.dismiss();
+//   }
+
+//   viewAllCourses(){
+//     this.navCtrl.push("CoreCoursesMyCoursesPage")
+//   }
+
+//   /**
+//      * Fetch the user courses.
+//      *
+//      * @return Promise resolved when done.
+//      */
+//    protected fetchCourses(): Promise<any> {
+//     return this.coursesProvider.getUserCourses().then((courses) => {
+//         const promises = [],
+//             courseIds = courses.map((course) => {
+//             return course.id;
+//         });
+
+//         this.courseIds = courseIds.join(',');
+
+//         promises.push(this.coursesHelper.loadCoursesExtraInfo(courses));
+
+//         if (this.coursesProvider.canGetAdminAndNavOptions()) {
+//             promises.push(this.coursesProvider.getCoursesAdminAndNavOptions(courseIds).then((options) => {
+//                 courses.forEach((course) => {
+//                     course.navOptions = options.navOptions[course.id];
+//                     course.admOptions = options.admOptions[course.id];
+//                 });
+//             }));
+//         }
+
+//         return Promise.all(promises).then(() => {
+//             this.courses = courses;
+//             this.initPrefetchCoursesIcon();
+//         });
+//     }).catch((error) => {
+//         this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcourses', true);
+//     });
+// }
+
+
+
+//   /**
+//      * Initialize the prefetch icon for the list of courses.
+//      */
+//    protected initPrefetchCoursesIcon(): void {
+//     if (this.prefetchIconInitialized || !this.downloadAllCoursesEnabled) {
+//         // Already initialized.
+//         return;
+//     }
+
+//     this.prefetchIconInitialized = true;
+
+//     if (!this.courses || this.courses.length < 2) {
+//         // Not enough courses.
+//         this.prefetchCoursesData.icon = '';
+
+//         return;
+//     }
+
+//     this.courseHelper.determineCoursesStatus(this.courses).then((status) => {
+//         let icon = this.courseHelper.getCourseStatusIconAndTitleFromStatus(status).icon;
+//         if (icon == 'spinner') {
+//             // It seems all courses are being downloaded, show a download button instead.
+//             icon = 'cloud-download';
+//         }
+//         this.prefetchCoursesData.icon = icon;
+//     });
+// }
+
 }

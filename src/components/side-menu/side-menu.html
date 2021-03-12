@@ -12,17 +12,21 @@
         <img *ngIf="!avatarUrl" src="assets/img/user-avatar.png" [alt]="'core.pictureof' | translate:{$a: siteInfo.fullname}" role="presentation" (click)="gotoProfile($event)">
         <h2>{{siteInfo.fullname}}</h2>
     </a>
-      <button ion-item>
+      <button ion-item class="sidemenu-item" (click)="goTo('dashboard')">
+        <div class="dashboard-icon"></div>
         DASHBOARD
       </button>
-      <button ion-item>
+      <button ion-item class="sidemenu-item" (click)="goTo('tutorial')">
+        <div class="tutorial-icon"></div>
         TUTORIAL
       </button>
-      <button ion-item>
+      <button ion-item class="sidemenu-item" (click)="goTo('customer-care')">
+        <div class="customer-care-icon"></div>
         CUSTOMER CARE
       </button>
-      <button ion-item>
-        CLOSE MENU
+      <button ion-item class="sidemenu-item" (click)="goTo('faq')">
+        <div class="faq-icon"></div>
+        FAQ
       </button>
     </ion-list>
   </ion-content>

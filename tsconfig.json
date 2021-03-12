@@ -17,6 +17,7 @@
       "@addon/*": ["addon/*"],
       "@app/*": ["app/*"],
       "@classes/*": ["classes/*"],
+      "@pages/*": ["pages/*"],
       "@core/*": ["core/*"],
       "@providers/*": ["providers/*"],
       "@components/*": ["components/*"],

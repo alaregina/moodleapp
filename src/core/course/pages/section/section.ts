@@ -30,6 +30,7 @@ import { CoreCourseOptionsDelegate, CoreCourseOptionsHandlerToDisplay,
 import { CoreCourseSyncProvider } from '../../providers/sync';
 import { CoreCourseFormatComponent } from '../../components/format/format';
 import { CoreFilterHelperProvider } from '@core/filter/providers/helper';
+import { CoreLoginSitePolicyPage } from '@core/login/pages/site-policy/site-policy';
 
 /**
  * Page that displays the list of courses the user is enrolled in.
@@ -243,6 +244,16 @@ export class CoreCourseSectionPage implements OnDestroy {
                             return section.modules.length > 0;
                     });
 
+                    sections.forEach(section => {
+                        if(!!section.modules && section.modules.length > 0){
+                            section.modules.forEach(module => {
+                                this.courseProvider.getModuleContentCategory(module.id).then(metadata=>{
+                                    if(!!metadata && metadata["local_metadata_field_contentcategory"])
+                                    module["category"] = metadata["local_metadata_field_contentcategory"]
+                                })
+                            });
+                        }
+                    });
                     if (sectionWithModules && typeof sectionWithModules.modules[0].completion != 'undefined') {
                         // The module already has completion (3.6 onwards). Load the offline completion.
                         promise = this.courseHelper.loadOfflineCompletion(this.course.id, sections).catch(() => {

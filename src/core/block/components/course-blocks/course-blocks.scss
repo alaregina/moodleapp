@@ -8,7 +8,7 @@ $core-side-blocks-min-width: 280px;
 ion-app.app-root core-block-course-blocks {
 
     &.core-no-blocks .core-course-blocks-content {
-        height: auto;
+        height: 100%;
     }
 
     &.core-has-blocks {
@@ -19,6 +19,7 @@ ion-app.app-root core-block-course-blocks {
             flex-wrap: nowrap;
 
             .core-course-blocks-content {
+                height: 100%;
                 box-shadow: none !important;
                 flex-grow: 1;
                 max-width: 100%;

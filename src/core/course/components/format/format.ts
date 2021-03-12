@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {
-    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild
+    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild, AfterViewInit
 } from '@angular/core';
-import { Content, ModalController } from 'ionic-angular';
+import { Content, ModalController, Slides } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreEventsProvider } from '@providers/events';
 import { CoreSitesProvider } from '@providers/sites';
@@ -54,7 +54,8 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
 
     @ViewChildren(CoreDynamicComponent) dynamicComponents: QueryList<CoreDynamicComponent>;
     @ViewChild(CoreBlockCourseBlocksComponent) courseBlocksComponent: CoreBlockCourseBlocksComponent;
-
+    @ViewChild('slides') slides: Slides;
+    @ViewChild('contents') contents: Slides;
     // All the possible component classes.
     courseFormatComponent: any;
     courseSummaryComponent: any;
@@ -64,7 +65,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     canLoadMore = false;
     showSectionId = 0;
     sectionSelectorExpanded = false;
-
+    _selectedContent = null
     // Data to pass to the components.
     data: any = {};
 
@@ -82,7 +83,8 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     protected sectionStatusObserver;
     protected selectTabObserver;
     protected lastCourseFormat: string;
-
+    warningSectionUnavailable: boolean = false;
+   
     constructor(private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
             eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
@@ -91,7 +93,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
 
         this.selectOptions.title = translate.instant('core.course.sections');
         this.completionChanged = new EventEmitter();
-
+        var arr = [];        
         // Pass this instance to all components so they can use its methods and properties.
         this.data.coreCourseFormatComponent = this;
 
@@ -154,6 +156,25 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
+    get selectedContent():string{
+        if(!!this._selectedContent)
+            return this._selectedContent;
+        else if(!!this.sectionContents && this.sectionContents.length>0)
+            return this.sectionContents[0];
+        else 
+            return ""
+    }
+
+    set selectedContent(value:string){
+        this._selectedContent = value;
+    }
+
+    get sectionContents():any[]{
+        var contents: any[] = [];
+        contents = this.selectedSection.modules.map(x=> x.category);
+        return Array.from(new Set(contents));
+    }
+
     /**
      * Component being initialized.
      */
@@ -167,6 +188,9 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
+        if(!this.selectedSection && !!this.sections){
+            this.initialSectionId = this.sections[2].id
+        }
 
         if (changes.course) {
             // Course has changed, try to get the components.
@@ -309,6 +333,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      * @param newSection The new selected section.
      */
     sectionChanged(newSection: any): void {
+        console.log(newSection)
         const previousValue = this.selectedSection;
         this.selectedSection = newSection;
         this.data.section = this.selectedSection;
@@ -356,6 +381,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 // Ignore errors.
             });
         }
+        this.selectedContent = null;
     }
 
     /**
@@ -504,6 +530,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 this.courseHelper.calculateSectionsStatus(this.sections, this.course.id, false, false);
             }
         }
+        setTimeout(()=>{
+            this.slides.update();
+            this.contents.update();
+        }, 1000)
     }
 
     /**
@@ -557,5 +587,13 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     onModuleStatusChange(eventData: any): void {
         this.courseHelper.calculateSectionsStatus(this.sections, this.course.id, false, false);
+    }
+
+    unauthorized(section){
+        this.warningSectionUnavailable = true;
+        setTimeout(()=>{
+            this.warningSectionUnavailable = false;
+        }, 3000)
+        console.log("unauthorized: " + section.name)
     }
 }

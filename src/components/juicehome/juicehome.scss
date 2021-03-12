@@ -1,5 +1,7 @@
 juicehome {
-
+    ion-grid.categories{
+        padding:3%!important;
+    }
     .text-small{
         font-size: small;
     }
@@ -28,13 +30,14 @@ juicehome {
         font-size: x-large;
     }
 
-    ion-card{
+    ion-card.course-card{
         width: 100%!important;
         border-radius: 4%!important;
         background-color: white!important;
+        margin: 0px!important;
     }
     ion-card[selected=true]{
-        background-color: #00a18f!important;
+        background-color: $ottanium!important;
         color: white;
         ion-card-header h1 strong{
             color: white;
@@ -46,16 +49,14 @@ juicehome {
     }
 
     .user-header{
-        margin-left: 10px;
+        padding:3%;
     }
     .goccia-rossa{
         display: block;
         width: 30px;
         height: 30px;
-        background-image: url(../../assets/img/goccia.png);
-        background-repeat: no-repeat;
-        background-size: contain;
         float: left;
+        margin-right: 3%;
     }
 
     div.select-category b{

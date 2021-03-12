@@ -1,17 +1,21 @@
 page-courses-modal {
-
+    background-color: transparent!important;
     ion-slides{
         height: auto!important;
     }
 
     ion-content.modal-courses{
-        background-color: white;
-        border-top-left-radius: 10%;
-        border-top-right-radius: 10%;
+        background-color: $gray-lighter;
+        border-top-left-radius: 5%;
+        border-top-right-radius: 5%;
     }
 
-    span.view-all{
-        color:#00a18f;
+    ion-col.view-all{
+        text-align: center;
+        align-self: center;
+        span{
+            color:#00a18f;            
+        }
     }
 
     ion-row.header{
@@ -27,4 +31,39 @@ page-courses-modal {
             width: 100%;
         }
     }
+
+    .swiper-pagination-bullet{
+        display: none;
+     }
+
+     .course-list .course-list-item {
+        
+        background-color: $gray-lighter;
+        .item-inner{
+            border:0px!important;
+            .input-wrapper ion-label{
+                margin:0px!important;
+            }
+        } 
+
+        ion-card{
+            min-height: 80px;
+            border-radius: 10px!important;
+            flex-direction: row!important;
+            -webkit-flex-direction: row!important;
+            ion-item{
+                display: none!important;
+            }
+            
+            .core-course-thumb{
+                padding-top:0%!important;
+                min-width: 30%!important;
+            }
+            .core-course-more-than-title{
+                display: block!important;
+                height: fit-content;
+                width:60%!important;
+            }
+         } 
+     }
 }

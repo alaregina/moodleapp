@@ -724,6 +724,50 @@ export class CoreCourseProvider {
     }
 
     /**
+     * Get the course sections.
+     *
+     * @param courseId The course ID.
+     * @param excludeModules Do not return modules, return only the sections structure.
+     * @param excludeContents Do not return module contents (i.e: files inside a resource).
+     * @param preSets Presets to use.
+     * @param siteId Site ID. If not defined, current site.
+     * @param includeStealthModules Whether to include stealth modules. Defaults to true.
+     * @return The reject contains the error message, else contains the sections.
+     */
+     getModuleContentCategory(moduleId?: number, preSets?: CoreSiteWSPreSets,
+        siteId?: string): Promise<any> {
+
+        return this.sitesProvider.getSite(siteId).then((site) => {
+            preSets = preSets || {};
+            preSets.updateFrequency = preSets.updateFrequency || CoreSite.FREQUENCY_RARELY;
+
+            const params = {
+                id: moduleId,
+                context: "MODULE"
+            };
+
+            return site.read('local_metadata_get_data', params, preSets).catch(() => {
+                // Error getting the data, it could fail because we added a new parameter and the call isn't cached.
+                // Retry without the new parameter and forcing cache.
+                preSets.omitExpires = true;
+                return site.read('local_metadata_get_data', params, preSets);
+            }).then((metadata) => {
+                if(metadata.success){
+                    var metaResult = {};
+                    if(!!metadata.metadata && metadata.metadata.length>0){
+                        metadata.metadata.forEach(element => {
+                            metaResult[element.name] = element.value;
+                        });
+                    }
+                    return metaResult;
+                }
+                else
+                    return metadata.error;
+            });
+        });
+    }
+
+    /**
      * Get cache key for section WS call.
      *
      * @param courseId Course ID.

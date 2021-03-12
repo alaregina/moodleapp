@@ -6,21 +6,22 @@
         <div class="user-header">
             <h1 class="name"><b>{{ user.fullname }}</b></h1>
             <div class="points">
-                <span class="goccia-rossa"></span>
+                <img class="goccia-rossa" src="assets/img/goccia.png"/>
                 <h1><b>6431</b></h1>
             </div>
         </div>
     </core-loading>
     <core-loading [hideUntil]="categoriesLoaded">
         <div *ngIf="categories?.length > 0">
-            <ion-grid>
+            <ion-grid class="categories">
+                <ion-row>
                 <ion-col col-12>
                     <div class="select-category">
                         <b>Seleziona una categoria</b>
                     </div>
                 </ion-col>
                 <ion-col col-6 *ngFor="let category of categories">
-                    <ion-card text-center (click)="openCategory(category.id)" [attr.selected]="category.id==selectedCategory">
+                    <ion-card class="course-card" text-center (click)="openCategory(category.id)" [attr.selected]="category.id==selectedCategory">
                         <ion-card-header>
                           <h1><strong>{{category.name | uppercase}}</strong></h1>
                         </ion-card-header>
@@ -29,7 +30,40 @@
                         </ion-card-content>
                       </ion-card>
                 </ion-col>
+            </ion-row>
             </ion-grid>
         </div>
     </core-loading>
+    <!-- <ion-content class="modal-courses" *ngIf="!!selectedCategory">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-12 class="close-button">
+              <h3 (click)="dismiss()">
+                  <core-icon name="fa-angle-up" item-start></core-icon>
+              </h3>
+            </ion-col>
+          </ion-row>
+          <ion-row class="header">
+            <ion-col col-4>
+              <h4>{{'core.courses.evidence' | translate}}</h4>
+            </ion-col>
+            <ion-col col-4>
+              
+            </ion-col>
+            <ion-col col-4 class="view-all">
+              <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+        <core-loading [hideUntil]="coursesLoaded">
+          <ion-slides #slides pager spaceBetween="0" slidesPerView="1.2">
+            <ion-slide *ngFor="let course of courses">
+              <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
+              </core-courses-course-progress>
+            </ion-slide>
+            
+          </ion-slides>
+      </core-loading>
+    </ion-content> -->
 </ion-content>

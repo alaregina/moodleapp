@@ -1,34 +1,50 @@
+<ion-header (click)="dismiss()" (pan)="drag($event)">
+  <h3 text-center>
+    <core-icon id="modal-icon" name="fa-angle-down" item-start></core-icon>
+  </h3>
+</ion-header>
 <ion-content class="modal-courses">
     <ion-grid>
-      <ion-row>
+      <!-- <ion-row>
         <ion-col col-12 class="close-button">
-          <h3 (click)="dismiss()">
-              <core-icon name="fa-angle-up" item-start></core-icon>
+          <h3>
+              <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
           </h3>
-          
-          <!-- <ion-icon name="chevron-up-outline"></ion-icon> -->
         </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-row class="header">
         <ion-col col-4>
           <h4>{{'core.courses.evidence' | translate}}</h4>
         </ion-col>
         <ion-col col-4>
-          
         </ion-col>
-        <ion-col col-4>
-          <span class="view-all">{{'core.courses.viewall' | translate}}</span>
+        <ion-col col-4 class="view-all">
+          <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span>
         </ion-col>
       </ion-row>
     </ion-grid>
     
     <core-loading [hideUntil]="coursesLoaded">
-      <ion-slides>
+      <ion-slides #slides pager spaceBetween="0" slidesPerView="1.2">
         <ion-slide *ngFor="let course of courses">
-          <course-card [course]="course">
-
-          </course-card>
+          <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
+          </core-courses-course-progress>
         </ion-slide>
+        
       </ion-slides>
+      <ion-grid>
+        <ion-row class="header">
+          <ion-col col-4>
+            <h4>{{'core.courses.courses' | translate}}</h4>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- <h4>{{'core.courses.courses' | translate}}</h4> -->
+      <ion-list class="course-list">
+        <ion-item *ngFor="let course of courses" class="course-list-item">
+          <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
+          </core-courses-course-progress>
+        </ion-item>
+      </ion-list>
   </core-loading>
 </ion-content>

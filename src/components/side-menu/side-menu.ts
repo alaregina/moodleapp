@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CoreEventsProvider } from '@providers/events';
 import { CoreSitesProvider } from '@providers/sites';
-import { NavController } from 'ionic-angular';
+import { MenuController, NavController } from 'ionic-angular';
 
 /**
  * Generated class for the SideMenuComponent component.
@@ -24,7 +24,7 @@ export class SideMenuComponent {
   updateSiteObserver: any;
   avatarUrl?: string;
 
-  constructor(private sitesProvider: CoreSitesProvider, eventsProvider: CoreEventsProvider) {
+  constructor(private sitesProvider: CoreSitesProvider, eventsProvider: CoreEventsProvider, private menuCtrl:MenuController) {
     this.langObserver = eventsProvider.on(CoreEventsProvider.LANGUAGE_CHANGED, this.loadSiteInfo.bind(this));
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.SITE_UPDATED, this.loadSiteInfo.bind(this));
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.LOGIN, this.loadSiteInfo.bind(this));
@@ -50,7 +50,25 @@ export class SideMenuComponent {
       if (this.siteInfo.userid) {
           event.preventDefault();
           event.stopPropagation();
-          this.navCtrl.push('UserProfilePage', { userId: this.siteInfo.userid, courseId: this.siteInfo.courseId });
+          if(this.navCtrl.getActive().id=="UserProfilePage"){
+            this.menuCtrl.close();
+            return;
+          }
+          this.navCtrl.setRoot('UserProfilePage',{ userId: this.siteInfo.userid, courseId: this.siteInfo.courseId })
+          this.menuCtrl.close();
       }
+  }
+  goTo(page:string){
+    switch(page){
+      case "dashboard":
+        console.log(this.navCtrl.getActive())
+        if(this.navCtrl.getActive().id=="CoreMainMenuPage"){
+          this.menuCtrl.close();
+          return;
+        }
+        this.navCtrl.setRoot('CoreMainMenuPage')
+        this.menuCtrl.close();
+        break;
+    }
   }
 }
