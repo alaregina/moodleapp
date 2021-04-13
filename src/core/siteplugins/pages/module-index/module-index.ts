@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import { Component, ViewChild } from '@angular/core';
+import { CoreCourseProvider } from '@core/course/providers/course';
+import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { CoreSitePluginsModuleIndexComponent } from '../../components/module-index/module-index';
 
@@ -31,11 +33,15 @@ export class CoreSitePluginsModuleIndexPage {
 
     module: any;
     courseId: number;
+    section: any;
+    loaded: boolean = false;
+    related: any = [];
 
-    constructor(params: NavParams) {
+    constructor(params: NavParams, private courseProvider: CoreCourseProvider, private courseHelper:CoreCourseHelperProvider) {
         this.title = params.get('title');
         this.module = params.get('module');
         this.courseId = params.get('courseId');
+        console.log(this.module)
     }
 
     /**
@@ -61,6 +67,22 @@ export class CoreSitePluginsModuleIndexPage {
      */
     ionViewDidEnter(): void {
         this.content.callComponentFunction('ionViewDidEnter');
+        this.courseProvider.getSections(this.courseId, false, true).then((sections) => {
+            let section = sections.find(x => (x.modules as any[]).findIndex(i => i.id == this.module.id) >= 0)
+            this.courseHelper.addHandlerDataForModules([section], this.courseId, undefined, undefined, true);
+            this.section = section;
+            this.loaded = true;
+            section.modules.forEach(module => {
+                if (module.id !== this.module.id) {
+                    this.courseProvider.getModuleContentCategory(module.id).then(metadata => {
+                        if (!!metadata && metadata["local_metadata_field_section"] && metadata["local_metadata_field_section"] == this.module.category) {
+                            module["category"] = metadata["local_metadata_field_section"]
+                            this.related.push(module)
+                        }
+                    })
+                }
+            });
+        })
     }
 
     /**

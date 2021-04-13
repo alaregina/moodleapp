@@ -13,18 +13,26 @@
 // limitations under the License.
 
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { IonicModule, IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@directives/directives.module';
 import { AddonModH5PActivityComponentsModule } from '../../components/components.module';
 import { AddonModH5PActivityIndexPage } from './index';
+import { CoreComponentsModule } from '@components/components.module';
+import { CommonModule } from '@angular/common';
+import { CoreCourseComponentsModule } from '@core/course/components/components.module';
 
 @NgModule({
     declarations: [
         AddonModH5PActivityIndexPage,
     ],
     imports: [
+        CommonModule,
+        IonicModule,
+        TranslateModule.forChild(),
+        CoreComponentsModule,
         CoreDirectivesModule,
+        CoreCourseComponentsModule,
         AddonModH5PActivityComponentsModule,
         IonicPageModule.forChild(AddonModH5PActivityIndexPage),
         TranslateModule.forChild()

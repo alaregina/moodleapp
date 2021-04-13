@@ -165,6 +165,10 @@ import { setSingletonsInjector } from '@singletons/core.singletons';
 import { LoginMidaProvider } from '../providers/login-mida/login-mida';
 import { UserProfilePageModule } from '../pages/user-profile/user-profile.module';
 import { CoursesModalPageModule } from '../pages/courses-modal/courses-modal.module';
+import { QuizFeedbackModalPageModule } from '../pages/quiz-feedback-modal/quiz-feedback-modal.module';
+import { FaqPageModule } from '../pages/faq/faq.module';
+import { TutorialPageModule } from '../pages/tutorial/tutorial.module';
+import { VideotimeProvider } from '../providers/videotime/videotime';
 
 // For translate loader. AoT requires an exported function for factories.
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
@@ -316,7 +320,10 @@ export const WP_PROVIDER: any = null;
         AddonFilterModule,
         AddonModH5PActivityModule,
         UserProfilePageModule,
-        CoursesModalPageModule
+        FaqPageModule,
+        TutorialPageModule,
+        CoursesModalPageModule,
+        QuizFeedbackModalPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -365,6 +372,7 @@ export const WP_PROVIDER: any = null;
         {provide: JitCompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
         {provide: LocationStrategy, useClass: MockLocationStrategy},
     LoginMidaProvider,
+    VideotimeProvider,
     ]
 })
 export class AppModule {

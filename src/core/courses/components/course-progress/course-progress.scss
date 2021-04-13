@@ -18,7 +18,7 @@ ion-app.app-root core-courses-course-progress {
         .core-course-thumb {
             margin: 3%;
             width: auto!important;
-            border-radius: 5%;
+            border-radius: 10px;
             padding-top: 40%;
             width: 100%;
             overflow: hidden;
@@ -70,7 +70,7 @@ ion-app.app-root core-courses-course-progress {
                 h2 {
                     font-size: small;
                     core-format-text{
-                        font-size: larger;
+                        font-size: 1.4rem;
                         font-weight:bold;
                     }
                 }

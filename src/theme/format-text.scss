@@ -13,10 +13,10 @@ ion-app.app-root core-rich-text-editor .core-rte-editor {
   @include core-headings();
 
   p {
-    font-size: large;
     margin-bottom: 1rem;
-    font-weight: bold;
-    color: $black;
+    // font-size: large;
+    // font-weight: bold;
+    // color: $black;
   }
 
   .no-overflow {

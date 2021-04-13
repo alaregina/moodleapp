@@ -1,8 +1,11 @@
-<ion-card *ngIf="description">
+<div *ngIf="description">
+    <ion-item class="module-title">
+        <core-format-text [text]="title"></core-format-text>
+    </ion-item>
     <ion-item text-wrap>
         <core-format-text [text]="description" [component]="component" [componentId]="componentId" [maxHeight]="showFull && showFull !== 'false' ? 0 : 120" fullOnClick="true" [contextLevel]="contextLevel" [contextInstanceId]="contextInstanceId" [courseId]="courseId"></core-format-text>
     </ion-item>
     <ion-item text-wrap *ngIf="note">
         <ion-note item-end>{{ note }}</ion-note>
     </ion-item>
-</ion-card>
+</div>

@@ -4,16 +4,22 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-toolbar>
-  <ion-buttons end>
-    <button ion-button icon-only attr.aria-label="login" (click)="goToLogin()">
-        <core-icon name="fa-sign-in"></core-icon>
-    </button>
-</ion-buttons>
 
-  <ion-title>Landing Page</ion-title>
-</ion-toolbar>
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only attr.aria-label="login" (click)="goToLogin()">
+          <core-icon name="fa-sign-in"></core-icon>
+      </button>
+  </ion-buttons>
+    <ion-title>Landing Page</ion-title>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
+  <h1>LANDING PAGE TODO</h1>
 
+  <button class="enter-button" (click)="goToLogin()">
+    Entra su JUICE
+  </button>
 </ion-content>

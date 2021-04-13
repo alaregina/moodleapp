@@ -1,7 +1,9 @@
 <ion-header>
     <ion-navbar core-back-button>
-        <ion-title><core-format-text [text]="title" contextLevel="module" [contextInstanceId]="module.id" [courseId]="courseId"></core-format-text></ion-title>
-
+        <div *ngIf="course">
+            <ion-title><core-format-text [text]="course.categoryname" contextLevel="course" [contextInstanceId]="courseId"></core-format-text></ion-title>
+        </div>
+        
         <ion-buttons end>
             <!-- The buttons defined by the component will be added in here. -->
         </ion-buttons>
@@ -11,6 +13,18 @@
     <ion-refresher [enabled]="h5pComponent.loaded" (ionRefresh)="h5pComponent.doRefresh($event)">
         <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
     </ion-refresher>
-
+    <div class="module-course-title" *ngIf="course">
+        <core-format-text [text]="course.displayname" contextLevel="course" [contextInstanceId]="courseId"></core-format-text>
+    </div>
     <addon-mod-h5pactivity-index [module]="module" [courseId]="courseId" (dataRetrieved)="updateData($event)"></addon-mod-h5pactivity-index>
+    <section class="related-module">
+        <h3 text-center>
+            <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
+        </h3>
+        <core-loading [hideUntil]="loaded">
+            <ng-container>
+                <core-course-module  *ngFor="let item of related" [module]="item" [courseId]="courseId" [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
+            </ng-container>
+        </core-loading>
+    </section>
 </ion-content>

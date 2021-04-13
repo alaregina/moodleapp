@@ -19,6 +19,9 @@ import { AddonModH5PActivityIndexComponent } from '../../components/index/index'
 import { AddonModH5PActivityData } from '../../providers/h5pactivity';
 
 import { Translate } from '@singletons/core.singletons';
+import { CoreCourseProvider } from '@core/course/providers/course';
+import { CoreCourseHelperProvider } from '@core/course/providers/helper';
+import { CoreCoursesProvider } from '@core/courses/providers/courses';
 
 /**
  * Page that displays an H5P activity.
@@ -34,10 +37,36 @@ export class AddonModH5PActivityIndexPage {
     title: string;
     module: any;
     courseId: number;
-
-    constructor(navParams: NavParams) {
+    related: any[] = [];
+    section: any;
+    downloadEnabled = false
+    loaded: boolean;
+    course: any;
+    constructor(navParams: NavParams, private courseProvider: CoreCourseProvider, private coursesProvider:CoreCoursesProvider, private courseHelper:CoreCourseHelperProvider) {
         this.module = navParams.get('module') || {};
         this.courseId = navParams.get('courseId');
+        courseHelper.getCourse(this.courseId).then(course => {
+            this.course = course.course;   
+            this.coursesProvider.getCategories(this.course.category).then(category => {
+                this.course["categoryname"] = category[0].name
+            })         
+        })
+        this.courseProvider.getSections(this.courseId, false, true).then((sections) => {
+            let section = sections.find(x => (x.modules as any[]).findIndex(i => i.id == this.module.id) >= 0)
+            this.courseHelper.addHandlerDataForModules([section], this.courseId, undefined, undefined, true);
+            this.section = section;
+            this.loaded = true;
+            section.modules.forEach(module => {
+                if (module.id !== this.module.id) {
+                    this.courseProvider.getModuleContentCategory(module.id).then(metadata => {
+                        if (!!metadata && metadata["local_metadata_field_section"] && metadata["local_metadata_field_section"] == this.module.category) {
+                            module["category"] = metadata["local_metadata_field_section"]
+                            this.related.push(module)
+                        }
+                    })
+                }
+            });
+        })
         this.title = this.module.name;
     }
 
@@ -61,5 +90,21 @@ export class AddonModH5PActivityIndexPage {
         }
 
         return CoreDomUtils.instance.showConfirm(Translate.instance.instant('core.confirmleaveunknownchanges'));
+    }
+
+    /**
+     * The completion of any of the modules have changed.
+     */
+     onCompletionChange(completionData: any): void {
+        
+    }
+
+    /**
+     * Recalculate the download status of each section, in response to a module being downloaded.
+     *
+     * @param eventData
+     */
+    onModuleStatusChange(eventData: any): void {
+        
     }
 }

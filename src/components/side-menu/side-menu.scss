@@ -1,5 +1,8 @@
 side-menu {
-
+    .user-fullname{
+        font-weight: bold;
+        color: black;
+    }
     ion-list{
         width: fit-content;
     }
@@ -15,6 +18,7 @@ side-menu {
     .icon-link {
         text-align:center;
         width:fit-content;
+        margin-bottom: 30%!important;
         img{
             border-radius: 50%;
         }
@@ -26,30 +30,35 @@ side-menu {
         font-weight: 100;
         font-size: x-small;
         text-align: center;
+        margin-bottom: 10%!important;
     }
 
-    .dashboard-icon{
+    span.sidemenu-item-title{
+        margin-top: 1rem;
+        font-weight: 100;
+        font-size: x-small;
+    }
+
+    .sidemenu-item-icon{
+        margin-bottom:10px;
         min-width: 50px;
         min-height: 50px;
-        background: url('../../assets/img/icons/dashboard.svg') round;
+    }
+    .dashboard-icon{
+        background: url('#{$assets-path}/img/icons/dashboard.svg') round;
     }
     .customer-care-icon{
-        min-width: 50px;
-        min-height: 50px;
-        background: url('../../assets/img/icons/customer-care.svg') round;
+        background: url('#{$assets-path}/img/icons/customer-care.svg') round;
     }
     .tutorial-icon{
-        min-width: 50px;
-        min-height: 50px;
-        background: url('../../assets/img/icons/tutorial.svg') round;
+        background: url('#{$assets-path}/img/icons/tutorial.svg') round;
     }
     .faq-icon{
-        min-width: 50px;
-        min-height: 50px;
-        background: url('../../assets/img/icons/faq.svg') round;
+        background: url('#{$assets-path}/img/icons/faq.svg') round;
     }
     .item-inner{
         background-image: unset!important;
         padding: 0px!important;
+        border:0px!important;
     }
 }

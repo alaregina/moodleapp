@@ -18,6 +18,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@directives/directives.module';
 import { CoreSitePluginsModuleIndexPage } from './module-index';
 import { CoreSitePluginsComponentsModule } from '../../components/components.module';
+import { CoreComponentsModule } from '@components/components.module';
+import { CoreCourseComponentsModule } from '@core/course/components/components.module';
 
 /**
  * Module to lazy load the page.
@@ -27,7 +29,9 @@ import { CoreSitePluginsComponentsModule } from '../../components/components.mod
         CoreSitePluginsModuleIndexPage
     ],
     imports: [
-        CoreDirectivesModule,
+        CoreDirectivesModule,        
+        CoreComponentsModule,
+        CoreCourseComponentsModule,
         CoreSitePluginsComponentsModule,
         IonicPageModule.forChild(CoreSitePluginsModuleIndexPage),
         TranslateModule.forChild()

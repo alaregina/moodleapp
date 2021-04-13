@@ -1,5 +1,17 @@
 ion-app.app-root core-course-module {
-    background: white;
+    .item-md{
+        .item-inner{
+            border:0px;
+        }
+        // padding: 3%;
+        background-color: white;
+        border-radius: 10px;
+    }
+    margin: 3%;
+    background-color: unset;
+
+
+    //background: white;
     display: block;
 
     .item.core-course-module-handler {
@@ -34,6 +46,7 @@ ion-app.app-root core-course-module {
 
         core-format-text {
             flex-grow: 2;
+            font-weight: bold;
         }
         .core-module-buttons,
         .buttons.core-module-buttons {
@@ -113,8 +126,11 @@ ion-app.app-root core-course-module {
 
 ion-app.app-root.md core-course-module {
     .core-module-description {
+        *{
+            font-size: small;
+        }
         @include padding(null, $label-md-margin-end, null, null);
-        margin-bottom: $label-md-margin-bottom;
+        //margin-bottom: $label-md-margin-bottom;
 
         .core-show-more {
             @include padding(null, $label-md-margin-end, null, null);
@@ -126,18 +142,24 @@ ion-app.app-root.md core-course-module {
         margin-bottom: $label-md-margin-bottom;
         width: 24px;
         height: 24px;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 25%;
+        min-width: 25%;
+        height: auto;
+        max-height: 60px;
     }
 
     .core-module-title core-format-text {
-        padding-top: $label-md-margin-top + 3;
+        padding-top: $label-md-margin-top - 5;
     }
     .button-md {
         margin-top: 8px;
         margin-bottom: 8px;
     }
     .core-module-buttons-more {
-        min-height: 52px;
-        min-width: 53px;
+        //min-height: 52px;
+        // min-width: 53px;
     }
 }
 

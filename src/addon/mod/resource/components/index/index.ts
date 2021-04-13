@@ -20,6 +20,7 @@ import {
 } from '@core/course/classes/main-resource-component';
 import { AddonModResourceProvider } from '../../providers/resource';
 import { AddonModResourceHelperProvider } from '../../providers/helper';
+import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 
 /**
  * Component that displays a resource.
@@ -37,12 +38,15 @@ export class AddonModResourceIndexComponent extends CoreCourseModuleMainResource
     contentText: string;
     displayDescription = true;
     warning: string;
-
+    section: any;
+    related: any[] = [];
+    course: any
     constructor(injector: Injector,
             protected resourceProvider: AddonModResourceProvider,
             protected resourceHelper: AddonModResourceHelperProvider,
             protected utils: CoreUtilsProvider,
-            protected filepoolProvider: CoreFilepoolProvider) {
+            protected filepoolProvider: CoreFilepoolProvider,
+            protected courseHelper: CoreCourseHelperProvider) {
         super(injector);
     }
 
@@ -61,6 +65,26 @@ export class AddonModResourceIndexComponent extends CoreCourseModuleMainResource
                 // Ignore errors.
             });
         });
+
+        this.courseHelper.getCourse(this.courseId).then(course => {
+            this.course = course.course;  
+        })
+        this.courseProvider.getSections(this.courseId, false, true).then((sections) => {
+            let section = sections.find(x => (x.modules as any[]).findIndex(i => i.id == this.module.id) >= 0)
+            this.courseHelper.addHandlerDataForModules([section], this.courseId, undefined, undefined, true);
+            this.section = section;
+            this.loaded = true;
+            section.modules.forEach(module => {
+                if (module.id !== this.module.id) {
+                    this.courseProvider.getModuleContentCategory(module.id).then(metadata => {
+                        if (!!metadata && metadata["local_metadata_field_section"] && metadata["local_metadata_field_section"] == this.module.category) {
+                            module["category"] = metadata["local_metadata_field_section"]
+                            this.related.push(module)
+                        }
+                    })
+                }
+            });
+        })
     }
 
     /**

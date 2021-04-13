@@ -71,7 +71,6 @@ export class AddonModQuizPreflightModalPage implements OnInit {
      */
     ngOnInit(): void {
         const promises = [];
-
         this.rules.forEach((rule) => {
             // Check if preflight is required for rule and, if so, get the component to render it.
             promises.push(this.accessRuleDelegate.isPreflightCheckRequiredForRule(rule, this.quiz, this.attempt, this.prefetch,
@@ -121,7 +120,6 @@ export class AddonModQuizPreflightModalPage implements OnInit {
             }
         } else {
             this.domUtils.triggerFormSubmittedEvent(this.formElement, false, this.siteId);
-
             this.viewCtrl.dismiss(this.preflightForm.value);
         }
     }

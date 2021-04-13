@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar core-back-button>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="dismiss()" [attr.aria-label]="'core.close' | translate">
+              <ion-icon name="close"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="percentage>=60">
+      <img src="assets/img/icons/correct.svg"/>
+      <h1>Corretto</h1>
+    </div>
+    <div *ngIf="percentage<60">
+      <img src="assets/img/icons/failed.svg"/>
+      <h1>Hai sbagliato!</h1>
+    </div>
+</ion-content>

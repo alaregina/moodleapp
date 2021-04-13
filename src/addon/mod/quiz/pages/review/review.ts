@@ -21,6 +21,8 @@ import { CoreTimeUtilsProvider } from '@providers/utils/time';
 import { CoreQuestionHelperProvider } from '@core/question/providers/helper';
 import { AddonModQuizProvider } from '../../providers/quiz';
 import { AddonModQuizHelperProvider } from '../../providers/helper';
+import { CoreCourseProvider } from '@core/course/providers/course';
+import { QuizFeedbackModalPage } from '../../../../../pages/quiz-feedback-modal/quiz-feedback-modal';
 
 /**
  * Page that allows reviewing a quiz attempt.
@@ -46,7 +48,7 @@ export class AddonModQuizReviewPage implements OnInit {
     nextPage: number; // Next page.
     previousPage: number; // Previous page.
     navigationModal: Modal; // Modal to navigate through the questions.
-
+    feedbackModal: Modal;
     protected quiz: any; // The quiz the attempt belongs to.
     protected courseId: number; // The course ID the quiz belongs to.
     protected quizId: number; // Quiz ID the attempt belongs to.
@@ -54,10 +56,11 @@ export class AddonModQuizReviewPage implements OnInit {
     protected currentPage: number; // The current page being reviewed.
     protected options: any; // Review options.
 
-    constructor(navParams: NavParams, modalCtrl: ModalController, protected translate: TranslateService,
+    constructor(navParams: NavParams, private modalCtrl: ModalController, protected translate: TranslateService,
             protected domUtils: CoreDomUtilsProvider, protected timeUtils: CoreTimeUtilsProvider,
             protected quizProvider: AddonModQuizProvider, protected quizHelper: AddonModQuizHelperProvider,
-            protected questionHelper: CoreQuestionHelperProvider, protected textUtils: CoreTextUtilsProvider) {
+            protected questionHelper: CoreQuestionHelperProvider, protected textUtils: CoreTextUtilsProvider, 
+            private courseProvider:CoreCourseProvider) {
 
         this.quizId = navParams.get('quizId');
         this.courseId = navParams.get('courseId');
@@ -81,11 +84,17 @@ export class AddonModQuizReviewPage implements OnInit {
      */
     ngOnInit(): void {
         this.fetchData().then(() => {
+            this.courseProvider.getModuleBasicInfoByInstance(this.attempt.quiz, "quiz").then(val=>console.log(val))
             this.quizProvider.logViewAttemptReview(this.attemptId, this.quizId, this.quiz.name).catch((error) => {
                 // Ignore errors.
             });
         }).finally(() => {
             this.loaded = true;
+            // this.feedbackModal = this.modalCtrl.create(QuizFeedbackModalPage, {feedback: this.attempt}, { cssClass:"feedback-modal", showBackdrop: true,
+            // enableBackdropDismiss: true,
+            // enterAnimation: 'core-modal-lateral-transition',
+            // leaveAnimation: 'core-modal-lateral-transition' })
+            // this.feedbackModal.present()
         });
     }
 

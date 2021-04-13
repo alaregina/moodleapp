@@ -285,7 +285,7 @@ export class CoreCoursesCourseProgressComponent implements OnInit, OnDestroy {
     protected setCourseFavourite(favourite: boolean): void {
         this.showSpinner = true;
 
-        this.coursesProvider.setFavouriteCourse(this.course.id, favourite).then(() => {
+        this.coursesProvider.setFavouriteCourse(this.course.id, favourite).then((data) => {
             this.course.isfavourite = favourite;
             this.eventsProvider.trigger(CoreCoursesProvider.EVENT_MY_COURSES_UPDATED, {
                 courseId: this.course.id,

@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import { Component, ViewChild } from '@angular/core';
+import { CoreCourseHelperProvider } from '@core/course/providers/helper';
+import { CoreCoursesProvider } from '@core/courses/providers/courses';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { AddonModResourceIndexComponent } from '../../components/index/index';
 
@@ -30,11 +32,17 @@ export class AddonModResourceIndexPage {
     title: string;
     module: any;
     courseId: number;
-
-    constructor(navParams: NavParams) {
+    course: any
+    constructor(navParams: NavParams, private courseHelper: CoreCourseHelperProvider, private coursesProvider:CoreCoursesProvider) {
         this.module = navParams.get('module') || {};
         this.courseId = navParams.get('courseId');
         this.title = this.module.name;
+        courseHelper.getCourse(this.courseId).then(course => {
+            this.course = course.course;   
+            this.coursesProvider.getCategories(this.course.category).then(category => {
+                this.course["categoryname"] = category[0].name
+            })         
+        })
     }
 
     /**

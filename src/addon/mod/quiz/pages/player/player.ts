@@ -677,7 +677,6 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      */
     protected startOrContinueAttempt(): Promise<any> {
         const attempt = this.newAttempt ? undefined : this.lastAttempt;
-
         // Get the preflight data and start attempt if needed.
         return this.quizHelper.getAndCheckPreflightData(this.quiz, this.quizAccessInfo, this.preflightData, attempt, this.offline,
                 false, 'addon.mod_quiz.startattempt').then((attempt) => {
@@ -685,7 +684,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
             // Re-fetch attempt access information with the right attempt (might have changed because a new attempt was created).
             return this.quizProvider.getAttemptAccessInformation(this.quiz.id, attempt.id, {
                 cmId: this.quiz.coursemodule,
-                readingStrategy: this.offline ? CoreSitesReadingStrategy.PreferCache : CoreSitesReadingStrategy.OnlyNetwork,
+                readingStrategy: this.offline ? CoreSitesReadingStrategy.PreferCache : 2,
             }).then((info) => {
                 this.attemptAccessInfo = info;
                 this.attempt = attempt;

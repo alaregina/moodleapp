@@ -248,8 +248,8 @@ export class CoreCourseSectionPage implements OnDestroy {
                         if(!!section.modules && section.modules.length > 0){
                             section.modules.forEach(module => {
                                 this.courseProvider.getModuleContentCategory(module.id).then(metadata=>{
-                                    if(!!metadata && metadata["local_metadata_field_contentcategory"])
-                                    module["category"] = metadata["local_metadata_field_contentcategory"]
+                                    if(!!metadata && metadata["local_metadata_field_section"])
+                                    module["category"] = metadata["local_metadata_field_section"]
                                 })
                             });
                         }
@@ -283,7 +283,6 @@ export class CoreCourseSectionPage implements OnDestroy {
 
                         return section;
                     });
-
                     if (this.courseFormatDelegate.canViewAllSections(this.course)) {
                         // Add a fake first section (all sections).
                         this.sections.unshift({
@@ -297,7 +296,8 @@ export class CoreCourseSectionPage implements OnDestroy {
                     this.title = this.courseFormatDelegate.getCourseTitle(this.course, this.sections);
 
                     // Get whether to show the refresher now that we have sections.
-                    this.displayRefresher = this.courseFormatDelegate.displayRefresher(this.course, this.sections);
+                    this.displayRefresher = this.courseFormatDelegate.displayRefresher(this.course, this.sections);               
+                    this.buildTree(this.sections)
                 });
             }));
 
@@ -512,6 +512,7 @@ export class CoreCourseSectionPage implements OnDestroy {
      * User entered the page.
      */
     ionViewDidEnter(): void {
+        this.doRefresh();
         this.formatComponent && this.formatComponent.ionViewDidEnter();
         this.tabsComponent && this.tabsComponent.ionViewDidEnter();
     }
@@ -522,5 +523,29 @@ export class CoreCourseSectionPage implements OnDestroy {
     ionViewDidLeave(): void {
         this.formatComponent && this.formatComponent.ionViewDidLeave();
         this.tabsComponent && this.tabsComponent.ionViewDidLeave();
+    }
+
+    buildTree(sections:any[]):void{
+        let clone:any[] = sections.map((x) => x);//JSON.parse(JSON.stringify(sections));
+        let i = 0;
+        while(i<clone.length){
+            if(!clone[i].hasContent){
+                while(i+1<clone.length && clone[i+1].hasContent){
+                    clone[i].subsections = !!clone[i].subsections ? (clone[i].subsections as any[]).concat(clone[i+1]):[clone[i+1]]
+                    clone.splice(i+1,1)
+                }
+                if(i-1>=0 && !clone[i-1].hasContent && clone[i-1].section!=0){
+                    clone[i-1].subsections = !!clone[i-1].subsections ? (clone[i-1].subsections as any[]).concat(clone[i]):[clone[i]]
+                    clone.splice(i,1)
+                }else
+                    i++
+            }else{
+                i++
+            }
+        }
+        console.log(clone)
+        if(clone[0].subsections)
+            clone = clone[0].subsections
+        this.sections = clone
     }
 }

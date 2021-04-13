@@ -42,7 +42,7 @@ ion-app.app-root core-progress-bar {
             @include darkmode() {
                 background-color: $core-progressbar-color;
             }
-            border-radius: 0;
+            border-radius: 20px;
         }
 
         .progress-bar-fallback {

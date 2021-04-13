@@ -53,7 +53,6 @@ export class LoginMidaPage {
         const siteUrl = this.siteUrl;
         const username = this.credForm.value.username || "1_ag01@cdc.ag";
         const password = this.credForm.value.password || "12345678";
-        console.log(siteUrl);
         if (!username) {
             this.domUtils.showErrorModal('core.login.usernamerequired', true);
 

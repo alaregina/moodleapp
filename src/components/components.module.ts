@@ -55,6 +55,10 @@ import { CoreStyleComponent } from './style/style';
 import { CoreBSTooltipComponent } from './bs-tooltip/bs-tooltip';
 import { JuicehomeComponent } from './juicehome/juicehome';
 import { SideMenuComponent } from './side-menu/side-menu';
+import { QuizResultModalComponent } from './quiz-result-modal/quiz-result-modal';
+import { SideMenuComponentModule } from './side-menu/side-menu.module';
+import { CoursesComponent } from './courses/courses';
+import { CourseProgressComponent } from './course-progress/course-progress';
 
 @NgModule({
     declarations: [
@@ -73,6 +77,7 @@ import { SideMenuComponent } from './side-menu/side-menu';
         CoreContextMenuItemComponent,
         CoreContextMenuPopoverComponent,
         CoreCoursePickerMenuPopoverComponent,
+        CourseProgressComponent,
         CoreChartComponent,
         CoreChronoComponent,
         CoreDownloadRefreshComponent,
@@ -94,8 +99,9 @@ import { SideMenuComponent } from './side-menu/side-menu';
         CoreUserAvatarComponent,
         CoreStyleComponent,
         CoreBSTooltipComponent,
+        CoursesComponent,
         JuicehomeComponent,
-        SideMenuComponent
+        QuizResultModalComponent
     ],
     entryComponents: [
         CoreContextMenuPopoverComponent,
@@ -106,6 +112,7 @@ import { SideMenuComponent } from './side-menu/side-menu';
     imports: [
         IonicModule,
         TranslateModule.forChild(),
+        SideMenuComponentModule,
         CoreDirectivesModule,
         CorePipesModule
     ],
@@ -117,6 +124,7 @@ import { SideMenuComponent } from './side-menu/side-menu';
         CoreSplitViewComponent,
         CoreIframeComponent,
         CoreProgressBarComponent,
+        CourseProgressComponent,
         CoreEmptyBoxComponent,
         CoreFileComponent,
         CoreFilesComponent,
@@ -143,8 +151,10 @@ import { SideMenuComponent } from './side-menu/side-menu';
         CoreUserAvatarComponent,
         CoreStyleComponent,
         CoreBSTooltipComponent,
+        CoursesComponent,
+        SideMenuComponent,
         JuicehomeComponent,
-        SideMenuComponent
+        QuizResultModalComponent
     ]
 })
 export class CoreComponentsModule {}

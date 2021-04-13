@@ -44,7 +44,9 @@ export class CoursesModalPage {
       this.coursesLoaded = true;
     })
   }
-
+  favourite(courses){
+    return this.courses.filter(c=>c.isfavourite).length==0 ? this.courses:this.courses.filter(c=>c.isfavourite)
+  }
   /**
      * Fetch the user courses.
      *
@@ -108,7 +110,6 @@ export class CoursesModalPage {
   }
 
   dismiss(){
-    console.log("drag-down")
     this.viewCtrl.dismiss();
   }
 

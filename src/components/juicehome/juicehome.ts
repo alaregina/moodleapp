@@ -1,7 +1,9 @@
+import { AddonBadgesProvider } from '@addon/badges/providers/badges';
 import { AfterViewInit, Component } from '@angular/core';
 import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 import { CoreCoursesProvider } from '@core/courses/providers/courses';
 import { CoreCoursesHelperProvider } from '@core/courses/providers/helper';
+import { CoreGradesProvider } from '@core/grades/providers/grades';
 import { CoreUserProvider } from '@core/user/providers/user';
 import { CoreSitesProvider } from '@providers/sites';
 import { CoreDomUtilsProvider } from '@providers/utils/dom';
@@ -31,6 +33,8 @@ export class JuicehomeComponent implements AfterViewInit {
   user: any = {};
   selectedCategory: number = -1;
   modal: Modal;
+  badges: any[];
+  points: number = 0;
 
 
   constructor(private navCtrl: NavController, 
@@ -39,12 +43,19 @@ export class JuicehomeComponent implements AfterViewInit {
     private sitesProvider: CoreSitesProvider,
     private userProvider: CoreUserProvider,
     private coursesProvider:CoreCoursesProvider,
-    private modalController: ModalController) {
+    private modalController: ModalController,
+    private badgesProvider: AddonBadgesProvider,
+    private gradesProvider: CoreGradesProvider) {
     
   }
   ngAfterViewInit(): void {
     this.fetchUser().finally(()=>{
-      this.userLoaded = true;
+      const promises = [];
+      promises.push(this.loadBadges())
+      promises.push(this.loadPoints())
+      Promise.all(promises).finally(() => {
+        this.userLoaded = true;
+      })
     });
     this.fetchCategories().finally(() => {
         this.categoriesLoaded = true;
@@ -91,6 +102,8 @@ export class JuicehomeComponent implements AfterViewInit {
       promises.push(this.coursesProvider.invalidateCategories(this.categoryId, true));
       promises.push(this.coursesProvider.invalidateCoursesByField('category', this.categoryId));
       promises.push(this.sitesProvider.getCurrentSite().invalidateConfig());
+      promises.push(this.loadBadges())
+      promises.push(this.loadPoints())
 
       Promise.all(promises).finally(() => {
           this.fetchCategories().finally(() => {
@@ -104,24 +117,56 @@ export class JuicehomeComponent implements AfterViewInit {
      *
      * @param categoryId The category ID.
      */
-   async openCategory(categoryId: number) {
+//    async openCategory(categoryId: number) {
+//     if (this.selectedCategory == categoryId)
+//     {
+//       this.selectedCategory = -1;
+//       this.modal.dismiss();
+//     } else {
+//       this.selectedCategory = categoryId;
+//       document.getElementsByTagName("ion-app")[0].classList.add("modal-opened");
+//       this.modal = this.modalController.create(CoursesModalPage, { categoryId: categoryId }, {cssClass: "small-modal", showBackdrop:true, enableBackdropDismiss: true})
+//       this.modal.onDidDismiss(()=>{
+//         this.selectedCategory = -1;
+//         document.getElementsByTagName("ion-app")[0].classList.remove("modal-opened");
+//       })
+//       await this.modal.present()
+//     }
+// }
+
+  /**
+   * Open a category.
+   *
+   * @param categoryId The category ID.
+   */
+  openCategory(categoryId: number) {
     if (this.selectedCategory == categoryId)
     {
       this.selectedCategory = -1;
-      this.modal.dismiss();
     } else {
       this.selectedCategory = categoryId;
-      document.getElementsByTagName("ion-app")[0].classList.add("modal-opened");
-      this.modal = this.modalController.create(CoursesModalPage, { categoryId: categoryId }, {cssClass: "small-modal", showBackdrop:true, enableBackdropDismiss: true})
-      this.modal.onDidDismiss(()=>{
-        this.selectedCategory = -1;
-        document.getElementsByTagName("ion-app")[0].classList.remove("modal-opened");
-      })
-      await this.modal.present()
     }
-    //this.navCtrl.push('CoreCoursesCategoriesPage', { categoryId: categoryId });
+  }
+
+  dismiss($event){
+    this.selectedCategory = -1;
+  }
+
+loadBadges(){
+  return this.badgesProvider.getUserBadges(null, this.user.id).then((badges:any[])=>{
+    this.badges = badges.filter(badge=>badge.courseid==null).sort((a,b)=>a.dateissued-b.dateissued);
+  })
 }
 
+loadPoints(){
+  this.points = 0;
+  return this.gradesProvider.getCoursesGrades().then((grades:any[])=>{
+      grades.forEach(grade=>{
+        this.points += +(grade.grade as string).replace("-", "0").replace(",", ".")
+      })
+      this.points = Math.round(this.points)
+  })
+}
 
 
 //     /**

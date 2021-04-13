@@ -69,7 +69,7 @@
     <!-- Result info. -->
     <ion-card *ngIf="quiz && showResults && (gradeResult || gradeOverridden || gradebookFeedback || (quiz.showFeedbackColumn && overallFeedback))">
         <ion-list>
-            <ion-item text-wrap *ngIf="gradeResult">{{ gradeResult }}</ion-item>
+            <ion-item text-wrap *ngIf="gradeResult"><div [innerHTML]="gradeResult"></div></ion-item>
             <ion-item text-wrap *ngIf="gradeOverridden">{{ 'core.course.overriddennotice' | translate }}</ion-item>
             <ion-item text-wrap *ngIf="gradebookFeedback">
                 <p class="item-heading">{{ 'addon.mod_quiz.comment' | translate }}</p>

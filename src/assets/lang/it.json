@@ -1387,7 +1387,7 @@
     "core.course.confirmdownloadunknownsize": "Non è stato possibile calcolare la dimensione del download.{{availableSpace}} Vuoi continuare?",
     "core.course.confirmdownloadzerosize": "Stai per iniziare il download. {{availableSpace}} Sei sicuro di voler continuare?",
     "core.course.confirmlimiteddownload": "Non sei collagato al Wi-Fi.",
-    "core.course.confirmpartialdownloadsize": "Stai per scaricare <strong>almeno/strong> {{size}}.{{availableSpace}} Vuoi continuare?",
+    "core.course.confirmpartialdownloadsize": "Stai per scaricare <strong>almeno</strong> {{size}}.{{availableSpace}} Vuoi continuare?",
     "core.course.contents": "Contenuti",
     "core.course.couldnotloadsectioncontent": "Non è stato possibile caricare il contenuto della sezione, per favore riprova più tardi.",
     "core.course.couldnotloadsections": "Non è stato possibile caricare le sezioni, per favore riprova più tardi.",

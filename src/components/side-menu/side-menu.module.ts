@@ -17,19 +17,15 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SideMenuComponent } from './side-menu';
-import { CoreComponentsModule } from '@components/components.module';
 import { IonicModule } from 'ionic-angular';
 import { CoreDirectivesModule } from '@directives/directives.module';
-import { UserProfilePage } from 'pages/user-profile/user-profile';
 
 @NgModule({
     declarations: [
         SideMenuComponent,
     ],
     imports: [
-        CoreComponentsModule,
         CoreDirectivesModule,
-        UserProfilePage,
         IonicModule,
         TranslateModule.forChild()
     ],

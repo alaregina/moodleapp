@@ -66,7 +66,7 @@ export class AddonModQuizHelperProvider {
                 return this.getPreflightData(quiz, accessInfo, attempt, prefetch, title, siteId).then((data) => {
                     // Data entered by the user, add it to preflight data and check it again.
                     Object.assign(preflightData, data);
-                });
+                }).catch((err)=>console.log(err));
             }
         }).then(() => {
             // Get some fixed preflight data from access rules (data that doesn't require user interaction).
@@ -76,7 +76,6 @@ export class AddonModQuizHelperProvider {
             // All the preflight data is gathered, now validate it.
             return this.validatePreflightData(quiz, accessInfo, preflightData, attempt, offline, prefetch, siteId)
                     .catch((error) => {
-
                 if (prefetch) {
                     return Promise.reject(error);
                 } else if (retrying && !isPreflightCheckRequired) {
@@ -134,12 +133,10 @@ export class AddonModQuizHelperProvider {
             siteId: siteId,
             rules: rules
         });
-
-        modal.present();
-
-        // Wait for modal to be dismissed.
-        return new Promise((resolve, reject): void => {
-            modal.onDidDismiss((data) => {
+        modal.onDidDismiss((data, role) => {
+        });
+        var prom = new Promise((resolve, reject): void => {
+            modal.onDidDismiss((data, role) => {
                 if (typeof data != 'undefined') {
                     resolve(data);
                 } else {
@@ -147,6 +144,10 @@ export class AddonModQuizHelperProvider {
                 }
             });
         });
+        modal.present();
+
+        // Wait for modal to be dismissed.
+        return prom;
     }
 
     /**

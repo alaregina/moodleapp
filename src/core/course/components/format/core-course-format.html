@@ -21,9 +21,11 @@
                             <span>
                                 {{course.displayname}}
                             </span>
-    
                         </div>
                         <div *ngIf="!!course.summary" [innerHTML]="course.summary"></div>
+                        <p class="episodes">
+                            <b>Episodi {{episodes}}</b>
+                        </p>
                     </div>
                     <ng-container *ngIf="selectedSection">
                         <ion-item class="core-course-progress" *ngIf="selectedSection.id == allSectionsId && course.progress != null && course.progress >= 0 && course.completionusertracked !== false">
@@ -108,7 +110,7 @@
 
 <!-- Template to render a section. -->
 <ng-template #sectionTemplate let-section="section">
-    <section ion-list *ngIf="!section.hiddenbynumsections && section.id != allSectionsId && section.id != stealthModulesSectionId">
+    <section ion-list *ngIf="!section.hiddenbynumsections && section.id != allSectionsId && section.id != stealthModulesSectionId && section.modules.length>0">
         <div class="section-slider">
             <ion-slides #contents id="contents" pager spaceBetween="0" slidesPerView="4" loop="false">
                 <ion-slide class="content-slide" *ngFor="let content of sectionContents; first as isFirst; last as isLast" (click)="selectedContent=content" [attr.selected]="selectedContent==content">
@@ -136,6 +138,17 @@
         <ng-container *ngFor="let module of section.modules">
             <core-course-module *ngIf="module.visibleoncoursepage !== 0 && module.category==selectedContent" [module]="module" [courseId]="course.id" [downloadEnabled]="downloadEnabled" [section]="section"
                     (completionChanged)="onCompletionChange($event)" (statusChanged)="onModuleStatusChange($event)"></core-course-module>
+        </ng-container>
+    </section>
+    <section *ngIf="!section.modules || section.modules.length==0" class="subsections">
+        <ng-container *ngFor="let subs of section.subsections">
+            <div class="subsection-container">
+                <ion-item class="core-subsection" (click)="!(subs.visible === 0 || subs.uservisible === false) ? sectionChanged(subs): unauthorized(subs)">
+                    <div class="core-subsection-title">
+                        {{subs.name}}
+                    </div>
+                </ion-item>
+            </div>
         </ng-container>
     </section>
 </ng-template>

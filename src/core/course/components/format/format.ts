@@ -175,6 +175,18 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         return Array.from(new Set(contents));
     }
 
+    set sectionContents(value:any[]){
+    }
+
+    get episodes():number{
+        let ep = 0;
+        this.sections.forEach(section=>{
+            if(section.modules)
+                ep += section.modules.filter(mod=>mod.modname!="quiz").length;
+        })
+        return ep;
+    }
+
     /**
      * Component being initialized.
      */
@@ -189,7 +201,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
         if(!this.selectedSection && !!this.sections){
-            this.initialSectionId = this.sections[2].id
+            this.initialSectionId = !!this.sections[1].subsections  ? this.sections[1].id:this.sections[2].id
         }
 
         if (changes.course) {
@@ -376,12 +388,13 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (!previousValue || previousValue.id != newSection.id) {
+            this.selectedContent = null;
+            this.sectionContents =  null;
             // First load or section changed, add log in Moodle.
             this.courseProvider.logView(this.course.id, newSection.section, undefined, this.course.fullname).catch(() => {
                 // Ignore errors.
             });
         }
-        this.selectedContent = null;
     }
 
     /**
@@ -594,6 +607,5 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         setTimeout(()=>{
             this.warningSectionUnavailable = false;
         }, 3000)
-        console.log("unauthorized: " + section.name)
     }
 }

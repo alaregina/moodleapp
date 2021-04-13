@@ -15,8 +15,6 @@
 <!-- Content. -->
 <core-loading [hideUntil]="loaded" class="core-loading-center safe-area-page">
 
-    <core-course-module-description [description]="description" [component]="component" [componentId]="componentId" contextLevel="module" [contextInstanceId]="module.id" [courseId]="courseId"></core-course-module-description>
-
     <!-- Offline data stored. -->
     <ion-card class="core-warning-card" icon-start *ngIf="hasOffline">
         <ion-icon name="warning"></ion-icon> {{ 'core.hasdatatosync' | translate:{$a: moduleName} }}
@@ -46,9 +44,12 @@
         <ion-item text-center *ngIf="downloading">
             <ion-spinner></ion-spinner>
             <h2 *ngIf="progressMessage">{{ progressMessage | translate }}</h2>
-            <core-progress-bar *ngIf="percentage <= 100" [progress]="percentage"></core-progress-bar>
+            <core-progress-bar *ngIf="+percentage <= 100" [progress]="percentage"></core-progress-bar>
         </ion-item>
     </ion-list>
 
     <core-h5p-iframe *ngIf="playing" [fileUrl]="fileUrl" [displayOptions]="displayOptions" [onlinePlayerUrl]="onlinePlayerUrl" [trackComponent]="trackComponent" [contextId]="h5pActivity.context"></core-h5p-iframe>
+
+    <core-course-module-description [description]="description" [component]="component" [componentId]="componentId" contextLevel="module" [contextInstanceId]="module.id" [courseId]="courseId"></core-course-module-description>
+
 </core-loading>

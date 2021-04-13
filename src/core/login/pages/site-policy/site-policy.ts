@@ -99,7 +99,7 @@ export class CoreLoginSitePolicyPage {
     cancel(): void {
         this.sitesProvider.logout().catch(() => {
             // Ignore errors, shouldn't happen.
-        }).then(() => {console.log("7");//DEBUG
+        }).then(() => {
             this.navCtrl.setRoot('CoreLoginSitesPage');
         });
     }

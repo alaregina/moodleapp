@@ -1,6 +1,8 @@
 page-user-profile  {
+    
     .item-inner{
         padding:8px!important;
+        border:0px!important;
     }
     .item-block{
         padding:0px!important;
@@ -8,6 +10,10 @@ page-user-profile  {
     ion-card{
         margin:0px!important;
     }
+    ion-card-header{
+        padding-bottom: 0px !important;
+    }
+
     ion-label{
         margin-right:0px!important;
     }
@@ -82,17 +88,17 @@ page-user-profile  {
         font-size: small;
     }
 
-    h1 small{
+    h1 small.text-red{
         font-size: small;
         color: $red;
     }
 
-    h2 b{
+    h2 b.text-red{
         font-size: x-large;
         color: $red;
     }
 
-    h1 b{
+    h1 b.text-red{
         font-size: xx-large;
         color: $red;
     }
@@ -103,7 +109,36 @@ page-user-profile  {
 
     ion-card{
         width: 100%!important;
-        border-radius: 10%!important;
+        border-radius: 10px!important;
         background-color: white!important;
+    }
+
+    ion-card-content{
+        padding: 0 0 8px 0!important;
+        color: $gray-dark;
+    }
+
+    img.badge-icon{
+        max-width: 60px;
+    }
+
+    div.last-achived-badge{
+        text-align: center;
+        clear: both;
+        img{
+            width: 40%;
+        }
+    }
+
+    img.badge-on-icon{
+        width: 30px!important;
+        height: 30px!important;
+        position:absolute;
+        bottom: 0;
+        margin: 0px !important;
+    }
+
+    div.badge{
+        float:left;
     }
 }

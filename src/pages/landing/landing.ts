@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CoreSitesProvider } from '@providers/sites';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
@@ -16,8 +17,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class LandingPage {
   siteUrl: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private siteProvider: CoreSitesProvider) {
     this.siteUrl = navParams.get('siteUrl');
+    
   }
 
   ionViewDidLoad() {

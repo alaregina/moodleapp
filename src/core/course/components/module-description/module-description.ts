@@ -43,7 +43,7 @@ export class CoreCourseModuleDescriptionComponent {
     @Input() contextLevel?: string; // The context level.
     @Input() contextInstanceId?: number; // The instance ID related to the context.
     @Input() courseId?: number; // Course ID the text belongs to. It can be used to improve performance with filters.
-
+    @Input() title?: string;
     constructor() {
         // Nothing to do.
     }

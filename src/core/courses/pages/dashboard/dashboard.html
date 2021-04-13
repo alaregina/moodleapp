@@ -30,7 +30,7 @@
     <core-tabs [selectedIndex]="firstSelectedTab" [hideUntil]="tabsReady">
         
         <!-- Site home tab. -->
-        <core-tab [show]="siteHomeEnabled" [title]="'core.sitehome.sitehome' | translate">
+        <!-- <core-tab [show]="siteHomeEnabled" [title]="'core.sitehome.sitehome' | translate">
             <ng-template>
                 <ion-content>
                     <ion-refresher [enabled]="!!siteHomeComponent && siteHomeComponent.dataLoaded" (ionRefresh)="siteHomeComponent.doRefresh($event)">
@@ -39,7 +39,7 @@
                     <core-sitehome-index [downloadEnabled]="downloadEnabled"></core-sitehome-index>
                 </ion-content>
             </ng-template>
-        </core-tab>
+        </core-tab> -->
 
         <!-- JUICE home tab. -->
         <core-tab title='Home'>
@@ -54,7 +54,7 @@
         </core-tab>
 
         <!-- Dashboard tab. -->
-        <core-tab [show]="dashboardEnabled" [title]="'core.courses.mymoodle' | translate">
+        <!-- <core-tab [show]="dashboardEnabled" [title]="'core.courses.mymoodle' | translate">
             <ng-template>
                 <ion-content>
                     <ion-refresher [enabled]="dashboardLoaded" (ionRefresh)="refreshDashboard($event)">
@@ -62,7 +62,6 @@
                     </ion-refresher>
                     <core-loading [hideUntil]="dashboardLoaded" class="core-loading-center">
                         <ion-list>
-                            <!-- Dashboard blocks. -->
                             <ng-container *ngFor="let block of blocks">
                                 <core-block *ngIf="block.visible" [block]="block" contextLevel="user" [instanceId]="userId" [extraData]="{'downloadEnabled': downloadEnabled}"></core-block>
                             </ng-container>
@@ -72,7 +71,7 @@
                     </core-loading>
                 </ion-content>
             </ng-template>
-        </core-tab>
+        </core-tab> -->
 
         <!-- Tab to display if both site home and dashboard are disabled. -->
         <core-tab [show]="!siteHomeEnabled && !dashboardEnabled" [title]="'core.courses.mymoodle' | translate">

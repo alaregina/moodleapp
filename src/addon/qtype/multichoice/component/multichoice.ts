@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, AfterViewInit } from '@angular/core';
 import { CoreLoggerProvider } from '@providers/logger';
 import { CoreQuestionBaseComponent } from '@core/question/classes/base-question-component';
-
+let $;
 /**
  * Component to render a multichoice question.
  */
@@ -23,10 +23,20 @@ import { CoreQuestionBaseComponent } from '@core/question/classes/base-question-
     selector: 'addon-qtype-multichoice',
     templateUrl: 'addon-qtype-multichoice.html'
 })
-export class AddonQtypeMultichoiceComponent extends CoreQuestionBaseComponent implements OnInit {
+export class AddonQtypeMultichoiceComponent extends CoreQuestionBaseComponent implements OnInit, AfterViewInit {
 
     constructor(logger: CoreLoggerProvider, injector: Injector) {
         super(logger, 'AddonQtypeMultichoiceComponent', injector);
+    }
+    ngAfterViewInit(): void {
+        var answers = this.question.options.filter((x)=> (x.text as string).includes("<img"))
+        if(answers.length==4){
+            var items = document.getElementsByClassName("quiz-item")
+            if(items.length==4){
+                for(var i = 0; i<items.length; i++)
+                    items[i].classList.add("item-image")
+            }
+        } 
     }
 
     /**

@@ -1,3 +1,11 @@
 page-landing {
-
+    .enter-button{
+       width: 100%;
+       min-height: 40px; 
+       border-radius: 20px;
+       background-color: $ottanium;
+       color: $white;
+       font-size: large;
+       font-weight: bold;
+    }
 }

@@ -558,7 +558,6 @@ export class CoreLoginHelperProvider {
             return this.sitesProvider.hasSites().then((hasSites) => {
                 if (hasSites) {
                     // There are sites stored, open sites page first to be able to go back.
-                    console.log("1");//DEBUG
                     navCtrl.setRoot('CoreLoginSitesPage');
 
                     return navCtrl.push(page, params, {animate: false});
@@ -781,7 +780,6 @@ export class CoreLoginHelperProvider {
                 }
             }).catch((error) => {
                 // Site doesn't exist.
-                console.log("8");//DEBUG
                 return navCtrl.setRoot('CoreLoginSitesPage');
             }).finally(() => {
                 modal.dismiss();

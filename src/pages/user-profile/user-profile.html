@@ -3,7 +3,12 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
   </button>
-      <ion-title>{{ title }}</ion-title>
+  <ion-buttons end>
+    <button ion-button icon-only (click)="logout()">
+      <ion-icon name="log-out" item-start aria-hidden="true"></ion-icon>
+  </button>
+  </ion-buttons>
+    
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -14,11 +19,12 @@
       <ion-list *ngIf="user && !isDeleted && isEnrolled">
           <ion-item text-center>
               <span class="text-small">{{ 'core.user.myDashboard' | translate}}</span>
-              <h2><b>{{ user.fullname }}</b></h2>
+              <h2><b class="text-red">{{ user.fullname }}</b></h2>
               <ion-avatar core-user-avatar class="item-avatar-center" [user]="user" [userId]="user.id" [linkProfile]="false" [checkOnline]="true">
                   <ion-icon name="create" class="core-icon-foreground" *ngIf="canChangeProfilePicture" (click)="changeProfilePicture()"></ion-icon>
+                  <img class="badge-on-icon" *ngIf="!!badges && badges.length>0" [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content>
               </ion-avatar>
-              <h1><b>6431</b></h1>
+              <h1><b class="text-red">{{points}}</b></h1>
               <p *ngIf="user.address">{{ user.address }}</p>
               <p *ngIf="user.roles" text-wrap>
                   <strong>{{ 'core.user.roles' | translate}}</strong>{{'core.labelsep' | translate}}
@@ -33,7 +39,7 @@
                 <ion-col col-6>
                   <ion-card>
                     <ion-card-header>
-                      <h1><b>{{ongoingCourses}}</b></h1>
+                      <h1><b class="text-red">{{ongoingCourses}}</b></h1>
                     </ion-card-header>
                     <ion-card-content>
                       Corsi in avanzamento
@@ -43,7 +49,7 @@
                 <ion-col col-6>
                   <ion-card>
                     <ion-card-header>
-                      <h1><b>{{completedCourses}}</b></h1>
+                      <h1><b class="text-red">{{completedCourses}}</b></h1>
                     </ion-card-header>
                     <ion-card-content>
                       Corsi completati
@@ -55,7 +61,7 @@
                 <ion-col col-6>
                   <ion-card>
                     <ion-card-header>
-                      <h1><b>29</b></h1>
+                      <h1><b class="text-red">{{completedActivities}}</b></h1>
                     </ion-card-header>
                     <ion-card-content>
                       Livelli sbloccati
@@ -65,7 +71,7 @@
                 <ion-col col-6>
                   <ion-card>
                     <ion-card-header>
-                      <h1><b>5</b><small>h</small><b> 21</b><small>m</small></h1>
+                      <h1><b class="text-red">{{timeSpent*1000 | date:'HH':'UTC'}}</b><small class="text-red">h</small><b class="text-red"> {{timeSpent*1000 | date:'mm':'UTC'}}</b><small class="text-red">m</small></h1>
                     </ion-card-header>
                     <ion-card-content>
                       La tua formazione
@@ -75,47 +81,20 @@
               </ion-row>
             </ion-grid>
           </ion-item>
-
-          <!-- <ion-grid class="core-user-communication-handlers" *ngIf="(communicationHandlers && communicationHandlers.length) || isLoadingHandlers">
-              <ion-row no-padding justify-content-between *ngIf="communicationHandlers && communicationHandlers.length">
-                  <ion-col align-self-center *ngFor="let comHandler of communicationHandlers" text-center>
-                      <a (click)="handlerClicked($event, comHandler)" [ngClass]="['core-user-profile-handler', comHandler.class]" title="{{comHandler.title | translate}}" tappable>
-                          <core-icon [name]="comHandler.icon"></core-icon>
-                          <p>{{comHandler.title | translate}}</p>
-                      </a>
-                  </ion-col>          
-              </ion-row>
-              <ion-row no-padding>
-                  <ion-col text-center class="core-loading-handlers" *ngIf="isLoadingHandlers">
-                      <ion-spinner></ion-spinner>
-                  </ion-col>
-              </ion-row>
-          </ion-grid>
-
-          <a ion-item text-wrap class="core-user-profile-handler" (click)="openUserDetails()" title="{{ 'core.user.details' | translate }}">
-              <ion-icon name="person" item-start></ion-icon>
-              <h2>{{ 'core.user.details' | translate }}</h2>
-          </a>
-          <ion-item text-center class="core-loading-handlers" *ngIf="isLoadingHandlers">
-              <ion-spinner></ion-spinner>
+          <ion-item id="badges">
+            <h1 text-center>
+              <b>Badges</b>
+            </h1>
+            <div *ngFor="let badge of badges" class="badge">
+              <img class="badge-icon" [src]="badge.badgeurl" [alt]="badge.name" item-start core-external-content>
+            </div>
+            <div class="last-achived-badge" *ngIf="!!badges && badges.length>0">
+              <img [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content>
+              <h3>
+                {{badges[badges.length-1].name | uppercase}}
+              </h3>
+            </div>
           </ion-item>
-
-          <a *ngFor="let npHandler of newPageHandlers" ion-item text-wrap [ngClass]="['core-user-profile-handler', npHandler.class]" (click)="handlerClicked($event, npHandler)" [hidden]="npHandler.hidden" title="{{ npHandler.title | translate }}">
-              <core-icon *ngIf="npHandler.icon" [name]="npHandler.icon" item-start></core-icon>
-              <h2>{{ npHandler.title | translate }}</h2>
-          </a>
-
-          <ion-item *ngIf="actionHandlers && actionHandlers.length">
-              <button *ngFor="let actHandler of actionHandlers" ion-button block outline [ngClass]="['core-user-profile-handler', actHandler.class]" (click)="handlerClicked($event, actHandler)" [hidden]="actHandler.hidden" title="{{ actHandler.title | translate }}" icon-start [disabled]="actHandler.spinner">
-                  <core-icon *ngIf="actHandler.icon" [name]="actHandler.icon" start></core-icon>
-                  <span>{{ actHandler.title | translate }}</span>
-                  <ion-spinner *ngIf="actHandler.spinner"></ion-spinner>
-              </button>
-          </ion-item> -->
       </ion-list>
-      <!-- <core-empty-box *ngIf="!user && !isDeleted && isEnrolled" icon="person" [message]=" 'core.user.detailsnotavailable' | translate"></core-empty-box>
-
-      <core-empty-box *ngIf="isDeleted" icon="person" [message]="'core.userdeleted' | translate"></core-empty-box>
-      <core-empty-box *ngIf="!isEnrolled" icon="person" [message]="'core.notenrolledprofile' | translate"></core-empty-box> -->
   </core-loading>
 </ion-content>

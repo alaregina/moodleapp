@@ -1,10 +1,17 @@
 page-courses-modal {
+    ion-header{
+        h3{
+            margin-top:0.5rem!important;
+            margin-bottom:0rem!important;
+            color:$gray-dark;
+        }
+    }
     background-color: transparent!important;
     ion-slides{
         height: auto!important;
     }
 
-    ion-content.modal-courses{
+    div.modal-courses{
         background-color: $gray-lighter;
         border-top-left-radius: 5%;
         border-top-right-radius: 5%;
@@ -14,13 +21,16 @@ page-courses-modal {
         text-align: center;
         align-self: center;
         span{
-            color:#00a18f;            
+            color:#00a18f;
+            font-size: 1.3rem;       
         }
     }
 
     ion-row.header{
         ion-col h4{
             margin:0px;
+            font-size: 1.4rem;
+            font-weight: bold;
         }
     }
 
@@ -65,5 +75,18 @@ page-courses-modal {
                 width:60%!important;
             }
          } 
+     }
+     core-courses-course-progress{
+        .item-block{
+            min-height: unset!important;
+        }
+     }
+     core-progress-bar progress{
+         height: 5px!important;
+         margin-top:4px!important;
+     }
+     
+     core-progress-bar span.core-progress-text{
+        font-size: 1.2rem!important;
      }
 }

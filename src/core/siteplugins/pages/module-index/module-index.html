@@ -12,4 +12,14 @@
         <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
     </ion-refresher>
     <core-site-plugins-module-index [module]="module" [courseId]="courseId" [pageTitle]="title"></core-site-plugins-module-index>
+    <section class="related-module">
+        <h3 text-center>
+            <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
+        </h3>
+        <core-loading [hideUntil]="loaded">
+            <ng-container>
+                <core-course-module *ngFor="let item of related" [module]="item" [courseId]="courseId" [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
+            </ng-container>
+        </core-loading>
+    </section>
 </ion-content>

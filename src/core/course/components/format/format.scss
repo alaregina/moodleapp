@@ -85,7 +85,11 @@ ion-app.app-root core-course-format {
     .course-general-info{
         margin-top: 16px;
         margin-left: 16px;
-
+        div:not(.course-title){
+            *{
+                margin:0px;
+            }
+        }
         .course-title{
             overflow: visible;
             width: 140px;
@@ -93,7 +97,7 @@ ion-app.app-root core-course-format {
             text-align: left;
             font-family: Biilmann;
             font-style: normal;
-            font-weight: normal;
+            font-weight: bold;
             font-size: 18px;
             color: $ottanium;
             letter-spacing: 0.5555555725097656px;
@@ -158,21 +162,37 @@ ion-app.app-root core-course-format {
     }
 
     .section{
-        min-height: 60%;
-        background-color: $white;
-        border-top-left-radius: 6%;
-        border-top-right-radius: 6%;
+        height: 100%;
+        background-color: $gray-lighter;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
     }
 
     .item-md{
         background-color: unset;
     }
 
-    core-course-module{
-        background-color: unset;
-    }
-
     .swiper-pagination-bullet{
         display: none;
      }
+
+    p.episodes{
+        margin-top:0px;
+    }
+    .subsections{
+        padding-top: 2rem;
+        .subsection-container{
+            margin: 3%;
+            background-color: unset;
+            display: block;
+        }
+        .core-subsection{
+            align-items: flex-start;
+            min-height: 52px;
+            background-color: $white;
+            .core-subsection-title{
+                font-weight: bold;
+            }
+        }
+    }
 }

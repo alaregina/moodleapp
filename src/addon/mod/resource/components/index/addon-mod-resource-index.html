@@ -12,9 +12,9 @@
 
 <!-- Content. -->
 <core-loading [hideUntil]="loaded" class="core-loading-center safe-area-page">
-
-    <core-course-module-description *ngIf="mode != 'iframe' && (mode != 'embedded' || displayDescription)" [description]="description" [component]="component" [componentId]="componentId" contextLevel="module" [contextInstanceId]="module.id" [courseId]="courseId"></core-course-module-description>
-
+        <div class="module-course-title" *ngIf="course">
+        <core-format-text [text]="course.displayname" contextLevel="course" [contextInstanceId]="courseId"></core-format-text>
+    </div>
     <ion-card class="core-warning-card" icon-start *ngIf="warning">
         <ion-icon name="warning"></ion-icon> <span [innerHTML]="warning"></span>
     </ion-card>
@@ -33,5 +33,16 @@
             {{ 'addon.mod_resource.openthefile' | translate }}
         </a>
     </div>
-
+    <core-course-module-description *ngIf="mode != 'iframe' && (mode != 'embedded' || displayDescription)" [title]="module.name" [description]="description" [component]="component" [componentId]="componentId" contextLevel="module" [contextInstanceId]="module.id" [courseId]="courseId"></core-course-module-description>
 </core-loading>
+
+<section class="related-module">
+    <h3 text-center>
+        <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
+    </h3>
+    <core-loading [hideUntil]="loaded">
+        <ng-container>
+            <core-course-module  *ngFor="let item of related" [module]="item" [courseId]="courseId" [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
+        </ng-container>
+    </core-loading>
+</section>

@@ -23,7 +23,7 @@
 
     <!-- Radio buttons for single choice. -->
     <div *ngIf="!question.multi" radio-group [(ngModel)]="question.singleChoiceModel" [name]="question.optionsName">
-        <ion-item text-wrap *ngFor="let option of question.options">
+        <ion-item text-wrap *ngFor="let option of question.options" class="quiz-item">
             <ion-label>
                 <core-format-text [component]="component" [componentId]="componentId" [text]="option.text" [contextLevel]="contextLevel" [contextInstanceId]="contextInstanceId" [courseId]="courseId"></core-format-text>
                 <div *ngIf="option.feedback" class="specificfeedback"><core-format-text [component]="component" [componentId]="componentId" [text]="option.feedback" [contextLevel]="contextLevel" [contextInstanceId]="contextInstanceId" [courseId]="courseId"></core-format-text></div>
