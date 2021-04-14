@@ -27,6 +27,27 @@
         </div> -->
     </core-loading>
     <core-loading [hideUntil]="categoriesLoaded">
+      <div *ngIf="macrocategories?.length > 0">
+        <ion-grid class="categories">
+            <ion-row>
+            <ion-col col-12>
+                <div class="select-category">
+                    <b>Seleziona una macroarea</b>
+                </div>
+            </ion-col>
+            <ion-col col-6 col-md-3 col-lg-2 *ngFor="let macrocategory of macrocategories">
+                <ion-card class="course-card" text-center (click)="selectMacroCategory(macrocategory.id)" [attr.selected]="macrocategory.id==selectedMacrocategory">
+                    <ion-card-header>
+                      <h1><strong>{{macrocategory.name | uppercase}}</strong></h1>
+                    </ion-card-header>
+                    <!-- <ion-card-content [class]="macrocategory.name | lowercase">
+                      {{macrocategory.coursecount}} Corsi
+                    </ion-card-content> -->
+                  </ion-card>
+            </ion-col>
+        </ion-row>
+        </ion-grid>
+    </div>
         <div *ngIf="categories?.length > 0">
             <ion-grid class="categories">
                 <ion-row>
@@ -36,7 +57,7 @@
                     </div>
                 </ion-col>
                 <ion-col col-6 col-md-3 col-lg-2 *ngFor="let category of categories">
-                    <ion-card class="course-card" text-center (click)="openCategory(category.id)" [attr.selected]="category.id==selectedCategory">
+                    <ion-card class="course-card" text-center (click)="openCategory(category)" [attr.selected]="category.id==selectedCategory?.id">
                         <ion-card-header>
                           <h1><strong>{{category.name | uppercase}}</strong></h1>
                         </ion-card-header>
@@ -49,7 +70,7 @@
             </ion-grid>
         </div>
     </core-loading>
-    <div *ngIf="selectedCategory==-1">
+    <div *ngIf="!(selectedCategory?.id!=-1 && selectedCategory?.coursecount>0)">
       <img src="assets/img/background.png"/>
       <div class="project">      
         <h1 class="red-text">
@@ -62,7 +83,7 @@
         </p>
       </div>
     </div>
-    <courses [categoryId]="selectedCategory" (close)="dismiss($event)" *ngIf="selectedCategory!=-1">
+    <courses [categoryId]="selectedCategory?.id" (close)="dismiss($event)" *ngIf="selectedCategory?.id!=-1 && selectedCategory?.coursecount>0">
       
     </courses>
 </ion-content>

@@ -31,10 +31,13 @@ export class JuicehomeComponent implements AfterViewInit {
   categoriesLoaded: boolean = false;
   userLoaded: boolean = false;
   user: any = {};
-  selectedCategory: number = -1;
+  selectedCategory= null;
   modal: Modal;
   badges: any[];
   points: number = 0;
+  macrocategories: any[];
+  selectedMacrocategory;
+  allCategories: any[];
 
 
   constructor(private navCtrl: NavController, 
@@ -83,8 +86,10 @@ export class JuicehomeComponent implements AfterViewInit {
 
               return a.depth > b.depth ? 1 : -1;
           });
-          this.categories = cats.filter(x=>x.depth==3)
-         
+          this.macrocategories = cats.filter(x=>x.depth==3 && cats.filter(y=>y.parent==x.id).length>0)
+          this.allCategories = cats
+          if(this.macrocategories.length==0)
+            this.categories = cats.filter(x=>x.depth==3)
       }).catch((error) => {
           this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcategories', true);
       });
@@ -112,151 +117,49 @@ export class JuicehomeComponent implements AfterViewInit {
       });
   }
   
-  /**
-     * Open a category.
-     *
-     * @param categoryId The category ID.
-     */
-//    async openCategory(categoryId: number) {
-//     if (this.selectedCategory == categoryId)
-//     {
-//       this.selectedCategory = -1;
-//       this.modal.dismiss();
-//     } else {
-//       this.selectedCategory = categoryId;
-//       document.getElementsByTagName("ion-app")[0].classList.add("modal-opened");
-//       this.modal = this.modalController.create(CoursesModalPage, { categoryId: categoryId }, {cssClass: "small-modal", showBackdrop:true, enableBackdropDismiss: true})
-//       this.modal.onDidDismiss(()=>{
-//         this.selectedCategory = -1;
-//         document.getElementsByTagName("ion-app")[0].classList.remove("modal-opened");
-//       })
-//       await this.modal.present()
-//     }
-// }
-
+  selectMacroCategory(macrocategory){
+    if (this.selectedMacrocategory == macrocategory)
+    {
+      this.selectedMacrocategory = -1;
+      this.selectedCategory = -1;
+      this.categories = null
+    } else {
+      this.selectedMacrocategory = macrocategory;
+      this.selectedCategory = null;
+      this.categories = this.allCategories.filter(x=>x.parent==macrocategory)
+    }
+  }
   /**
    * Open a category.
    *
    * @param categoryId The category ID.
    */
-  openCategory(categoryId: number) {
-    if (this.selectedCategory == categoryId)
+  openCategory(category) {
+    if (this.selectedCategory && this.selectedCategory.id == category.id)
     {
-      this.selectedCategory = -1;
+      this.selectedCategory = null;
     } else {
-      this.selectedCategory = categoryId;
+      this.selectedCategory = category;
     }
   }
 
   dismiss($event){
-    this.selectedCategory = -1;
+    this.selectedCategory = null;
   }
 
-loadBadges(){
-  return this.badgesProvider.getUserBadges(null, this.user.id).then((badges:any[])=>{
-    this.badges = badges.filter(badge=>badge.courseid==null).sort((a,b)=>a.dateissued-b.dateissued);
-  })
-}
+  loadBadges(){
+    return this.badgesProvider.getUserBadges(null, this.user.id).then((badges:any[])=>{
+      this.badges = badges.filter(badge=>badge.courseid==null).sort((a,b)=>a.dateissued-b.dateissued);
+    })
+  }
 
-loadPoints(){
-  this.points = 0;
-  return this.gradesProvider.getCoursesGrades().then((grades:any[])=>{
-      grades.forEach(grade=>{
-        this.points += +(grade.grade as string).replace("-", "0").replace(",", ".")
-      })
-      this.points = Math.round(this.points)
-  })
-}
-
-
-//     /**
-//      * Open a category.
-//      *
-//      * @param categoryId The category ID.
-//      */
-//     async openCategory(categoryId: number) {
-//       if (this.selectedCategory == categoryId)
-//       {
-//         this.selectedCategory = null;
-//       } else {
-//         this.selectedCategory = categoryId;
-//         this.fetchCourses().finally(()=>{
-//           this.coursesLoaded = true;
-//         })
-//       }
-//       //this.navCtrl.push('CoreCoursesCategoriesPage', { categoryId: categoryId });
-//   }
-
-//   dismiss(){
-//     // this.viewCtrl.dismiss();
-//   }
-
-//   viewAllCourses(){
-//     this.navCtrl.push("CoreCoursesMyCoursesPage")
-//   }
-
-//   /**
-//      * Fetch the user courses.
-//      *
-//      * @return Promise resolved when done.
-//      */
-//    protected fetchCourses(): Promise<any> {
-//     return this.coursesProvider.getUserCourses().then((courses) => {
-//         const promises = [],
-//             courseIds = courses.map((course) => {
-//             return course.id;
-//         });
-
-//         this.courseIds = courseIds.join(',');
-
-//         promises.push(this.coursesHelper.loadCoursesExtraInfo(courses));
-
-//         if (this.coursesProvider.canGetAdminAndNavOptions()) {
-//             promises.push(this.coursesProvider.getCoursesAdminAndNavOptions(courseIds).then((options) => {
-//                 courses.forEach((course) => {
-//                     course.navOptions = options.navOptions[course.id];
-//                     course.admOptions = options.admOptions[course.id];
-//                 });
-//             }));
-//         }
-
-//         return Promise.all(promises).then(() => {
-//             this.courses = courses;
-//             this.initPrefetchCoursesIcon();
-//         });
-//     }).catch((error) => {
-//         this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcourses', true);
-//     });
-// }
-
-
-
-//   /**
-//      * Initialize the prefetch icon for the list of courses.
-//      */
-//    protected initPrefetchCoursesIcon(): void {
-//     if (this.prefetchIconInitialized || !this.downloadAllCoursesEnabled) {
-//         // Already initialized.
-//         return;
-//     }
-
-//     this.prefetchIconInitialized = true;
-
-//     if (!this.courses || this.courses.length < 2) {
-//         // Not enough courses.
-//         this.prefetchCoursesData.icon = '';
-
-//         return;
-//     }
-
-//     this.courseHelper.determineCoursesStatus(this.courses).then((status) => {
-//         let icon = this.courseHelper.getCourseStatusIconAndTitleFromStatus(status).icon;
-//         if (icon == 'spinner') {
-//             // It seems all courses are being downloaded, show a download button instead.
-//             icon = 'cloud-download';
-//         }
-//         this.prefetchCoursesData.icon = icon;
-//     });
-// }
-
+  loadPoints(){
+    this.points = 0;
+    return this.gradesProvider.getCoursesGrades().then((grades:any[])=>{
+        grades.forEach(grade=>{
+          this.points += +(grade.grade as string).replace("-", "0").replace(",", ".")
+        })
+        this.points = Math.round(this.points)
+    })
+  }
 }

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CoreCoursesMyCoursesComponent } from '../../components/my-courses/my-courses';
 
 /**
@@ -26,8 +26,12 @@ import { CoreCoursesMyCoursesComponent } from '../../components/my-courses/my-co
 })
 export class CoreCoursesMyCoursesPage {
     @ViewChild(CoreCoursesMyCoursesComponent) mcComponent: CoreCoursesMyCoursesComponent;
+    type: any;
 
-    constructor(private navCtrl: NavController) { }
+    constructor(params: NavParams, private navCtrl: NavController) {
+        this.type = params.get('type');
+        console.log(this.type)
+     }
 
     /**
      * Go to search courses.

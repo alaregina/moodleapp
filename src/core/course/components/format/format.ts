@@ -26,6 +26,7 @@ import { CoreCourseFormatDelegate } from '@core/course/providers/format-delegate
 import { CoreCourseModulePrefetchDelegate } from '@core/course/providers/module-prefetch-delegate';
 import { CoreBlockCourseBlocksComponent } from '@core/block/components/course-blocks/course-blocks';
 import { CoreDynamicComponent } from '@components/dynamic-component/dynamic-component';
+import { SectionNavigationProvider } from '@providers/section-navigation/section-navigation';
 
 /**
  * Component to display course contents using a certain format. If the format isn't found, use default one.
@@ -89,7 +90,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
             eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
             prefetchDelegate: CoreCourseModulePrefetchDelegate, private modalCtrl: ModalController,
-            private courseProvider: CoreCourseProvider) {
+            private courseProvider: CoreCourseProvider, private sectionNavigationProvider:SectionNavigationProvider) {
 
         this.selectOptions.title = translate.instant('core.course.sections');
         this.completionChanged = new EventEmitter();
@@ -200,10 +201,9 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
-        if(!this.selectedSection && !!this.sections){
+        if(!this.initialSectionId && !this.selectedSection && !!this.sections){
             this.initialSectionId = !!this.sections[1].subsections  ? this.sections[1].id:this.sections[2].id
         }
-
         if (changes.course) {
             // Course has changed, try to get the components.
             this.getComponents();
@@ -258,7 +258,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 if (!newSection) {
                     // Section not found, calculate which one to use.
                     this.cfDelegate.getCurrentSection(this.course, this.sections).then((section) => {
-                        this.sectionChanged(section);
+                        if(this.selectedSection)
+                            this.sectionChanged(this.selectedSection);
+                        else
+                            this.sectionChanged(section);
                     });
                 } else {
                     this.sectionChanged(newSection);
@@ -345,11 +348,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      * @param newSection The new selected section.
      */
     sectionChanged(newSection: any): void {
-        console.log(newSection)
+        this.sectionNavigationProvider.selectedSection = newSection.id;
         const previousValue = this.selectedSection;
         this.selectedSection = newSection;
         this.data.section = this.selectedSection;
-
         if (newSection.id != this.allSectionsId) {
             // Select next and previous sections to show the arrows.
             const i = this.sections.findIndex((value, index) => {
@@ -476,7 +478,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             return this.courseBlocksComponent.loadContent();
         }));
 
-        return Promise.all(promises);
+        return Promise.all(promises)
     }
 
     /**
@@ -607,5 +609,12 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         setTimeout(()=>{
             this.warningSectionUnavailable = false;
         }, 3000)
+    }
+
+    get sectionsWithContent(){
+        return this.sections.filter(section=>
+            section.name!="Test" || 
+            (section.modules.length>0 && 
+                section.modules.filter(module=>module.completionstatus.state==0).length>0))
     }
 }

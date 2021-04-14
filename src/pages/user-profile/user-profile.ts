@@ -52,6 +52,9 @@ export class UserProfilePage {
   points = 0
   badges: any[];
   timeSpent: number = 0;
+    badgeAlcolizzato: boolean;
+    badgeSommelier: boolean;
+    badgeMegadirettore: boolean;
 
   constructor(navParams: NavParams, private userProvider: CoreUserProvider, private userHelper: CoreUserHelperProvider,
           private domUtils: CoreDomUtilsProvider, private translate: TranslateService, private eventsProvider: CoreEventsProvider,
@@ -128,8 +131,11 @@ export class UserProfilePage {
         }) 
         Promise.all(attestatiProm).then(()=>{
             var att = Object.values<any>(attestati);
-            console.log(att)
-            console.log(att.find(x=>x.category=="Spirits").badges)
+            let spiritsBadges = att.find(x=>x.category=="Spirits") ? att.find(x=>x.category=="Spirits").badges : 0
+            let wineBadges = att.find(x=>x.category=="Wine") ? att.find(x=>x.category=="Wine").badges : 0
+            this.badgeAlcolizzato = spiritsBadges>=3
+            this.badgeSommelier = wineBadges>=3
+            this.badgeMegadirettore = this.badgeAlcolizzato && this.badgeSommelier
         })
       })
   }

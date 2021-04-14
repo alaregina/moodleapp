@@ -22,7 +22,7 @@
               <h2><b class="text-red">{{ user.fullname }}</b></h2>
               <ion-avatar core-user-avatar class="item-avatar-center" [user]="user" [userId]="user.id" [linkProfile]="false" [checkOnline]="true">
                   <ion-icon name="create" class="core-icon-foreground" *ngIf="canChangeProfilePicture" (click)="changeProfilePicture()"></ion-icon>
-                  <img class="badge-on-icon" *ngIf="!!badges && badges.length>0" [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content>
+                  <!-- <img class="badge-on-icon" *ngIf="!!badges && badges.length>0" [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content> -->
               </ion-avatar>
               <h1><b class="text-red">{{points}}</b></h1>
               <p *ngIf="user.address">{{ user.address }}</p>
@@ -85,15 +85,24 @@
             <h1 text-center>
               <b>Badges</b>
             </h1>
-            <div *ngFor="let badge of badges" class="badge">
-              <img class="badge-icon" [src]="badge.badgeurl" [alt]="badge.name" item-start core-external-content>
+            <div *ngIf="badgeAlcolizzato">
+              <img src="assets/img/badgeAlcolizzato.png">
             </div>
-            <div class="last-achived-badge" *ngIf="!!badges && badges.length>0">
+            <div *ngIf="badgeSommelier">
+              <img src="assets/img/badgeSommelier.png">
+            </div>
+            <div *ngIf="badgeMegadirettore">              
+              <img src="assets/img/badgeMegadirettore.png">
+            </div>
+            <!-- <div *ngFor="let badge of badges" class="badge">
+              <img class="badge-icon" [src]="badge.badgeurl" [alt]="badge.name" item-start core-external-content>
+            </div> -->
+            <!-- <div class="last-achived-badge" *ngIf="!!badges && badges.length>0">
               <img [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content>
               <h3>
                 {{badges[badges.length-1].name | uppercase}}
               </h3>
-            </div>
+            </div> -->
           </ion-item>
       </ion-list>
   </core-loading>

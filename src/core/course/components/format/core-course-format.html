@@ -23,9 +23,9 @@
                             </span>
                         </div>
                         <div *ngIf="!!course.summary" [innerHTML]="course.summary"></div>
-                        <p class="episodes">
+                        <!-- <p class="episodes">
                             <b>Episodi {{episodes}}</b>
-                        </p>
+                        </p> -->
                     </div>
                     <ng-container *ngIf="selectedSection">
                         <ion-item class="core-course-progress" *ngIf="selectedSection.id == allSectionsId && course.progress != null && course.progress >= 0 && course.completionusertracked !== false">
@@ -55,7 +55,7 @@
             <!-- section selector -->
              <div class="section-slider" *ngIf="!!sections" >
                 <ion-slides id="slides" #slides pager spaceBetween="10" slidesPerView="2.3" loop="false">
-                    <ion-slide *ngFor="let section of sections | slice:1" [class.item-dimmed]="section.visible === 0 || section.uservisible === false" >
+                    <ion-slide *ngFor="let section of sectionsWithContent | slice:1" [class.item-dimmed]="section.visible === 0 || section.uservisible === false" >
                         <div class="section-button" [attr.selected]="(section.id==selectedSection.id) ? true:false" (click)="!(section.visible === 0 || section.uservisible === false) ? sectionChanged(section): unauthorized(section)" *ngIf="!section.hiddenbynumsections && section.id != stealthModulesSectionId">
                             <p>{{section.name}}</p>
                         </div>
@@ -77,7 +77,7 @@
             <div *ngIf="selectedSection && selectedSection.id != allSectionsId" class="section">
                 <core-dynamic-component [component]="singleSectionComponent" [data]="data">
                     <ng-container *ngTemplateOutlet="sectionTemplate; context: {section: selectedSection}"></ng-container>
-                    <core-empty-box *ngIf="!selectedSection.hasContent" icon="qr-scanner" [message]="'core.course.nocontentavailable' | translate"></core-empty-box>
+                    <!-- <core-empty-box *ngIf="!selectedSection.hasContent" icon="qr-scanner" [message]="'core.course.nocontentavailable' | translate"></core-empty-box> -->
                 </core-dynamic-component>
             </div>
             

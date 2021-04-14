@@ -41,7 +41,6 @@ export class CoreSitePluginsModuleIndexPage {
         this.title = params.get('title');
         this.module = params.get('module');
         this.courseId = params.get('courseId');
-        console.log(this.module)
     }
 
     /**

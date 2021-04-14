@@ -51,6 +51,12 @@ export class CoursesComponent implements OnChanges {
   favourite(courses){
     return this.courses.filter(c=>c.isfavourite).length==0 ? this.courses:this.courses.filter(c=>c.isfavourite)
   }
+  thematicRoutes(courses){
+    return this.courses.filter(c=>c.thematicRoutes)
+  }
+  standardCourses(courses){
+    return this.courses.filter(c=>!c.thematicRoutes)
+  }
   highlighted(courses){
     return this.courses.filter(c=>c.highlight).length==0 ? this.courses:this.courses.filter(c=>c.highlight)
   }
@@ -61,6 +67,7 @@ export class CoursesComponent implements OnChanges {
      */
     protected fetchCourses(): Promise<any> {
       return this.coursesProvider.getUserCourses().then((courses) => {
+          courses = courses.filter(c=>c.category==this.categoryId)
           const promises = [],
               courseIds = courses.map((course) => {
               return course.id;
@@ -80,12 +87,15 @@ export class CoursesComponent implements OnChanges {
           }
           promises.push(courses.forEach(course=>{
             this.coursesProvider.getCourseByField('id', course.id).then((c) => {
-              let hightlight = (c.customfields as any[]).find(x=>x.name=="Highlight")
+              let hightlight = (c.customfields as any[]).find(x=>x.shortname=="highlight")
               course.highlight = !!hightlight ? (+hightlight.valueraw) : false
+              let percorso_tematico = (c.customfields as any[]).find(x=>x.shortname=="percorso_tematico")
+              course.thematicRoutes = !!percorso_tematico ? (+percorso_tematico.valueraw) : false
             });
           }))
           return Promise.all(promises).then(() => {
               this.courses = courses;
+              console.log(this.courses)
               this.initPrefetchCoursesIcon();
           });
       }).catch((error) => {
@@ -126,7 +136,13 @@ export class CoursesComponent implements OnChanges {
   }
 
   viewAllCourses(){
-    this.navCtrl.push("CoreCoursesMyCoursesPage")
+    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"courses"})
+  }
+  viewAllThematicRoutse(){
+    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"thematicRoutes"})
+  }
+  viewAllBrand(){
+    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"brand"})
   }
 
 }

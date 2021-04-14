@@ -31,6 +31,7 @@ import { CoreCourseSyncProvider } from '../../providers/sync';
 import { CoreCourseFormatComponent } from '../../components/format/format';
 import { CoreFilterHelperProvider } from '@core/filter/providers/helper';
 import { CoreLoginSitePolicyPage } from '@core/login/pages/site-policy/site-policy';
+import { SectionNavigationProvider } from '@providers/section-navigation/section-navigation';
 
 /**
  * Page that displays the list of courses the user is enrolled in.
@@ -79,7 +80,7 @@ export class CoreCourseSectionPage implements OnDestroy {
             private coursesProvider: CoreCoursesProvider, private filterHelper: CoreFilterHelperProvider,
             sitesProvider: CoreSitesProvider, private navCtrl: NavController, private injector: Injector,
             private prefetchDelegate: CoreCourseModulePrefetchDelegate, private syncProvider: CoreCourseSyncProvider,
-            private utils: CoreUtilsProvider) {
+            private utils: CoreUtilsProvider, private sectionNavigation: SectionNavigationProvider) {
         this.course = navParams.get('course');
         this.sectionId = navParams.get('sectionId');
         this.sectionNumber = navParams.get('sectionNumber');
@@ -512,7 +513,7 @@ export class CoreCourseSectionPage implements OnDestroy {
      * User entered the page.
      */
     ionViewDidEnter(): void {
-        this.doRefresh();
+        this.doRefresh()
         this.formatComponent && this.formatComponent.ionViewDidEnter();
         this.tabsComponent && this.tabsComponent.ionViewDidEnter();
     }
@@ -529,12 +530,12 @@ export class CoreCourseSectionPage implements OnDestroy {
         let clone:any[] = sections.map((x) => x);//JSON.parse(JSON.stringify(sections));
         let i = 0;
         while(i<clone.length){
-            if(!clone[i].hasContent){
-                while(i+1<clone.length && clone[i+1].hasContent){
+            if(!!clone[i].modules && clone[i].modules.length==0){
+                while(i+1<clone.length && !!clone[i+1].modules && clone[i+1].modules.length>0){
                     clone[i].subsections = !!clone[i].subsections ? (clone[i].subsections as any[]).concat(clone[i+1]):[clone[i+1]]
                     clone.splice(i+1,1)
                 }
-                if(i-1>=0 && !clone[i-1].hasContent && clone[i-1].section!=0){
+                if(i-1>=0 && !!clone[i-1].modules && clone[i-1].modules.length==0){
                     clone[i-1].subsections = !!clone[i-1].subsections ? (clone[i-1].subsections as any[]).concat(clone[i]):[clone[i]]
                     clone.splice(i,1)
                 }else
@@ -543,9 +544,11 @@ export class CoreCourseSectionPage implements OnDestroy {
                 i++
             }
         }
-        console.log(clone)
-        if(clone[0].subsections)
-            clone = clone[0].subsections
+        if(clone[1].section==0 && clone[1].subsections){
+            var temp = clone[1].subsections
+            clone.splice(1,1)
+            clone= clone.concat(temp)
+        }
         this.sections = clone
     }
 }

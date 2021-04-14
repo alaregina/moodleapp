@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { Searchbar } from 'ionic-angular';
 import { CoreEventsProvider } from '@providers/events';
 import { CoreSitesProvider } from '@providers/sites';
@@ -31,12 +31,12 @@ import { CoreCourseOptionsDelegate } from '@core/course/providers/options-delega
 })
 export class CoreCoursesMyCoursesComponent implements OnInit, OnDestroy {
     @ViewChild('searchbar') searchbar: Searchbar;
-
+    @Input("type") type: string;
     courses: any[];
     filteredCourses: any[];
     searchEnabled: boolean;
     filter = '';
-    showFilter = false;
+    showFilter = true;
     coursesLoaded = false;
     prefetchCoursesData: any = {};
     downloadAllCoursesEnabled: boolean;
@@ -110,9 +110,20 @@ export class CoreCoursesMyCoursesComponent implements OnInit, OnDestroy {
                     });
                 }));
             }
-
+           courses.forEach(course=>{
+                promises.push(this.coursesProvider.getCourseByField('id', course.id).then((c) => {
+                  let percorso_tematico = (c.customfields as any[]).find(x=>x.shortname=="percorso_tematico")
+                  course.thematicRoutes = !!percorso_tematico ? (+percorso_tematico.valueraw>0) : false
+                })
+                )
+              })
             return Promise.all(promises).then(() => {
-                this.courses = courses;
+                if(this.type=="brand")
+                    this.courses = courses.filter(c=>!c.thematicRoutes)
+                else if(this.type=="thematicRoutes")
+                    this.courses = courses.filter(c=>c.thematicRoutes)
+                else
+                    this.courses = courses;
                 this.filteredCourses = this.courses;
                 this.filter = '';
 
