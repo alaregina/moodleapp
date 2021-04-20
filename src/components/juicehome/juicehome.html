@@ -11,20 +11,13 @@
         </ion-row>
         <ion-row>
           <ion-col class="header">
-            <img *ngIf="!!badges && badges.length>0" class="goccia-rossa" [src]="badges[badges.length-1].badgeurl" item-start core-external-content/>
+              <img *ngIf="!!badge" [src]="badge" item-start  class="goccia-rossa">
             <div class="points">
               <h2 class="red-text"><b>{{points}}</b></h2>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-        <!-- <div class="user-header">
-            <h1 class="name"><b>{{ user.fullname }}</b></h1>
-            <div class="points">
-                <img class="goccia-rossa" src="assets/img/goccia.png"/>
-                <h1><b>6431</b></h1>
-            </div>
-        </div> -->
     </core-loading>
     <core-loading [hideUntil]="categoriesLoaded">
       <div *ngIf="macrocategories?.length > 0">
@@ -40,9 +33,6 @@
                     <ion-card-header>
                       <h1><strong>{{macrocategory.name | uppercase}}</strong></h1>
                     </ion-card-header>
-                    <!-- <ion-card-content [class]="macrocategory.name | lowercase">
-                      {{macrocategory.coursecount}} Corsi
-                    </ion-card-content> -->
                   </ion-card>
             </ion-col>
         </ion-row>
@@ -70,17 +60,26 @@
             </ion-grid>
         </div>
     </core-loading>
-    <div *ngIf="!(selectedCategory?.id!=-1 && selectedCategory?.coursecount>0)">
-      <img src="assets/img/background.png"/>
-      <div class="project">      
-        <h1 class="red-text">
-          <b>
-            {{ 'core.site.projecttitle' | translate }}
-          </b>
-        </h1>
-        <p>
-          {{ 'core.site.project' | translate }}
-        </p>
+    <div *ngIf="courses && (!(selectedCategory?.id!=-1 && selectedCategory?.coursecount>0))">
+      <div style="padding: 0 4%;" *ngIf="highlighted(courses).length>0">
+        <h4>{{'core.courses.evidence' | translate}}</h4>
+        <ion-slides #slides pager spaceBetween="0" [slidesPerView]="highlighted(courses).length==1 ? 1:1.3">
+          <ion-slide *ngFor="let course of highlighted(courses)">
+            <course-progress [course]="course" class="core-courseoverview" showAll="true">
+            </course-progress>
+          </ion-slide>
+          
+        </ion-slides>
+      </div>
+      <div style="padding: 0 4%;" *ngIf="highlighted(courses).length>0">
+        <h4>{{'core.courses.resume' | translate}}</h4>
+        <ion-slides #slides pager spaceBetween="0" [slidesPerView]="resume(courses).length==1 ? 1:1.3">
+          <ion-slide *ngFor="let course of resume(courses)">
+            <course-progress [course]="course" class="core-courseoverview" showAll="true">
+            </course-progress>
+          </ion-slide>
+          
+        </ion-slides>
       </div>
     </div>
     <courses [categoryId]="selectedCategory?.id" (close)="dismiss($event)" *ngIf="selectedCategory?.id!=-1 && selectedCategory?.coursecount>0">

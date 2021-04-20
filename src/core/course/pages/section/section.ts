@@ -31,7 +31,6 @@ import { CoreCourseSyncProvider } from '../../providers/sync';
 import { CoreCourseFormatComponent } from '../../components/format/format';
 import { CoreFilterHelperProvider } from '@core/filter/providers/helper';
 import { CoreLoginSitePolicyPage } from '@core/login/pages/site-policy/site-policy';
-import { SectionNavigationProvider } from '@providers/section-navigation/section-navigation';
 
 /**
  * Page that displays the list of courses the user is enrolled in.
@@ -80,7 +79,7 @@ export class CoreCourseSectionPage implements OnDestroy {
             private coursesProvider: CoreCoursesProvider, private filterHelper: CoreFilterHelperProvider,
             sitesProvider: CoreSitesProvider, private navCtrl: NavController, private injector: Injector,
             private prefetchDelegate: CoreCourseModulePrefetchDelegate, private syncProvider: CoreCourseSyncProvider,
-            private utils: CoreUtilsProvider, private sectionNavigation: SectionNavigationProvider) {
+            private utils: CoreUtilsProvider) {
         this.course = navParams.get('course');
         this.sectionId = navParams.get('sectionId');
         this.sectionNumber = navParams.get('sectionNumber');
@@ -226,7 +225,6 @@ export class CoreCourseSectionPage implements OnDestroy {
                 if (refresh) {
                     // Invalidate the recently downloaded module list. To ensure info can be prefetched.
                     const modules = this.courseProvider.getSectionsModules(sections);
-
                     return this.prefetchDelegate.invalidateModules(modules, this.course.id).then(() => {
                         return sections;
                     });
@@ -525,7 +523,10 @@ export class CoreCourseSectionPage implements OnDestroy {
         this.formatComponent && this.formatComponent.ionViewDidLeave();
         this.tabsComponent && this.tabsComponent.ionViewDidLeave();
     }
-
+    /**
+     * Funzione per trasformare l'array di sezioni in ingresso in un albero.
+     * chiave di lettura: una sezione senza contenuti è parent di tutte le sezioni successive con contenuti
+     */
     buildTree(sections:any[]):void{
         let clone:any[] = sections.map((x) => x);//JSON.parse(JSON.stringify(sections));
         let i = 0;

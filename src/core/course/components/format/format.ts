@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {
-    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild, AfterViewInit
+    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild, AfterViewInit, HostListener
 } from '@angular/core';
 import { Content, ModalController, Slides } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,7 +26,6 @@ import { CoreCourseFormatDelegate } from '@core/course/providers/format-delegate
 import { CoreCourseModulePrefetchDelegate } from '@core/course/providers/module-prefetch-delegate';
 import { CoreBlockCourseBlocksComponent } from '@core/block/components/course-blocks/course-blocks';
 import { CoreDynamicComponent } from '@components/dynamic-component/dynamic-component';
-import { SectionNavigationProvider } from '@providers/section-navigation/section-navigation';
 
 /**
  * Component to display course contents using a certain format. If the format isn't found, use default one.
@@ -80,17 +79,27 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     selectOptions: any = {};
     loaded: boolean;
     hasSeveralSections: boolean;
-
+    get notifications():number{
+        if(!!this.selectedSection && this.selectedSection.modules){
+            return this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length
+        }else
+            return 0
+    }
     protected sectionStatusObserver;
     protected selectTabObserver;
     protected lastCourseFormat: string;
     warningSectionUnavailable: boolean = false;
-   
+    private _sectionContents: any;
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        if(this.slides)
+            this.slides.update()
+    }
     constructor(private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
             eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
             prefetchDelegate: CoreCourseModulePrefetchDelegate, private modalCtrl: ModalController,
-            private courseProvider: CoreCourseProvider, private sectionNavigationProvider:SectionNavigationProvider) {
+            private courseProvider: CoreCourseProvider) {
 
         this.selectOptions.title = translate.instant('core.course.sections');
         this.completionChanged = new EventEmitter();
@@ -177,6 +186,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     set sectionContents(value:any[]){
+        this._sectionContents = value
     }
 
     get episodes():number{
@@ -247,13 +257,16 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             } else {
                 // We have a selected section, but the list has changed. Search the section in the list.
                 let newSection;
-                for (let i = 0; i < this.sections.length; i++) {
-                    const section = this.sections[i];
-                    if (this.compareSections(section, this.selectedSection)) {
-                        newSection = section;
-                        break;
-                    }
-                }
+                //search in array
+                // for (let i = 0; i < this.sections.length; i++) {
+                //     const section = this.sections[i];
+                //     if (this.compareSections(section, this.selectedSection)) {
+                //         newSection = section;
+                //         break;
+                //     }
+                // }
+                //search in tree
+                newSection = this.treeSearch(this.sections, this.selectedSection)
 
                 if (!newSection) {
                     // Section not found, calculate which one to use.
@@ -272,6 +285,22 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         if (this.downloadEnabled && (changes.downloadEnabled || changes.sections)) {
             this.calculateSectionsStatus(false);
         }
+        
+        if(changes.sections){
+            this.sectionContents = null;
+        }
+    }
+
+    treeSearch(sections: any[], selectedSection: any): any {
+        if(sections == null || sections.length==null)
+            return null
+        let newSection = null;
+        for(let i = 0; i<sections.length && !newSection; i++){
+            if(this.compareSections(selectedSection,sections[i]))
+                return sections[i]
+            newSection = this.treeSearch(sections[i].subsections, selectedSection)
+        }
+        return newSection
     }
 
     /**
@@ -348,7 +377,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      * @param newSection The new selected section.
      */
     sectionChanged(newSection: any): void {
-        this.sectionNavigationProvider.selectedSection = newSection.id;
+        
         const previousValue = this.selectedSection;
         this.selectedSection = newSection;
         this.data.section = this.selectedSection;

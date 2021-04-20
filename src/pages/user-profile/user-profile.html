@@ -81,28 +81,34 @@
               </ion-row>
             </ion-grid>
           </ion-item>
-          <ion-item id="badges">
+          <ion-item id="badges" *ngIf="badgeAlcolizzato || badgeSommelier || badgeMegadirettore || completedTest>=10">
             <h1 text-center>
               <b>Badges</b>
             </h1>
-            <div *ngIf="badgeAlcolizzato">
-              <img src="assets/img/badgeAlcolizzato.png">
-            </div>
-            <div *ngIf="badgeSommelier">
-              <img src="assets/img/badgeSommelier.png">
-            </div>
-            <div *ngIf="badgeMegadirettore">              
-              <img src="assets/img/badgeMegadirettore.png">
-            </div>
-            <!-- <div *ngFor="let badge of badges" class="badge">
-              <img class="badge-icon" [src]="badge.badgeurl" [alt]="badge.name" item-start core-external-content>
-            </div> -->
-            <!-- <div class="last-achived-badge" *ngIf="!!badges && badges.length>0">
-              <img [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content>
-              <h3>
-                {{badges[badges.length-1].name | uppercase}}
-              </h3>
-            </div> -->
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngIf="badgeAlcolizzato">
+                  <div>
+                    <img src="assets/img/alcolizzato.png">
+                  </div>
+                </ion-col>
+                <ion-col *ngIf="badgeSommelier">
+                  <div>
+                    <img src="assets/img/sommelier.png">
+                  </div>
+                </ion-col>
+                <ion-col *ngIf="badgeMegadirettore">
+                  <div>
+                    <img src="assets/img/megadirettore.png">
+                  </div>
+                </ion-col>
+                <ion-col *ngIf="completedTest>=10">
+                  <div>
+                    <img src="assets/img/mixology.png">
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-item>
       </ion-list>
   </core-loading>

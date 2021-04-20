@@ -55,6 +55,7 @@ export class UserProfilePage {
     badgeAlcolizzato: boolean;
     badgeSommelier: boolean;
     badgeMegadirettore: boolean;
+    completedTest: number;
 
   constructor(navParams: NavParams, private userProvider: CoreUserProvider, private userHelper: CoreUserHelperProvider,
           private domUtils: CoreDomUtilsProvider, private translate: TranslateService, private eventsProvider: CoreEventsProvider,
@@ -99,6 +100,7 @@ export class UserProfilePage {
         this.completedCourses = courses.filter(x=>x.completed==true).length
         this.ongoingCourses = courses.length - this.completedCourses
         this.completedActivities = 0;
+        this.completedTest = 0;
         this.timeSpent = 0;
         var attestati = {}
         var attestatiProm = [];
@@ -126,6 +128,7 @@ export class UserProfilePage {
                         this.timeSpent += res.seconds
                     })
                 })
+                this.completedTest += activities.filter(x=>x.modname=="quiz" && x.state!=0).length
                 this.completedActivities += activities.filter((x:any)=>x.state==1).length
             })
         }) 

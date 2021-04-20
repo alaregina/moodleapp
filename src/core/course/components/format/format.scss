@@ -195,4 +195,15 @@ ion-app.app-root core-course-format {
             }
         }
     }
+
+    .notification-badge{
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        padding: 1px 5px;
+        border-radius: 50%;
+        background: red;
+        color: white;
+        font-size: 1.2rem;
+    }
 }

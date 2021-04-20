@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CoreComponentsModule } from '@components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LandingPage } from './landing';
 
@@ -9,6 +10,7 @@ import { LandingPage } from './landing';
   ],
   imports: [
     CoreComponentsModule,
+    TranslateModule.forRoot(),
     IonicPageModule.forChild(LandingPage),
   ],
   entryComponents: [

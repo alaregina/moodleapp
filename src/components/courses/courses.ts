@@ -95,7 +95,6 @@ export class CoursesComponent implements OnChanges {
           }))
           return Promise.all(promises).then(() => {
               this.courses = courses;
-              console.log(this.courses)
               this.initPrefetchCoursesIcon();
           });
       }).catch((error) => {
