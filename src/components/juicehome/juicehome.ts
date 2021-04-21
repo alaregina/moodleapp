@@ -83,6 +83,7 @@ export class JuicehomeComponent implements AfterViewInit {
      */
     protected fetchCategories(): Promise<any> {
       return this.coursesProvider.getCategories(0, true).then((cats) => {
+        console.log(cats)
           this.currentCategory = undefined;
           cats.sort((a, b) => {
               if (a.depth == b.depth) {

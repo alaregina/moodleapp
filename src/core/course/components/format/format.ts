@@ -89,12 +89,15 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     protected selectTabObserver;
     protected lastCourseFormat: string;
     warningSectionUnavailable: boolean = false;
+    
+    notHidden = true;
     private _sectionContents: any;
     @HostListener('window:resize', ['$event'])
     onResize(event) {
         if(this.slides)
             this.slides.update()
     }
+
     constructor(private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
             eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
@@ -266,8 +269,8 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 //     }
                 // }
                 //search in tree
+                
                 newSection = this.treeSearch(this.sections, this.selectedSection)
-
                 if (!newSection) {
                     // Section not found, calculate which one to use.
                     this.cfDelegate.getCurrentSection(this.course, this.sections).then((section) => {
@@ -291,6 +294,12 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    /**
+     * recursively search a section in the sections tree
+     * @param sections array structure representing the sections tree
+     * @param selectedSection section to search in the tree
+     * @returns 
+     */
     treeSearch(sections: any[], selectedSection: any): any {
         if(sections == null || sections.length==null)
             return null
@@ -425,6 +434,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             this.courseProvider.logView(this.course.id, newSection.section, undefined, this.course.fullname).catch(() => {
                 // Ignore errors.
             });
+        }
+        if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length){
+            console.log(this.selectedContent)
+            this.selectedContent="Test"
         }
     }
 

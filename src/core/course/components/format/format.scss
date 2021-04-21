@@ -108,7 +108,7 @@ ion-app.app-root core-course-format {
     .section-button{
         border-radius: 8px;
         border: 1px solid $gray-dark;
-        font-size: small;
+        font-size: large;
         p{
             margin: 3px;
         }
@@ -192,6 +192,7 @@ ion-app.app-root core-course-format {
             background-color: $white;
             .core-subsection-title{
                 font-weight: bold;
+                font-size: large;
             }
         }
     }
@@ -205,5 +206,24 @@ ion-app.app-root core-course-format {
         background: red;
         color: white;
         font-size: 1.2rem;
+    }
+
+    .pending-test-badge{
+        margin: 5px;
+        display:flex;
+        justify-content: space-between;
+        background-color: $ottanium;
+        border-radius: 10px;
+        span{
+            padding: 10px;
+        }
+        button{
+            background-color: transparent;
+            padding: .75rem 1.25rem;
+            ion-icon{
+                font-weight: bold;
+                font-size: 1.6em;
+            }
+        }
     }
 }

@@ -67,6 +67,7 @@ export class CoursesComponent implements OnChanges {
      */
     protected fetchCourses(): Promise<any> {
       return this.coursesProvider.getUserCourses().then((courses) => {
+        console.log(courses)
           courses = courses.filter(c=>c.category==this.categoryId)
           const promises = [],
               courseIds = courses.map((course) => {
