@@ -148,6 +148,7 @@
     "@types/node": "^8.10.59",
     "@types/promise.prototype.finally": "^2.0.4",
     "acorn": "^5.7.4",
+    "cordova-browser": "^6.0.0",
     "cordova.plugins.diagnostic": "^5.0.2",
     "electron-builder-lib": "^20.23.1",
     "electron-rebuild": "^1.10.0",
@@ -177,7 +178,8 @@
   "cordova": {
     "platforms": [
       "android",
-      "ios"
+      "ios",
+      "browser"
     ],
     "plugins": {
       "com-darryncampbell-cordova-plugin-intent": {},
