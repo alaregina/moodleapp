@@ -97,6 +97,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         if(this.slides)
             this.slides.update()
     }
+    percorsoSelezionato = null;
 
     constructor(private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
@@ -214,9 +215,9 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
-        if(!this.initialSectionId && !this.selectedSection && !!this.sections){
-            this.initialSectionId = !!this.sections[1].subsections  ? this.sections[1].id:this.sections[2].id
-        }
+        // if(!this.initialSectionId && !this.selectedSection && !!this.sections){
+        //     this.initialSectionId = !!this.sections[1].subsections  ? this.sections[1].id:this.sections[2].id
+        // }
         if (changes.course) {
             // Course has changed, try to get the components.
             this.getComponents();
@@ -231,6 +232,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 if (!this.hasSeveralSections) {
                     // Always load "All sections" to display the section title. If it isn't there just load the section.
                     this.loaded = true;
+                    console.log("1")
                     this.sectionChanged(this.sections[0]);
                 } else if (this.initialSectionId || this.initialSectionNumber) {
                     // We have an input indicating the section ID to load. Search the section.
@@ -254,7 +256,8 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                     // No section specified, not found or not visible, get current section.
                     this.cfDelegate.getCurrentSection(this.course, this.sections).then((section) => {
                         this.loaded = true;
-                        this.sectionChanged(section);
+                        console.log("3")
+                        //this.sectionChanged(section);
                     });
                 }
             } else {
@@ -274,12 +277,14 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 if (!newSection) {
                     // Section not found, calculate which one to use.
                     this.cfDelegate.getCurrentSection(this.course, this.sections).then((section) => {
+                        console.log("4")
                         if(this.selectedSection)
                             this.sectionChanged(this.selectedSection);
                         else
                             this.sectionChanged(section);
                     });
                 } else {
+                    console.log("15")
                     this.sectionChanged(newSection);
                 }
             }
@@ -658,5 +663,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             section.name!="Test" || 
             (section.modules.length>0 && 
                 section.modules.filter(module=>module.completionstatus.state==0).length>0))
+    }
+
+    selectPath(section){
+        this.percorsoSelezionato = section;
+        this.sectionChanged(section)
     }
 }

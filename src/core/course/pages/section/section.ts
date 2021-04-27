@@ -532,11 +532,11 @@ export class CoreCourseSectionPage implements OnDestroy {
         let i = 0;
         while(i<clone.length){
             if(!!clone[i].modules && clone[i].modules.length==0){
-                while(i+1<clone.length && !!clone[i+1].modules && clone[i+1].modules.length>0){
+                while(i+1<clone.length && ((!!clone[i+1].modules && clone[i+1].modules.length>0) || clone[i+1].hasContent)){
                     clone[i].subsections = !!clone[i].subsections ? (clone[i].subsections as any[]).concat(clone[i+1]):[clone[i+1]]
                     clone.splice(i+1,1)
                 }
-                if(i-1>=0 && !!clone[i-1].modules && clone[i-1].modules.length==0){
+                if(i-1>=0 && ((!!clone[i-1].modules && clone[i-1].modules.length==0) || !clone[i-1].hasContent)){
                     clone[i-1].subsections = !!clone[i-1].subsections ? (clone[i-1].subsections as any[]).concat(clone[i]):[clone[i]]
                     clone.splice(i,1)
                 }else
@@ -551,5 +551,6 @@ export class CoreCourseSectionPage implements OnDestroy {
             clone= clone.concat(temp)
         }
         this.sections = clone
+        console.log(this.sections)
     }
 }

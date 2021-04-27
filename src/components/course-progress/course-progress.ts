@@ -54,8 +54,8 @@ export class CourseProgressComponent {
   ngOnInit(): void {//MODIFIED
       this.courseProvider.getActivitiesCompletionStatus(this.course.id).then((result: {})=>{
           var activities = Object.values(result)
-          this.totalActivities = activities.length
-          this.completedActivities = activities.filter((x:any)=>x.state==1).length
+          this.totalActivities = activities.filter((x:any)=>x.modname=="videotime").length
+          this.completedActivities = activities.filter((x:any)=>x.modname=="videotime" && x.state==1).length
       })
       this.downloadCourseEnabled = !this.coursesProvider.isDownloadCourseDisabledInSite();
 

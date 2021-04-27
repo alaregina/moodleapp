@@ -18,10 +18,10 @@
                     </div>
                     <div class="course-general-info">
                         <div *ngIf="!!course.displayname" class="course-title">
-                            <span>
-                                {{course.displayname}}
-                            </span>
+                            <span> {{course.displayname}} </span>
+                            <span class="selected-path" *ngIf="percorsoSelezionato">: {{percorsoSelezionato.name}}</span>
                         </div>
+                        
                         <div *ngIf="!!course.summary" [innerHTML]="course.summary"></div>
                         <!-- <p class="episodes">
                             <b>Episodi {{episodes}}</b>
@@ -53,11 +53,24 @@
                 </div>
             </core-dynamic-component> -->
             <!-- section selector -->
-             <div class="section-slider" *ngIf="!!sections" >
+
+            <!-- <section *ngIf="!section.modules || section.modules.length==0" class="subsections">
+                <ng-container *ngFor="let subs of section.subsections">
+                    <div class="subsection-container">
+                        <ion-item class="core-subsection" (click)="!(subs.visible === 0 || subs.uservisible === false) ? sectionChanged(subs): unauthorized(subs)">
+                            <div class="core-subsection-title">
+                                {{subs.name}}
+                            </div>
+                        </ion-item>
+                    </div>
+                </ng-container>
+            </section> -->
+            <!-- selectedSection && (!selectedSection.modules || selectedSection.modules.length==0) -->
+             <div class="section-slider" *ngIf="percorsoSelezionato" >
                 <ion-slides id="slides" #slides pager spaceBetween="10" slidesPerView="2.3" loop="false">
-                    <ion-slide *ngFor="let section of sectionsWithContent | slice:1" [class.item-dimmed]="section.visible === 0 || section.uservisible === false" >
-                        <div class="section-button" [attr.selected]="(section.id==selectedSection.id) ? true:false" (click)="!(section.visible === 0 || section.uservisible === false) ? sectionChanged(section): unauthorized(section)" *ngIf="!section.hiddenbynumsections && section.id != stealthModulesSectionId">
-                            <p>{{section.name}}</p>
+                    <ion-slide *ngFor="let subs of percorsoSelezionato.subsections" [class.item-dimmed]="subs.visible === 0 || subs.uservisible === false" >
+                        <div class="section-button" [attr.selected]="(selectedSection && subs.id==selectedSection.id) ? true:false" (click)="!(subs.visible === 0 || subs.uservisible === false) ? sectionChanged(subs): unauthorized(subs)" *ngIf="!subs.hiddenbynumsections && subs.id != stealthModulesSectionId">
+                            <p>{{subs.name}}</p>
                         </div>
                     </ion-slide>
                 </ion-slides>
@@ -93,7 +106,17 @@
 
                 <core-infinite-loading [enabled]="canLoadMore" (action)="showMoreActivities($event)"></core-infinite-loading>
             </div>
-
+            <div class="subsections" *ngIf="!selectedSection && !!sections">
+                <ng-container *ngFor="let section of sectionsWithContent | slice:1">
+                    <div class="subsection-container">
+                        <ion-item class="core-subsection" (click)="!(section.visible === 0 || section.uservisible === false) ? selectPath(section): unauthorized(section)">
+                            <div class="core-subsection-title">
+                                {{section.name}}
+                            </div>
+                        </ion-item>
+                    </div>
+                </ng-container>
+            </div>
             <!-- <ion-buttons padding end class="core-course-section-nav-buttons safe-padding-horizontal" *ngIf="displaySectionSelector && sections && sections.length">
                 <button *ngIf="previousSection" ion-button color="light" icon-only (click)="sectionChanged(previousSection)" title="{{ 'core.previous' | translate }}">
                     <ion-icon name="arrow-back" md="ios-arrow-back"></ion-icon>
@@ -148,7 +171,7 @@
                     (completionChanged)="onCompletionChange($event)" (statusChanged)="onModuleStatusChange($event)"></core-course-module>
         </ng-container>
     </section>
-    <section *ngIf="!section.modules || section.modules.length==0" class="subsections">
+    <!-- <section *ngIf="!section.modules || section.modules.length==0" class="subsections">
         <ng-container *ngFor="let subs of section.subsections">
             <div class="subsection-container">
                 <ion-item class="core-subsection" (click)="!(subs.visible === 0 || subs.uservisible === false) ? sectionChanged(subs): unauthorized(subs)">
@@ -158,7 +181,7 @@
                 </ion-item>
             </div>
         </ng-container>
-    </section>
+    </section> -->
 </ng-template>
 
 <!-- Template to render a section download button/progress. -->
