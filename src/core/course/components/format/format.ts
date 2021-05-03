@@ -441,7 +441,6 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             });
         }
         if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length){
-            console.log(this.selectedContent)
             this.selectedContent="Test"
         }
     }
