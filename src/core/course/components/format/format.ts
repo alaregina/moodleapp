@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {
-    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild, AfterViewInit, HostListener
+    Component, Input, OnInit, OnChanges, OnDestroy, SimpleChange, Output, EventEmitter, ViewChildren, QueryList, Injector, ViewChild, AfterViewInit, HostListener, Optional
 } from '@angular/core';
-import { Content, ModalController, Slides } from 'ionic-angular';
+import { Content, ModalController, NavController, Slides } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreEventsProvider } from '@providers/events';
 import { CoreSitesProvider } from '@providers/sites';
@@ -98,7 +98,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             this.slides.update()
     }
 
-    constructor(private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
+    constructor(@Optional() protected navCtrl: NavController, private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
             private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
             eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
             prefetchDelegate: CoreCourseModulePrefetchDelegate, private modalCtrl: ModalController,
@@ -215,7 +215,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
         if(!this.initialSectionId && !this.selectedSection && !!this.sections){
-            this.initialSectionId = !!this.sections[1].subsections  ? this.sections[1].id:this.sections[2].id
+            this.initialSectionId = !!this.sections[1].subsections  ? this.sections[0].id:this.sections[1].id
         }
         if (changes.course) {
             // Course has changed, try to get the components.
@@ -269,7 +269,6 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 //     }
                 // }
                 //search in tree
-                
                 newSection = this.treeSearch(this.sections, this.selectedSection)
                 if (!newSection) {
                     // Section not found, calculate which one to use.
@@ -282,6 +281,13 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 } else {
                     this.sectionChanged(newSection);
                 }
+            }
+            //se ci sono dei quiz da completare esegui in automatico la redirect al modulo -
+            if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length>0){
+                let module = this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0)[0]
+                if (module.uservisible !== false && module.handlerData.action) 
+                    module.handlerData.action(new Event("click"), this.navCtrl, module, this.course.id);
+                this.selectedContent="Test"
             }
         }
 
@@ -435,10 +441,6 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 // Ignore errors.
             });
         }
-        if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length){
-            console.log(this.selectedContent)
-            this.selectedContent="Test"
-        }
     }
 
     /**
@@ -591,6 +593,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             this.slides.update();
             this.contents.update();
         }, 1000)
+       
     }
 
     /**

@@ -1,0 +1,33 @@
+page-course {
+
+    .section{
+        height: 100%;
+        background-color: $gray-lighter;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+    .subsections{
+        padding-top: 2rem;
+        .subsection-container{
+            margin: 3%;
+            background-color: unset;
+            display: block;
+        }
+        .core-subsection{
+            align-items: flex-start;
+            min-height: 52px;
+            background-color: $white;
+            .core-subsection-title{
+                font-weight: bold;
+                font-size: large;
+            }
+        }
+    }
+    .core-adapted-img-container{
+        margin: 0px!important;
+        img{
+            width: unset!important;
+            margin:0px!important;
+        }
+    }
+}

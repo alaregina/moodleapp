@@ -1451,3 +1451,16 @@ addon-mod-resource-index{
     font-size: 1.5rem;
   }
 }
+
+button.nextActivity{
+  font-size: x-large;
+  font-weight: bold;
+  background-color: $ottanium;
+  border-radius: 100px;
+  width: 80%;
+  margin-right: 10%;
+  margin-left: 10%;
+  div{
+    color: $white;
+  }
+}

@@ -1,0 +1,35 @@
+<!-- <ion-header>
+  <ion-navbar core-back-button>
+      <button ion-button icon-only menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+  </ion-navbar>
+</ion-header> -->
+<ion-header>
+    <ion-navbar core-back-button>
+        <ion-title><core-format-text [text]="category?.name" contextLevel="course" [contextInstanceId]="category.id"></core-format-text></ion-title>
+
+        <ion-buttons end></ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-refresher [enabled]="coursesLoaded" (ionRefresh)="refreshCourses($event)">
+        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
+    </ion-refresher>
+    <div *ngIf="category.description" class="course-general-info">
+        <div *ngIf="!!category.description"><core-format-text [text]="category.description"></core-format-text></div>
+    </div>
+    <core-loading [hideUntil]="coursesLoaded">
+        <section class="section subsections">
+            <ng-container *ngFor="let course of courses">
+                <div class="subsection-container" (click)="openCourse(course)" >
+                    <ion-item class="core-subsection">
+                        <div class="core-subsection-title">
+                            {{course.displayname}}
+                        </div>
+                    </ion-item>
+                </div>
+            </ng-container>
+        </section>
+    </core-loading>
+</ion-content>

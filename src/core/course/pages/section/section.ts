@@ -72,6 +72,7 @@ export class CoreCourseSectionPage implements OnDestroy {
     protected syncObserver;
     protected firstTabName: string;
     protected isDestroyed = false;
+    fromVideo: any;
 
     constructor(navParams: NavParams, private courseProvider: CoreCourseProvider, private domUtils: CoreDomUtilsProvider,
             private courseFormatDelegate: CoreCourseFormatDelegate, private courseOptionsDelegate: CoreCourseOptionsDelegate,
@@ -81,6 +82,8 @@ export class CoreCourseSectionPage implements OnDestroy {
             private prefetchDelegate: CoreCourseModulePrefetchDelegate, private syncProvider: CoreCourseSyncProvider,
             private utils: CoreUtilsProvider) {
         this.course = navParams.get('course');
+        this.fromVideo = navParams.get('fromVideo') || false;
+        console.log(this.fromVideo)
         this.sectionId = navParams.get('sectionId');
         this.sectionNumber = navParams.get('sectionNumber');
         this.module = navParams.get('module');

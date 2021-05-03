@@ -8,18 +8,29 @@
     <ion-grid>
       <ion-row class="header">
         <ion-col col-6>
-          <h4>{{'core.courses.evidence' | translate}}</h4>
+         
         </ion-col>
         <ion-col col-2>
         </ion-col>
         <ion-col col-4 class="view-all">
           <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span>
+          <!-- <ion-select value="notifications" interface="action-sheet" placeholder="{{'core.courses.viewall' | translate}}" selectedText="{{'core.courses.viewall' | translate}}">
+            <ion-option *ngFor="let course of coursesCategory" value="{{course.name}}">{{course.name}}</ion-option>
+          </ion-select> -->
+          <!-- <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span> -->
         </ion-col>
       </ion-row>
     </ion-grid>
     
     <core-loading [hideUntil]="coursesLoaded">
-      <div style="padding: 0 4%;">
+      <ion-grid *ngIf="highlighted(courses).length>0">
+        <ion-row class="header">
+          <ion-col col-6>
+            <h4>{{'core.courses.evidence' | translate}}</h4>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div style="padding: 0 4%;" *ngIf="highlighted(courses).length>0">
         <ion-slides #slides pager spaceBetween="0" [slidesPerView]="highlighted(courses).length==1 ? 1:1.3">
           <ion-slide *ngFor="let course of highlighted(courses)">
             <course-progress [course]="course" class="core-courseoverview" showAll="true">
@@ -28,30 +39,37 @@
           
         </ion-slides>
       </div>
-      
-      <ion-grid>
-        <ion-row class="header">
-          <ion-col col-4>
-            <h4>{{'core.courses.courses' | translate}}</h4>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div style="padding: 0 4%;">
-        <ion-slides #coursesSlides pager spaceBetween="0" slidesPerView="1.3">
-          <ion-slide>
-            <ion-card (click)="viewAllBrand()">
-              <ion-card-content>
-                Tutti i brand
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-          <ion-slide *ngFor="let course of standardCourses(courses)">
-            <course-progress [course]="course" class="core-courseoverview" showAll="true">
-            </course-progress>
-          </ion-slide>
-        </ion-slides>
-    </div>
-      <ion-grid>
+      <div *ngFor="let item of coursesCategory">
+        <ion-grid *ngIf="item.subcategories?.length>0">
+          <ion-row class="header">
+            <ion-col col-4>
+              <h4>{{item.name}}</h4>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div style="padding: 0 4%;" *ngIf="item.subcategories?.length>0">
+          <ion-slides pager spaceBetween="0" slidesPerView="1.3">
+            <ion-slide *ngFor="let course of item.subcategories | slice:0:10" (click)="goToCourse(course)">
+              <ion-card>
+                <ion-card-header>
+                  {{course.name}}
+                </ion-card-header>
+                <ion-card-content>
+                  {{course.coursecount}} percorsi
+                </ion-card-content>
+              </ion-card>
+            </ion-slide>
+            <ion-slide>
+              <ion-card (click)="viewAllCourses(item.subcategories)">
+                <ion-card-content>
+                  Tutti i {{item.name}}
+                </ion-card-content>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+      </div>
+      </div>
+      <!-- <ion-grid>
         <ion-row class="header">
           <ion-col col-4>
             <h4>{{'core.courses.thematicRoutes' | translate}}</h4>
@@ -72,6 +90,6 @@
           </course-progress>
         </ion-slide>
       </ion-slides>
-    </div>
+    </div> -->
   </core-loading>
 </div>

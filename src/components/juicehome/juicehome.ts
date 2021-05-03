@@ -42,7 +42,7 @@ export class JuicehomeComponent implements AfterViewInit {
   badgeSommelier: boolean;
   badgeMegadirettore: boolean;
   badge: string = null
-
+  coursesCategory:any[]
   constructor(private navCtrl: NavController, 
     private domUtils: CoreDomUtilsProvider, 
     private utils: CoreUtilsProvider, 
@@ -82,8 +82,9 @@ export class JuicehomeComponent implements AfterViewInit {
      * @return Promise resolved when done.
      */
     protected fetchCategories(): Promise<any> {
+      //passando 0 e true vengono prese TUTTE le categorie. Diventa pesante se aumentano i corsi.
+      //L'alternativa è costruire l'albero fino al 3°/4° livello e poi costruire il resto on demand
       return this.coursesProvider.getCategories(0, true).then((cats) => {
-        console.log(cats)
           this.currentCategory = undefined;
           cats.sort((a, b) => {
               if (a.depth == b.depth) {
@@ -92,7 +93,9 @@ export class JuicehomeComponent implements AfterViewInit {
 
               return a.depth > b.depth ? 1 : -1;
           });
-          this.macrocategories = cats.filter(x=>x.depth==3 && cats.filter(y=>y.parent==x.id).length>0)
+          this.macrocategories = []
+          if(cats.sort((a,b)=>b.depth-a.depth)[0].depth>=5)//le macrocategorie possono esserci o non esserci, per capirlo al momento usiamo la profondità massima
+            this.macrocategories = cats.filter(x=>x.depth==3 && cats.filter(y=>y.parent==x.id).length>0)
           this.allCategories = cats
           if(this.macrocategories.length==0)
             this.categories = cats.filter(x=>x.depth==3)
@@ -201,13 +204,15 @@ export class JuicehomeComponent implements AfterViewInit {
   selectMacroCategory(macrocategory){
     if (this.selectedMacrocategory == macrocategory)
     {
-      this.selectedMacrocategory = -1;
-      this.selectedCategory = -1;
+      this.selectedMacrocategory = null;
+      this.selectedCategory = null;
       this.categories = null
     } else {
       this.selectedMacrocategory = macrocategory;
       this.selectedCategory = null;
       this.categories = this.allCategories.filter(x=>x.parent==macrocategory)
+      if(this.categories.length==1)
+        this.openCategory(this.categories[0])
     }
   }
   /**
@@ -221,6 +226,7 @@ export class JuicehomeComponent implements AfterViewInit {
       this.selectedCategory = null;
     } else {
       this.selectedCategory = category;
+      this.coursesCategory = this.allCategories.filter(x=>x.parent == category.id) 
     }
   }
 
@@ -252,5 +258,9 @@ export class JuicehomeComponent implements AfterViewInit {
             resolve(badgesCount)
         })
     })
+  }
+
+  getCount(category){
+    return this.allCategories.filter(c=>c.parent==category.id).length;
   }
 }

@@ -15,7 +15,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CoreCourseProvider } from '@core/course/providers/course';
 import { CoreCourseHelperProvider } from '@core/course/providers/helper';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, NavController } from 'ionic-angular';
 import { CoreSitePluginsModuleIndexComponent } from '../../components/module-index/module-index';
 
 /**
@@ -37,7 +37,8 @@ export class CoreSitePluginsModuleIndexPage {
     loaded: boolean = false;
     related: any = [];
 
-    constructor(params: NavParams, private courseProvider: CoreCourseProvider, private courseHelper:CoreCourseHelperProvider) {
+    constructor(params: NavParams, private courseProvider: CoreCourseProvider, 
+        private courseHelper:CoreCourseHelperProvider, private navCtrl:NavController) {
         this.title = params.get('title');
         this.module = params.get('module');
         this.courseId = params.get('courseId');
@@ -112,5 +113,9 @@ export class CoreSitePluginsModuleIndexPage {
      */
     ionViewCanLeave(): boolean | Promise<void> {
         return this.content.callComponentFunction('ionViewCanLeave');
+    }
+
+    async nextActivity(){
+        this.navCtrl.pop()
     }
 }

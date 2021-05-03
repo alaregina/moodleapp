@@ -51,7 +51,7 @@ export class LoginMidaPage {
 
         // Get input data.
         const siteUrl = this.siteUrl;
-        const username = this.credForm.value.username || "1_ag01@cdc.ag";
+        const username = this.credForm.value.username || "nicola@lacasadelrum.it";
         const password = this.credForm.value.password || "12345678";
         if (!username) {
             this.domUtils.showErrorModal('core.login.usernamerequired', true);
@@ -75,7 +75,7 @@ export class LoginMidaPage {
           //per usare l'api di autenticazione con token serve un token quindi ho creato un'utenza di sistema systemuser
           this.loginMidaProvider.loginMIDA(username, password).then((data) => {
             //MIDA deve mandarci un token come questo sotto
-            data.access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjEzNzI5MDIyLCJleHAiOjE2MTM3NTkwMjIsImRhdGEiOnsidXNlciI6eyJ1c2VybmFtZSI6Imp3dHVzZXIxIiwiaWRudW1iZXIiOiIiLCJmaXJzdG5hbWUiOiJqd3RVc2VyIiwibGFzdG5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJqd3R1c2VyQHRlc3QxLml0IiwiaWNxIjoiIiwic2t5cGUiOiIiLCJ5YWhvbyI6IiIsImFpbSI6IiIsIm1zbiI6IiIsInBob25lMSI6IiIsInBob25lMiI6IiIsImluc3RpdHV0aW9uIjoiIiwiZGVwYXJ0bWVudCI6IiIsImFkZHJlc3MiOiIiLCJjaXR5IjoiIiwiY291bnRyeSI6IiIsImxhbmciOiIiLCJ0aW1lem9uZSI6IiJ9fX0.BOX6YxMrimZ_qt4bS9kfUzg3kMSbVmquoY3nJe93-J970DTB31vb3rGM4B8XzLW_AV-v5lQ3t1S8bNrKC00beb6244eTzQzDjrPQJiPUMTpp4eMbtOyeWSsWsQld3N5O3uF90yNTs6j--v0Gr_uj06MbUE_1mtVOHstgcNHCpIiiL1xPxpWZkhFxcKcQ_ujqOHEeJt4JdHK2lh7bdlg_0AeeIdwJYGm21rjfp8Z7jrUQbZPNC9t2ra-d0_EJdUwZAGzXNzxgjlSjXJea3p7QZVt-vmlg6Cz4fpTJwWyTVyoe6dLLX5BVAZ8Tv_42PJQG1-gN3aBkIuRM64BCuADfEQ"
+            data.access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXIiOnsiVWlkIjoiQzAwMDA5IiwiRW1haWwiOiJuaWNvbGFAbGFjYXNhZGVscnVtLml0IiwiRGlzcGxheU5hbWUiOiJCQVIgQkFHTk8gUk9NQSBTLkEuUy4gREkgUlVGSU5JIEZSQU5DRVNDTyAmIEMuIiwiRmlyc3ROYW1lIjoiTmljb2xhIiwiTGFzdE5hbWUiOiJMYUNhc2FEZWxSdW0iLCJOaWNrTmFtZSI6Im5pY29sYSIsIlJvbGUiOiJjbGllbnRlL21hc3RlciIsIlBlcm1pc3Npb25zIjoiU3Bpcml0In19fQ.H_0r8xJkSuw1W7vogzEaGNdU1I_xNuLRkE20rJTHZ26h4XNIWj_ABbCq18F_EwHif-NcB4uv4JAqiSuc208orvBZX7xEc5cRTShVGMoaK5Tv2d6tUxotKQFhs_tniQq58oQo1HKnOuMDpSW5mxozou6p7PNou0u2mwj32j8S3GUaEVEv75p4IJU0kZFBJ5JJGPrR17cesI_vBtQ8I47c4WKM9hwEFuAZFTjqzbGl35Q2RH-InOf_HC11GIiolZhGGbOyZ4AdnSfuL7AVKr9Pk9CuJjRsvujHhq_mTWigHemxxA1_GesmUDFNwB3cDUKovOHPrS7rkEcVG12PuLtSdQ"
             this.loginMidaProvider.loginMoodle(data.access_token, response.token, siteUrl).then((tokenresponse)=>{
               return this.sitesProvider.newSite(tokenresponse.siteUrl, tokenresponse.token, tokenresponse.privateToken).then((id) => {
                 // Reset fields so the data is not in the view anymore.

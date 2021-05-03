@@ -18,6 +18,7 @@ import { NavController, NavParams, Slides, ViewController } from 'ionic-angular'
 export class CoursesComponent implements OnChanges {
   @ViewChild(Slides) slides: Slides;
   @Input("categoryId") categoryId: number;
+  @Input("coursesCategory") coursesCategory: any[];
   @Output() close = new EventEmitter<string>();
   courses: any[] = [];
   prefetchCoursesData: any = {};
@@ -36,6 +37,14 @@ export class CoursesComponent implements OnChanges {
     private coursesHelper: CoreCoursesHelperProvider) {
   }
   ngOnChanges(changes: SimpleChanges): void {
+    if(changes.coursesCategory){
+      console.log(this.coursesCategory)
+      this.coursesCategory.forEach(category=>{
+        this.fetchCategories(category.id).then(sub=>{
+          category.subcategories = sub
+        })
+      })
+    }
     if(changes.categoryId)
       this.fetchCourses().finally(()=>{
         this.coursesLoaded = true;
@@ -48,6 +57,24 @@ export class CoursesComponent implements OnChanges {
       this.coursesLoaded = true;
     })
   }
+
+/**
+     * Fetch the categories.
+     *
+     * @return Promise resolved when done.
+     */
+ protected fetchCategories(categoryId): Promise<any> {
+   return new Promise((resolve, reject)=>{
+    this.coursesProvider.getCategories(categoryId, true).then((cats) => {
+      resolve(cats.filter(c=>c.id!=categoryId))
+    }).catch((error) => {
+        this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcategories', true);
+        reject(error)
+    });
+   })
+}
+
+
   favourite(courses){
     return this.courses.filter(c=>c.isfavourite).length==0 ? this.courses:this.courses.filter(c=>c.isfavourite)
   }
@@ -67,8 +94,8 @@ export class CoursesComponent implements OnChanges {
      */
     protected fetchCourses(): Promise<any> {
       return this.coursesProvider.getUserCourses().then((courses) => {
-        console.log(courses)
-          courses = courses.filter(c=>c.category==this.categoryId)
+        var categoriesIds = this.coursesCategory.map(cc=>cc.id)
+        courses.filter(c=>categoriesIds.includes(c.category))
           const promises = [],
               courseIds = courses.map((course) => {
               return course.id;
@@ -135,14 +162,26 @@ export class CoursesComponent implements OnChanges {
     this.close.emit("close")
   }
 
-  viewAllCourses(){
-    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"courses"})
+  viewAllCourses(subcategories){
+    if(!!subcategories)
+      this.navCtrl.push("AllCoursesPage", {categories:subcategories})
+    else{
+      let allCategories = []
+      this.coursesCategory.forEach(c=>allCategories = allCategories.concat(c.subcategories))
+      console.log(allCategories)
+      this.navCtrl.push("AllCoursesPage", {categories:allCategories})
+    }
   }
   viewAllThematicRoutse(){
     this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"thematicRoutes"})
   }
   viewAllBrand(){
     this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"brand"})
+  }
+
+  goToCourse(course){
+    this.navCtrl.push('CoursePage', {category: course})
+    // this.navCtrl.setRoot('CoursePage', {category: course})
   }
 
 }
