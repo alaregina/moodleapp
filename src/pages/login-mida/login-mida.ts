@@ -69,29 +69,30 @@ export class LoginMidaPage {
 
             return;
         }
-
         const modal = this.domUtils.showModalLoading();
-        this.sitesProvider.getUserToken(siteUrl, 'systemuser', 'Systemuser!1192$2').then((response)=>{
-          //per usare l'api di autenticazione con token serve un token quindi ho creato un'utenza di sistema systemuser
-          this.loginMidaProvider.loginMIDA(username, password).then((data) => {
-            //MIDA deve mandarci un token come questo sotto
-            //data.access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjEzNzI5MDIyLCJleHAiOjE2MTM3NTkwMjIsImRhdGEiOnsidXNlciI6eyJ1c2VybmFtZSI6Imp3dHVzZXIxIiwiaWRudW1iZXIiOiIiLCJmaXJzdG5hbWUiOiJqd3RVc2VyIiwibGFzdG5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJqd3R1c2VyQHRlc3QxLml0IiwiaWNxIjoiIiwic2t5cGUiOiIiLCJ5YWhvbyI6IiIsImFpbSI6IiIsIm1zbiI6IiIsInBob25lMSI6IiIsInBob25lMiI6IiIsImluc3RpdHV0aW9uIjoiIiwiZGVwYXJ0bWVudCI6IiIsImFkZHJlc3MiOiIiLCJjaXR5IjoiIiwiY291bnRyeSI6IiIsImxhbmciOiIiLCJ0aW1lem9uZSI6IiJ9fX0.BOX6YxMrimZ_qt4bS9kfUzg3kMSbVmquoY3nJe93-J970DTB31vb3rGM4B8XzLW_AV-v5lQ3t1S8bNrKC00beb6244eTzQzDjrPQJiPUMTpp4eMbtOyeWSsWsQld3N5O3uF90yNTs6j--v0Gr_uj06MbUE_1mtVOHstgcNHCpIiiL1xPxpWZkhFxcKcQ_ujqOHEeJt4JdHK2lh7bdlg_0AeeIdwJYGm21rjfp8Z7jrUQbZPNC9t2ra-d0_EJdUwZAGzXNzxgjlSjXJea3p7QZVt-vmlg6Cz4fpTJwWyTVyoe6dLLX5BVAZ8Tv_42PJQG1-gN3aBkIuRM64BCuADfEQ"
-            this.loginMidaProvider.loginMoodle(data.access_token, response.token, siteUrl).then((tokenresponse)=>{
+        this.loginMidaProvider.loginMIDA(username, password).then((data) => {
+          var systemToken = "9810399b65db8309f8b3c80a346261f6";//mettere in un config
+          console.log(data.access_token)
+          console.log(systemToken)
+          console.log(siteUrl)
+          this.loginMidaProvider.loginMoodle(data.access_token, systemToken, siteUrl).then((tokenresponse)=>{
+            console.log(tokenresponse)
+            if(!!tokenresponse.token){
               return this.sitesProvider.newSite(tokenresponse.siteUrl, tokenresponse.token, tokenresponse.privateToken).then((id) => {
                 // Reset fields so the data is not in the view anymore.
                 this.credForm.controls['username'].reset();
                 this.credForm.controls['password'].reset();
-
+  
                 this.siteId = id;
                 return this.loginHelper.goToSiteInitialPage(undefined, undefined, undefined, undefined, this.urlToOpen);
-            });
-            })
-        }).catch((error) => {
-            console.log(error)
-        }).finally(() => {
-            modal.dismiss();
-        });
-        })
+              });
+            }
+          }).catch(err=>console.log(err))
+      }).catch((error) => {
+          console.log(error)
+      }).finally(() => {
+          modal.dismiss();
+      });
         
   }
 }
