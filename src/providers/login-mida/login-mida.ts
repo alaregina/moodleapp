@@ -27,7 +27,7 @@ export class LoginMidaProvider {
       user_pwd:password,//12345678
       api_key:"JUICE.b09e30861a684b7e9eb90053e147a181"
     }
-    return this.http.post("https://stage.compagniadeicaraibi.com/api/oauth/login", body, {params: param}).toPromise()
+    return this.http.post("https://stage.compagniadeicaraibi.com/api/oauth/loginjwt", body, {params: param}).toPromise()
 
   }
 
@@ -42,15 +42,16 @@ export class LoginMidaProvider {
     }
     var promise = this.http.post(siteUrl + "/webservice/rest/server.php", body).toPromise()
     return promise.then((data: any): any => {
+      console.log(data)
       if (typeof data == 'undefined') {
         return Promise.reject(this.translate.instant('core.cannotconnecttrouble'));
       }else if(!data.success){
-        return Promise.reject(data.error);
+        return Promise.reject(data);
       }else{
         if (typeof data.token != 'undefined') {
             return { token: data.token, siteUrl: siteUrl, privateToken: data.privatetoken };
         }
       }
-    })
+    }).catch(err=>{console.log(err); return Promise.reject(err)})
   }
 }
