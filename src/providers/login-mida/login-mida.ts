@@ -55,3 +55,19 @@ export class LoginMidaProvider {
     }).catch(err=>{console.log(err); return Promise.reject(err)})
   }
 }
+
+// Cliente CDC (utenza admin):
+// Username à f.cocco@cdc.com
+// Password à  C07450  
+
+// Cliente CDC (utenza operativa – legata al cliente admin sopra)
+// Username à g.salata@compagniadeicaraibi.com
+// Password à  12345678 
+
+// Cliente CDC (utenza staff – legata al cliente admin sopra)
+// Username à gabriele.salata@hotmail.it
+// Password à 12345678 
+
+// Utente ‘Fan’ ‘Professionista’ (le tipologie di utenze sono due, ma hanno esattamente gli stessi ‘privilegi’, ne ho creata solo 1 perché non avevo più e-mail da usare ahahaha)
+// Username à gabri-1996@hotmail.it
+// Password à 12345678
