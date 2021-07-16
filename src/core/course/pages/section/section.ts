@@ -25,8 +25,10 @@ import { CoreCourseProvider } from '../../providers/course';
 import { CoreCourseHelperProvider } from '../../providers/helper';
 import { CoreCourseFormatDelegate } from '../../providers/format-delegate';
 import { CoreCourseModulePrefetchDelegate } from '../../providers/module-prefetch-delegate';
-import { CoreCourseOptionsDelegate, CoreCourseOptionsHandlerToDisplay,
-    CoreCourseOptionsMenuHandlerToDisplay } from '../../providers/options-delegate';
+import {
+    CoreCourseOptionsDelegate, CoreCourseOptionsHandlerToDisplay,
+    CoreCourseOptionsMenuHandlerToDisplay
+} from '../../providers/options-delegate';
 import { CoreCourseSyncProvider } from '../../providers/sync';
 import { CoreCourseFormatComponent } from '../../components/format/format';
 import { CoreFilterHelperProvider } from '@core/filter/providers/helper';
@@ -75,12 +77,12 @@ export class CoreCourseSectionPage implements OnDestroy {
     fromVideo: any;
 
     constructor(navParams: NavParams, private courseProvider: CoreCourseProvider, private domUtils: CoreDomUtilsProvider,
-            private courseFormatDelegate: CoreCourseFormatDelegate, private courseOptionsDelegate: CoreCourseOptionsDelegate,
-            private translate: TranslateService, private courseHelper: CoreCourseHelperProvider, eventsProvider: CoreEventsProvider,
-            private coursesProvider: CoreCoursesProvider, private filterHelper: CoreFilterHelperProvider,
-            sitesProvider: CoreSitesProvider, private navCtrl: NavController, private injector: Injector,
-            private prefetchDelegate: CoreCourseModulePrefetchDelegate, private syncProvider: CoreCourseSyncProvider,
-            private utils: CoreUtilsProvider) {
+        private courseFormatDelegate: CoreCourseFormatDelegate, private courseOptionsDelegate: CoreCourseOptionsDelegate,
+        private translate: TranslateService, private courseHelper: CoreCourseHelperProvider, eventsProvider: CoreEventsProvider,
+        private coursesProvider: CoreCoursesProvider, private filterHelper: CoreFilterHelperProvider,
+        sitesProvider: CoreSitesProvider, private navCtrl: NavController, private injector: Injector,
+        private prefetchDelegate: CoreCourseModulePrefetchDelegate, private syncProvider: CoreCourseSyncProvider,
+        private utils: CoreUtilsProvider) {
         this.course = navParams.get('course');
         this.fromVideo = navParams.get('fromVideo') || false;
         console.log(this.fromVideo)
@@ -204,7 +206,7 @@ export class CoreCourseSectionPage implements OnDestroy {
         }).then((course) => {
             if (course) {
                 if (this.course.id === course.id && this.course.hasOwnProperty('displayname')
-                        && !course.hasOwnProperty('displayname')) {
+                    && !course.hasOwnProperty('displayname')) {
                     course.displayname = this.course.displayname;
                 }
                 this.course = course;
@@ -237,21 +239,21 @@ export class CoreCourseSectionPage implements OnDestroy {
             }).then((sections) => {
                 let promise;
 
-                 // Get the completion status.
+                // Get the completion status.
                 if (this.course.enablecompletion === false) {
                     // Completion not enabled.
                     promise = Promise.resolve({});
                 } else {
                     const sectionWithModules = sections.find((section) => {
-                            return section.modules.length > 0;
+                        return section.modules.length > 0;
                     });
 
                     sections.forEach(section => {
-                        if(!!section.modules && section.modules.length > 0){
+                        if (!!section.modules && section.modules.length > 0) {
                             section.modules.forEach(module => {
-                                this.courseProvider.getModuleContentCategory(module.id).then(metadata=>{
-                                    if(!!metadata && metadata["local_metadata_field_section"])
-                                    module["category"] = metadata["local_metadata_field_section"]
+                                this.courseProvider.getModuleContentCategory(module.id).then(metadata => {
+                                    if (!!metadata && metadata["local_metadata_field_section"])
+                                        module["category"] = metadata["local_metadata_field_section"]
                                 })
                             });
                         }
@@ -273,14 +275,14 @@ export class CoreCourseSectionPage implements OnDestroy {
 
                 return promise.then((completionStatus) => {
                     this.courseHelper.addHandlerDataForModules(sections, this.course.id, completionStatus, this.course.fullname,
-                            true);
+                        true);
 
                     // Format the name of each section and check if it has content.
                     this.sections = sections.map((section) => {
                         this.filterHelper.getFiltersAndFormatText(section.name.trim(), 'course', this.course.id,
-                                {clean: true, singleLine: true}).then((result) => {
-                            section.formattedName = result.text;
-                        });
+                            { clean: true, singleLine: true }).then((result) => {
+                                section.formattedName = result.text;
+                            });
                         section.hasContent = this.courseHelper.sectionHasContent(section);
 
                         return section;
@@ -298,7 +300,7 @@ export class CoreCourseSectionPage implements OnDestroy {
                     this.title = this.courseFormatDelegate.getCourseTitle(this.course, this.sections);
 
                     // Get whether to show the refresher now that we have sections.
-                    this.displayRefresher = this.courseFormatDelegate.displayRefresher(this.course, this.sections);               
+                    this.displayRefresher = this.courseFormatDelegate.displayRefresher(this.course, this.sections);
                     this.buildTree(this.sections)
                 });
             }));
@@ -310,30 +312,30 @@ export class CoreCourseSectionPage implements OnDestroy {
 
             // Load the course handlers.
             promises.push(this.courseOptionsDelegate.getHandlersToDisplay(this.injector, this.course, refresh, false)
-                    .then((handlers) => {
-                let tabToLoad;
+                .then((handlers) => {
+                    let tabToLoad;
 
-                // Add the courseId to the handler component data.
-                handlers.forEach((handler, index) => {
-                    handler.data.componentData = handler.data.componentData || {};
-                    handler.data.componentData.courseId = this.course.id;
+                    // Add the courseId to the handler component data.
+                    handlers.forEach((handler, index) => {
+                        handler.data.componentData = handler.data.componentData || {};
+                        handler.data.componentData.courseId = this.course.id;
 
-                    // Check if this handler should be the first selected tab.
-                    if (this.firstTabName && handler.name == this.firstTabName) {
-                        tabToLoad = index + 1;
-                    }
-                });
-
-                this.courseHandlers = handlers;
-
-                // Select the tab if needed.
-                this.firstTabName = undefined;
-                if (tabToLoad) {
-                    setTimeout(() => {
-                        this.tabsComponent.selectTab(tabToLoad);
+                        // Check if this handler should be the first selected tab.
+                        if (this.firstTabName && handler.name == this.firstTabName) {
+                            tabToLoad = index + 1;
+                        }
                     });
-                }
-            }));
+
+                    this.courseHandlers = handlers;
+
+                    // Select the tab if needed.
+                    this.firstTabName = undefined;
+                    if (tabToLoad) {
+                        setTimeout(() => {
+                            this.tabsComponent.selectTab(tabToLoad);
+                        });
+                    }
+                }));
 
             // Load the course menu handlers.
             promises.push(this.courseOptionsDelegate.getMenuHandlersToDisplay(this.injector, this.course).then((handlers) => {
@@ -371,12 +373,12 @@ export class CoreCourseSectionPage implements OnDestroy {
             return this.loadData(true, true).finally(() => {
                 /* Do not call doRefresh on the format component if the refresher is defined in the format component
                    to prevent an inifinite loop. */
-                 let promise;
-                 if (this.displayRefresher) {
-                     promise = this.formatComponent.doRefresh(refresher);
-                 } else {
-                     promise = Promise.resolve();
-                 }
+                let promise;
+                if (this.displayRefresher) {
+                    promise = this.formatComponent.doRefresh(refresher);
+                } else {
+                    promise = Promise.resolve();
+                }
 
                 return promise.finally(() => {
                     refresher && refresher.complete();
@@ -457,11 +459,11 @@ export class CoreCourseSectionPage implements OnDestroy {
      */
     prefetchCourse(): void {
         this.courseHelper.confirmAndPrefetchCourse(this.prefetchCourseData, this.course, this.sections,
-                this.courseHandlers, this.courseMenuHandlers).catch((error) => {
-            if (!this.isDestroyed) {
-                this.domUtils.showErrorModalDefault(error, 'core.course.errordownloadingcourse', true);
-            }
-        });
+            this.courseHandlers, this.courseMenuHandlers).catch((error) => {
+                if (!this.isDestroyed) {
+                    this.domUtils.showErrorModalDefault(error, 'core.course.errordownloadingcourse', true);
+                }
+            });
     }
 
     /**
@@ -488,7 +490,7 @@ export class CoreCourseSectionPage implements OnDestroy {
      * Open the course summary
      */
     openCourseSummary(): void {
-        this.navCtrl.push('CoreCoursesCoursePreviewPage', {course: this.course, avoidOpenCourse: true});
+        this.navCtrl.push('CoreCoursesCoursePreviewPage', { course: this.course, avoidOpenCourse: true });
     }
 
     /**
@@ -497,7 +499,7 @@ export class CoreCourseSectionPage implements OnDestroy {
      * @param item Item to open
      */
     openMenuItem(item: CoreCourseOptionsMenuHandlerToDisplay): void {
-        const params = Object.assign({ course: this.course}, item.data.pageParams);
+        const params = Object.assign({ course: this.course }, item.data.pageParams);
         this.navCtrl.push(item.data.page, params);
     }
 
@@ -530,28 +532,28 @@ export class CoreCourseSectionPage implements OnDestroy {
      * Funzione per trasformare l'array di sezioni in ingresso in un albero.
      * chiave di lettura: una sezione senza contenuti è parent di tutte le sezioni successive con contenuti
      */
-    buildTree(sections:any[]):void{
-        let clone:any[] = sections.map((x) => x);//JSON.parse(JSON.stringify(sections));
+    buildTree(sections: any[]): void {
+        let clone: any[] = sections.map((x) => x);//JSON.parse(JSON.stringify(sections));
         let i = 0;
-        while(i<clone.length){
-            if(!!clone[i].modules && clone[i].modules.length==0){
-                while(i+1<clone.length && !!clone[i+1].modules && clone[i+1].modules.length>0){
-                    clone[i].subsections = !!clone[i].subsections ? (clone[i].subsections as any[]).concat(clone[i+1]):[clone[i+1]]
-                    clone.splice(i+1,1)
+        while (i < clone.length) {
+            if (!!clone[i].modules && clone[i].modules.length == 0) {
+                while (i + 1 < clone.length && !!clone[i + 1].modules && clone[i + 1].modules.length > 0) {
+                    clone[i].subsections = !!clone[i].subsections ? (clone[i].subsections as any[]).concat(clone[i + 1]) : [clone[i + 1]]
+                    clone.splice(i + 1, 1)
                 }
-                if(i-1>=0 && !!clone[i-1].modules && clone[i-1].modules.length==0){
-                    clone[i-1].subsections = !!clone[i-1].subsections ? (clone[i-1].subsections as any[]).concat(clone[i]):[clone[i]]
-                    clone.splice(i,1)
-                }else
+                if (i - 1 >= 0 && !!clone[i - 1].modules && clone[i - 1].modules.length == 0) {
+                    clone[i - 1].subsections = !!clone[i - 1].subsections ? (clone[i - 1].subsections as any[]).concat(clone[i]) : [clone[i]]
+                    clone.splice(i, 1)
+                } else
                     i++
-            }else{
+            } else {
                 i++
             }
         }
-        if(clone[1].section==0 && clone[1].subsections){
+        if (clone[1].section == 0 && clone[1].subsections) {
             var temp = clone[1].subsections
-            clone.splice(1,1)
-            clone= clone.concat(temp)
+            clone.splice(1, 1)
+            clone = clone.concat(temp)
         }
         this.sections = clone
     }

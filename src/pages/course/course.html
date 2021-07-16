@@ -7,7 +7,10 @@
 </ion-header> -->
 <ion-header>
     <ion-navbar core-back-button>
-        <ion-title><core-format-text [text]="category?.name" contextLevel="course" [contextInstanceId]="category.id"></core-format-text></ion-title>
+        <ion-title>
+            <core-format-text [text]="category?.name" contextLevel="course" [contextInstanceId]="category.id">
+            </core-format-text>
+        </ion-title>
 
         <ion-buttons end></ion-buttons>
     </ion-navbar>
@@ -17,15 +20,18 @@
         <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
     </ion-refresher>
     <div *ngIf="category.description" class="course-general-info">
-        <div *ngIf="!!category.description"><core-format-text [text]="category.description"></core-format-text></div>
+        <div *ngIf="!!category.description">
+            <core-format-text [text]="category.description"></core-format-text>
+        </div>
     </div>
     <core-loading [hideUntil]="coursesLoaded">
         <section class="section subsections">
             <ng-container *ngFor="let course of courses">
-                <div class="subsection-container" (click)="openCourse(course)" >
+                <div class="subsection-container" (click)="openCourse(course)">
                     <ion-item class="core-subsection">
                         <div class="core-subsection-title">
                             {{course.displayname}}
+                            <ion-icon name="arrow-forward"></ion-icon>
                         </div>
                     </ion-item>
                 </div>

@@ -39,12 +39,12 @@ export interface CoreAlert extends Alert {
     /**
      * Observable that will notify when the alert is dismissed.
      */
-    didDismiss: Subject<{data: any, role: string}>;
+    didDismiss: Subject<{ data: any, role: string }>;
 
     /**
      * Observable that will notify when the alert will be dismissed.
      */
-    willDismiss: Subject<{data: any, role: string}>;
+    willDismiss: Subject<{ data: any, role: string }>;
 }
 
 /*
@@ -60,25 +60,25 @@ export class CoreDomUtilsProvider {
     protected template = document.createElement('template'); // A template element to convert HTML to element.
 
     protected matchesFn: string; // Name of the "matches" function to use when simulating a closest call.
-    protected instances: {[id: string]: any} = {}; // Store component/directive instances by id.
+    protected instances: { [id: string]: any } = {}; // Store component/directive instances by id.
     protected lastInstanceId = 0;
     protected debugDisplay = false; // Whether to display debug messages. Store it in a variable to make it synchronous.
     protected displayedAlerts = {}; // To prevent duplicated alerts.
     protected logger;
 
     constructor(protected translate: TranslateService,
-            protected loadingCtrl: LoadingController,
-            protected toastCtrl: ToastController,
-            protected alertCtrl: AlertController,
-            protected textUtils: CoreTextUtilsProvider,
-            protected configProvider: CoreConfigProvider,
-            protected urlUtils: CoreUrlUtilsProvider,
-            protected modalCtrl: ModalController,
-            protected sanitizer: DomSanitizer,
-            protected popoverCtrl: PopoverController,
-            protected fileProvider: CoreFileProvider,
-            loggerProvider: CoreLoggerProvider,
-            protected eventsProvider: CoreEventsProvider) {
+        protected loadingCtrl: LoadingController,
+        protected toastCtrl: ToastController,
+        protected alertCtrl: AlertController,
+        protected textUtils: CoreTextUtilsProvider,
+        protected configProvider: CoreConfigProvider,
+        protected urlUtils: CoreUrlUtilsProvider,
+        protected modalCtrl: ModalController,
+        protected sanitizer: DomSanitizer,
+        protected popoverCtrl: PopoverController,
+        protected fileProvider: CoreFileProvider,
+        loggerProvider: CoreLoggerProvider,
+        protected eventsProvider: CoreEventsProvider) {
 
         this.logger = loggerProvider.getInstance('CoreDomUtilsProvider');
 
@@ -141,7 +141,7 @@ export class CoreDomUtilsProvider {
      * @return Promise resolved when the user confirms or if no confirm needed.
      */
     confirmDownloadSize(size: any, message?: string, unknownMessage?: string, wifiThreshold?: number, limitedThreshold?: number,
-            alwaysConfirm?: boolean): Promise<void> {
+        alwaysConfirm?: boolean): Promise<void> {
         const readableSize = this.textUtils.bytesToSize(size.size, 2);
 
         const getAvailableBytes = new Promise((resolve): void => {
@@ -176,7 +176,7 @@ export class CoreDomUtilsProvider {
                     return Promise.reject(this.translate.instant('core.course.insufficientavailablespace', { size: readableSize }));
                 }
 
-                return this.translate.instant('core.course.availablespace', {available: availableSize});
+                return this.translate.instant('core.course.availablespace', { available: availableSize });
             }
         });
 
@@ -193,7 +193,7 @@ export class CoreDomUtilsProvider {
                 // Seems size was unable to be calculated. Show a warning.
                 unknownMessage = unknownMessage || 'core.course.confirmdownloadunknownsize';
 
-                return this.showConfirm(wifiPrefix + this.translate.instant(unknownMessage, {availableSpace: availableSpace}));
+                return this.showConfirm(wifiPrefix + this.translate.instant(unknownMessage, { availableSpace: availableSpace }));
             } else if (!size.total) {
                 // Filesize is only partial.
 
@@ -221,7 +221,7 @@ export class CoreDomUtilsProvider {
         // Add a div to hold the content, that's the element that will be returned.
         this.template.innerHTML = '<div>' + html + '</div>';
 
-        return <HTMLElement> this.template.content.children[0];
+        return <HTMLElement>this.template.content.children[0];
     }
 
     /**
@@ -230,7 +230,7 @@ export class CoreDomUtilsProvider {
      * @return The error object.
      */
     createCanceledError(): any {
-        return {coreCanceled: true};
+        return { coreCanceled: true };
     }
 
     /**
@@ -268,7 +268,7 @@ export class CoreDomUtilsProvider {
      */
     extractDownloadableFilesFromHtml(html: string): string[] {
         this.logger.error('The function extractDownloadableFilesFromHtml has been moved to CoreFilepoolProvider.' +
-                ' Please use that function instead of this one.');
+            ' Please use that function instead of this one.');
 
         const urls = [];
         let elements;
@@ -479,7 +479,7 @@ export class CoreDomUtilsProvider {
      * @return Height in pixels.
      */
     getElementHeight(element: any, usePadding?: boolean, useMargin?: boolean, useBorder?: boolean,
-            innerMeasure?: boolean): number {
+        innerMeasure?: boolean): number {
         return this.getElementMeasure(element, false, usePadding, useMargin, useBorder, innerMeasure);
     }
 
@@ -495,7 +495,7 @@ export class CoreDomUtilsProvider {
      * @return Measure in pixels.
      */
     getElementMeasure(element: any, getWidth?: boolean, usePadding?: boolean, useMargin?: boolean, useBorder?: boolean,
-            innerMeasure?: boolean): number {
+        innerMeasure?: boolean): number {
 
         const offsetMeasure = getWidth ? 'offsetWidth' : 'offsetHeight',
             measureName = getWidth ? 'width' : 'height',
@@ -558,8 +558,8 @@ export class CoreDomUtilsProvider {
      */
     getConnectionWarningIconHtml(): string {
         return '<div text-center><span class="core-icon-with-badge">' +
-                '<ion-icon role="img" class="icon fa fa-wifi" aria-label="wifi"></ion-icon>' +
-                '<ion-icon class="icon fa fa-exclamation-triangle core-icon-badge"></ion-icon>' +
+            '<ion-icon role="img" class="icon fa fa-wifi" aria-label="wifi"></ion-icon>' +
+            '<ion-icon class="icon fa fa-exclamation-triangle core-icon-badge"></ion-icon>' +
             '</span></div>';
     }
 
@@ -574,7 +574,7 @@ export class CoreDomUtilsProvider {
      * @return Width in pixels.
      */
     getElementWidth(element: any, usePadding?: boolean, useMargin?: boolean, useBorder?: boolean,
-            innerMeasure?: boolean): number {
+        innerMeasure?: boolean): number {
         return this.getElementMeasure(element, true, usePadding, useMargin, useBorder, innerMeasure);
     }
 
@@ -587,7 +587,7 @@ export class CoreDomUtilsProvider {
      * @return positionLeft, positionTop of the element relative to.
      */
     getElementXY(container: HTMLElement, selector?: string, positionParentClass?: string): number[] {
-        let element: HTMLElement = <HTMLElement> (selector ? container.querySelector(selector) : container),
+        let element: HTMLElement = <HTMLElement>(selector ? container.querySelector(selector) : container),
             offsetElement,
             positionTop = 0,
             positionLeft = 0;
@@ -634,7 +634,7 @@ export class CoreDomUtilsProvider {
      */
     private getErrorTitle(message: string): any {
         if (message == this.translate.instant('core.networkerrormsg') ||
-                message == this.translate.instant('core.fileuploader.errormustbeonlinetoupload')) {
+            message == this.translate.instant('core.fileuploader.errormustbeonlinetoupload')) {
 
             return this.sanitizer.bypassSecurityTrustHtml(this.getConnectionWarningIconHtml());
         }
@@ -660,7 +660,7 @@ export class CoreDomUtilsProvider {
                 }
                 if (error.backtrace) {
                     extraInfo += '<br><br>' + this.textUtils.replaceNewLines(
-                            this.textUtils.escapeHTML(error.backtrace, false), '<br>');
+                        this.textUtils.escapeHTML(error.backtrace, false), '<br>');
                 }
 
                 // tslint:disable-next-line
@@ -778,7 +778,7 @@ export class CoreDomUtilsProvider {
                 treated = el.getAttribute('data-bstooltip-treated');
 
             if (!content || treated === 'true' ||
-                    (trigger.indexOf('hover') == -1 && trigger.indexOf('focus') == -1 && trigger.indexOf('click') == -1)) {
+                (trigger.indexOf('hover') == -1 && trigger.indexOf('focus') == -1 && trigger.indexOf('click') == -1)) {
                 return;
             }
 
@@ -1170,14 +1170,14 @@ export class CoreDomUtilsProvider {
             options.message = await this.textUtils.formatText(options.message);
         }
 
-        const alertId = <string> Md5.hashAsciiStr((options.title || '') + '#' + (options.message || ''));
+        const alertId = <string>Md5.hashAsciiStr((options.title || '') + '#' + (options.message || ''));
 
         if (this.displayedAlerts[alertId]) {
             // There's already an alert with the same message and title. Return it.
             return this.displayedAlerts[alertId];
         }
 
-        const alert: CoreAlert = <any> this.alertCtrl.create(options);
+        const alert: CoreAlert = <any>this.alertCtrl.create(options);
 
         alert.present().then(() => {
             if (hasHTMLTags) {
@@ -1198,11 +1198,11 @@ export class CoreDomUtilsProvider {
         alert.onDidDismiss((data: any, role: string) => {
             delete this.displayedAlerts[alertId];
 
-            alert.didDismiss.next({data: data, role: role});
+            alert.didDismiss.next({ data: data, role: role });
         });
 
         alert.onWillDismiss((data: any, role: string) => {
-            alert.willDismiss.next({data: data, role: role});
+            alert.willDismiss.next({ data: data, role: role });
         });
 
         if (autocloseTime > 0) {
@@ -1211,7 +1211,7 @@ export class CoreDomUtilsProvider {
 
                 if (options.buttons) {
                     // Execute dismiss function if any.
-                    const cancelButton = <AlertButton> options.buttons.find((button) => {
+                    const cancelButton = <AlertButton>options.buttons.find((button) => {
                         return typeof button != 'string' && typeof button.role != 'undefined' &&
                             typeof button.handler != 'undefined' && button.role == 'cancel';
                     });
@@ -1372,8 +1372,8 @@ export class CoreDomUtilsProvider {
         }
 
         const loader = this.loadingCtrl.create({
-                content: text
-            }),
+            content: text
+        }),
             dismiss = loader.dismiss.bind(loader);
         let isPresented = false,
             isDismissed = false;
@@ -1517,7 +1517,7 @@ export class CoreDomUtilsProvider {
      * @return Toast instance.
      */
     showToast(text: string, needsTranslate?: boolean, duration: number = 2000, cssClass: string = '',
-            dismissOnPageChange: boolean = true): Toast {
+        dismissOnPageChange: boolean = true): Toast {
 
         if (needsTranslate) {
             text = this.translate.instant(text);
@@ -1723,4 +1723,4 @@ export class CoreDomUtilsProvider {
 
 }
 
-export class CoreDomUtils extends makeSingleton(CoreDomUtilsProvider) {}
+export class CoreDomUtils extends makeSingleton(CoreDomUtilsProvider) { }

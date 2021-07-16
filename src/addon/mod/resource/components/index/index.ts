@@ -42,11 +42,11 @@ export class AddonModResourceIndexComponent extends CoreCourseModuleMainResource
     related: any[] = [];
     course: any
     constructor(injector: Injector,
-            protected resourceProvider: AddonModResourceProvider,
-            protected resourceHelper: AddonModResourceHelperProvider,
-            protected utils: CoreUtilsProvider,
-            protected filepoolProvider: CoreFilepoolProvider,
-            protected courseHelper: CoreCourseHelperProvider) {
+        protected resourceProvider: AddonModResourceProvider,
+        protected resourceHelper: AddonModResourceHelperProvider,
+        protected utils: CoreUtilsProvider,
+        protected filepoolProvider: CoreFilepoolProvider,
+        protected courseHelper: CoreCourseHelperProvider) {
         super(injector);
     }
 
@@ -67,7 +67,7 @@ export class AddonModResourceIndexComponent extends CoreCourseModuleMainResource
         });
 
         this.courseHelper.getCourse(this.courseId).then(course => {
-            this.course = course.course;  
+            this.course = course.course;
         })
         this.courseProvider.getSections(this.courseId, false, true).then((sections) => {
             let section = sections.find(x => (x.modules as any[]).findIndex(i => i.id == this.module.id) >= 0)

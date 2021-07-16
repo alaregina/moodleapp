@@ -103,10 +103,10 @@ export class CoreCourseProvider {
     ];
 
     constructor(logger: CoreLoggerProvider, private sitesProvider: CoreSitesProvider, private eventsProvider: CoreEventsProvider,
-            private utils: CoreUtilsProvider, private timeUtils: CoreTimeUtilsProvider, private translate: TranslateService,
-            private courseOffline: CoreCourseOfflineProvider, private appProvider: CoreAppProvider,
-            private courseFormatDelegate: CoreCourseFormatDelegate, private sitePluginsProvider: CoreSitePluginsProvider,
-            private domUtils: CoreDomUtilsProvider, protected pushNotificationsProvider: CorePushNotificationsProvider) {
+        private utils: CoreUtilsProvider, private timeUtils: CoreTimeUtilsProvider, private translate: TranslateService,
+        private courseOffline: CoreCourseOfflineProvider, private appProvider: CoreAppProvider,
+        private courseFormatDelegate: CoreCourseFormatDelegate, private sitePluginsProvider: CoreSitePluginsProvider,
+        private domUtils: CoreDomUtilsProvider, protected pushNotificationsProvider: CorePushNotificationsProvider) {
         this.logger = logger.getInstance('CoreCourseProvider');
 
         this.sitesProvider.registerSiteSchema(this.siteSchema);
@@ -198,7 +198,7 @@ export class CoreCourseProvider {
      * @return Promise resolved with the completion statuses: object where the key is module ID.
      */
     getActivitiesCompletionStatus(courseId: number, siteId?: string, userId?: number, forceCache: boolean = false,
-            ignoreCache: boolean = false, includeOffline: boolean = true): Promise<any> {
+        ignoreCache: boolean = false, includeOffline: boolean = true): Promise<any> {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
             userId = userId || site.getUserId();
@@ -206,9 +206,9 @@ export class CoreCourseProvider {
             this.logger.debug(`Getting completion status for user ${userId} in course ${courseId}`);
 
             const params = {
-                    courseid: courseId,
-                    userid: userId
-                },
+                courseid: courseId,
+                userid: userId
+            },
                 preSets: CoreSiteWSPreSets = {
                     cacheKey: this.getActivitiesCompletionCacheKey(courseId, userId)
                 };
@@ -277,9 +277,9 @@ export class CoreCourseProvider {
     getCourseBlocks(courseId: number, siteId?: string): Promise<any[]> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    courseid: courseId,
-                    returncontents: 1
-                },
+                courseid: courseId,
+                returncontents: 1
+            },
                 preSets: CoreSiteWSPreSets = {
                     cacheKey: this.getCourseBlocksCacheKey(courseId),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -366,12 +366,12 @@ export class CoreCourseProvider {
      * @return Promise resolved with the module.
      */
     getModule(moduleId: number, courseId?: number, sectionId?: number, preferCache?: boolean, ignoreCache?: boolean,
-            siteId?: string, modName?: string): Promise<any> {
+        siteId?: string, modName?: string): Promise<any> {
         siteId = siteId || this.sitesProvider.getCurrentSiteId();
 
         // Helper function to do the WS request without processing the result.
         const doRequest = (site: CoreSite, moduleId: number, modName: string, includeStealth: boolean, preferCache: boolean):
-                Promise<any> => {
+            Promise<any> => {
             const params: any = {
                 courseid: courseId,
                 options: []
@@ -457,7 +457,7 @@ export class CoreCourseProvider {
             for (let i = 0; i < sections.length; i++) {
                 const section = sections[i];
                 if (sectionId != null && !isNaN(sectionId) && section.id != CoreCourseProvider.STEALTH_MODULES_SECTION_ID &&
-                        sectionId != section.id) {
+                    sectionId != section.id) {
                     continue;
                 }
 
@@ -485,8 +485,8 @@ export class CoreCourseProvider {
     getModuleBasicInfo(moduleId: number, siteId?: string): Promise<any> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    cmid: moduleId
-                },
+                cmid: moduleId
+            },
                 preSets = {
                     cacheKey: this.getModuleCacheKey(moduleId),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -543,9 +543,9 @@ export class CoreCourseProvider {
     getModuleBasicInfoByInstance(id: number, module: string, siteId?: string): Promise<any> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    instance: id,
-                    module: module
-                },
+                instance: id,
+                module: module
+            },
                 preSets = {
                     cacheKey: this.getModuleBasicInfoByInstanceCacheKey(id, module),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -734,7 +734,7 @@ export class CoreCourseProvider {
      * @param includeStealthModules Whether to include stealth modules. Defaults to true.
      * @return The reject contains the error message, else contains the sections.
      */
-     getModuleContentCategory(moduleId?: number, preSets?: CoreSiteWSPreSets,
+    getModuleContentCategory(moduleId?: number, preSets?: CoreSiteWSPreSets,
         siteId?: string): Promise<any> {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
@@ -746,15 +746,16 @@ export class CoreCourseProvider {
                 context: "MODULE"
             };
 
-            return site.read('local_metadata_get_data', params, preSets).catch(() => {
+            return site.read('local_metadata_get_data', params, preSets).catch((error) => {
+                console.log(error);
                 // Error getting the data, it could fail because we added a new parameter and the call isn't cached.
                 // Retry without the new parameter and forcing cache.
                 preSets.omitExpires = true;
                 return site.read('local_metadata_get_data', params, preSets);
             }).then((metadata) => {
-                if(metadata.success){
+                if (metadata.success) {
                     var metaResult = {};
-                    if(!!metadata.metadata && metadata.metadata.length>0){
+                    if (!!metadata.metadata && metadata.metadata.length > 0) {
                         metadata.metadata.forEach(element => {
                             metaResult[element.name] = element.value;
                         });
@@ -886,7 +887,7 @@ export class CoreCourseProvider {
      * @return Promise resolved when loaded.
      */
     loadModuleContents(module: any, courseId?: number, sectionId?: number, preferCache?: boolean, ignoreCache?: boolean,
-            siteId?: string, modName?: string): Promise<void> {
+        siteId?: string, modName?: string): Promise<void> {
 
         if (!ignoreCache && module.contents && module.contents.length) {
             // Already loaded.
@@ -909,8 +910,8 @@ export class CoreCourseProvider {
      */
     logView(courseId: number, sectionNumber?: number, siteId?: string, name?: string): Promise<void> {
         const params: any = {
-                courseid: courseId
-            },
+            courseid: courseId
+        },
             wsName = 'core_course_view_course';
 
         if (typeof sectionNumber != 'undefined') {
@@ -918,7 +919,7 @@ export class CoreCourseProvider {
         }
 
         return this.sitesProvider.getSite(siteId).then((site) => {
-            this.pushNotificationsProvider.logViewEvent(courseId, name, 'course', wsName, {sectionnumber: sectionNumber}, siteId);
+            this.pushNotificationsProvider.logViewEvent(courseId, name, 'course', wsName, { sectionnumber: sectionNumber }, siteId);
 
             return site.write('core_course_view_course', params).then((response) => {
                 if (!response.status) {
@@ -944,7 +945,7 @@ export class CoreCourseProvider {
      * @return Promise resolved when completion is successfully sent or stored.
      */
     markCompletedManually(cmId: number, completed: number, courseId: number, courseName?: string, siteId?: string)
-            : Promise<any> {
+        : Promise<any> {
 
         siteId = siteId || this.sitesProvider.getCurrentSiteId();
 
@@ -989,9 +990,9 @@ export class CoreCourseProvider {
     markCompletedManuallyOnline(cmId: number, completed: number, siteId?: string): Promise<any> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    cmid: cmId,
-                    completed: completed
-                };
+                cmid: cmId,
+                completed: completed
+            };
 
             return site.write('core_completion_update_activity_completion_status_manually', params);
         });
@@ -1272,4 +1273,4 @@ export type CoreCourseModuleSummary = {
     iconurl: string; // Iconurl.
 };
 
-export class CoreCourse extends makeSingleton(CoreCourseProvider) {}
+export class CoreCourse extends makeSingleton(CoreCourseProvider) { }

@@ -79,41 +79,41 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     selectOptions: any = {};
     loaded: boolean;
     hasSeveralSections: boolean;
-    get notifications():number{
-        if(!!this.selectedSection && this.selectedSection.modules){
-            return this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length
-        }else
+    get notifications(): number {
+        if (!!this.selectedSection && this.selectedSection.modules) {
+            return this.selectedSection.modules.filter(x => x.category == 'Test' && x.completionstatus.state == 0).length
+        } else
             return 0
     }
     protected sectionStatusObserver;
     protected selectTabObserver;
     protected lastCourseFormat: string;
     warningSectionUnavailable: boolean = false;
-    
+
     notHidden = true;
     private _sectionContents: any;
     @HostListener('window:resize', ['$event'])
     onResize(event) {
-        if(this.slides)
+        if (this.slides)
             this.slides.update()
     }
 
     constructor(@Optional() protected navCtrl: NavController, private cfDelegate: CoreCourseFormatDelegate, translate: TranslateService, private injector: Injector,
-            private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
-            eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
-            prefetchDelegate: CoreCourseModulePrefetchDelegate, private modalCtrl: ModalController,
-            private courseProvider: CoreCourseProvider) {
+        private courseHelper: CoreCourseHelperProvider, private domUtils: CoreDomUtilsProvider,
+        eventsProvider: CoreEventsProvider, private sitesProvider: CoreSitesProvider, private content: Content,
+        prefetchDelegate: CoreCourseModulePrefetchDelegate, private modalCtrl: ModalController,
+        private courseProvider: CoreCourseProvider) {
 
         this.selectOptions.title = translate.instant('core.course.sections');
         this.completionChanged = new EventEmitter();
-        var arr = [];        
+        var arr = [];
         // Pass this instance to all components so they can use its methods and properties.
         this.data.coreCourseFormatComponent = this;
 
         // Listen for section status changes.
         this.sectionStatusObserver = eventsProvider.on(CoreEventsProvider.SECTION_STATUS_CHANGED, (data) => {
             if (this.downloadEnabled && this.sections && this.sections.length && this.course && data.sectionId &&
-                    data.courseId == this.course.id) {
+                data.courseId == this.course.id) {
                 // Check if the affected section is being downloaded.
                 // If so, we don't update section status because it'll already be updated when the download finishes.
                 const downloadId = this.courseHelper.getSectionDownloadId({ id: data.sectionId });
@@ -169,34 +169,34 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    get selectedContent():string{
-        if(!!this._selectedContent)
+    get selectedContent(): string {
+        if (!!this._selectedContent)
             return this._selectedContent;
-        else if(!!this.sectionContents && this.sectionContents.length>0)
+        else if (!!this.sectionContents && this.sectionContents.length > 0)
             return this.sectionContents[0];
-        else 
+        else
             return ""
     }
 
-    set selectedContent(value:string){
+    set selectedContent(value: string) {
         this._selectedContent = value;
     }
 
-    get sectionContents():any[]{
+    get sectionContents(): any[] {
         var contents: any[] = [];
-        contents = this.selectedSection.modules.map(x=> x.category);
+        contents = this.selectedSection.modules.map(x => x.category);
         return Array.from(new Set(contents));
     }
 
-    set sectionContents(value:any[]){
+    set sectionContents(value: any[]) {
         this._sectionContents = value
     }
 
-    get episodes():number{
+    get episodes(): number {
         let ep = 0;
-        this.sections.forEach(section=>{
-            if(section.modules)
-                ep += section.modules.filter(mod=>mod.modname!="quiz").length;
+        this.sections.forEach(section => {
+            if (section.modules)
+                ep += section.modules.filter(mod => mod.modname != "quiz").length;
         })
         return ep;
     }
@@ -214,8 +214,8 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     ngOnChanges(changes: { [name: string]: SimpleChange }): void {
         this.setInputData();
-        if(!this.initialSectionId && !this.selectedSection && !!this.sections){
-            this.initialSectionId = !!this.sections[1].subsections  ? this.sections[0].id:this.sections[1].id
+        if (!this.initialSectionId && !this.selectedSection && !!this.sections) {
+            this.initialSectionId = !!this.sections[1].subsections ? this.sections[0].id : this.sections[1].id
         }
         if (changes.course) {
             // Course has changed, try to get the components.
@@ -237,7 +237,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                     for (let i = 0; i < this.sections.length; i++) {
                         const section = this.sections[i];
                         if ((section.id && section.id == this.initialSectionId) ||
-                                (section.section && section.section == this.initialSectionNumber)) {
+                            (section.section && section.section == this.initialSectionNumber)) {
 
                             // Don't load the section if it cannot be viewed by the user.
                             if (this.canViewSection(section)) {
@@ -273,7 +273,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 if (!newSection) {
                     // Section not found, calculate which one to use.
                     this.cfDelegate.getCurrentSection(this.course, this.sections).then((section) => {
-                        if(this.selectedSection)
+                        if (this.selectedSection)
                             this.sectionChanged(this.selectedSection);
                         else
                             this.sectionChanged(section);
@@ -283,19 +283,20 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
             //se ci sono dei quiz da completare esegui in automatico la redirect al modulo -
-            if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length>0){
-                let module = this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0)[0]
-                if (module.uservisible !== false && module.handlerData.action) 
-                    module.handlerData.action(new Event("click"), this.navCtrl, module, this.course.id);
-                this.selectedContent="Test"
-            }
+            // Da ripristinare dopo averci lavorato in css trovami
+            // if(this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0).length>0){
+            //     let module = this.selectedSection.modules.filter(x=>x.category=='Test' && x.completionstatus.state==0)[0]
+            //     if (module.uservisible !== false && module.handlerData.action) 
+            //         module.handlerData.action(new Event("click"), this.navCtrl, module, this.course.id);
+            //     this.selectedContent="Test"
+            // }
         }
 
         if (this.downloadEnabled && (changes.downloadEnabled || changes.sections)) {
             this.calculateSectionsStatus(false);
         }
-        
-        if(changes.sections){
+
+        if (changes.sections) {
             this.sectionContents = null;
         }
     }
@@ -307,11 +308,11 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      * @returns 
      */
     treeSearch(sections: any[], selectedSection: any): any {
-        if(sections == null || sections.length==null)
+        if (sections == null || sections.length == null)
             return null
         let newSection = null;
-        for(let i = 0; i<sections.length && !newSection; i++){
-            if(this.compareSections(selectedSection,sections[i]))
+        for (let i = 0; i < sections.length && !newSection; i++) {
+            if (this.compareSections(selectedSection, sections[i]))
                 return sections[i]
             newSection = this.treeSearch(sections[i].subsections, selectedSection)
         }
@@ -369,7 +370,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
     showSectionSelector(event: MouseEvent): void {
         if (!this.sectionSelectorExpanded) {
             const modal = this.modalCtrl.create('CoreCourseSectionSelectorPage',
-                {course: this.course, sections: this.sections, selected: this.selectedSection});
+                { course: this.course, sections: this.sections, selected: this.selectedSection });
             modal.onDidDismiss((newSection) => {
                 if (newSection) {
                     this.sectionChanged(newSection);
@@ -392,7 +393,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      * @param newSection The new selected section.
      */
     sectionChanged(newSection: any): void {
-        
+
         const previousValue = this.selectedSection;
         this.selectedSection = newSection;
         this.data.section = this.selectedSection;
@@ -435,7 +436,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
 
         if (!previousValue || previousValue.id != newSection.id) {
             this.selectedContent = null;
-            this.sectionContents =  null;
+            this.sectionContents = null;
             // First load or section changed, add log in Moodle.
             this.courseProvider.logView(this.course.id, newSection.section, undefined, this.course.fullname).catch(() => {
                 // Ignore errors.
@@ -589,11 +590,11 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
                 this.courseHelper.calculateSectionsStatus(this.sections, this.course.id, false, false);
             }
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             this.slides.update();
             this.contents.update();
         }, 1000)
-       
+
     }
 
     /**
@@ -613,7 +614,7 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
      */
     canViewSection(section: any): boolean {
         return section.uservisible !== false && !section.hiddenbynumsections &&
-                section.id != CoreCourseProvider.STEALTH_MODULES_SECTION_ID;
+            section.id != CoreCourseProvider.STEALTH_MODULES_SECTION_ID;
     }
 
     /**
@@ -623,10 +624,10 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         if (completionData.hasOwnProperty('valueused') && !completionData.valueused) {
             // If the completion value is not used, the page won't be reloaded, so update the progress bar.
             const completionModules = []
-                    .concat(...this.sections.filter((section) => section.hasOwnProperty('modules'))
-                        .map((section) => section.modules))
-                    .map((module) => (module.completion > 0) ? 1 : module.completion)
-                    .reduce((accumulator, currentValue) => accumulator + currentValue);
+                .concat(...this.sections.filter((section) => section.hasOwnProperty('modules'))
+                    .map((section) => section.modules))
+                .map((module) => (module.completion > 0) ? 1 : module.completion)
+                .reduce((accumulator, currentValue) => accumulator + currentValue);
             const moduleProgressPercent = 100 / completionModules;
             // Use min/max here to avoid floating point rounding errors over/under-flowing the progress bar.
             if (completionData.state === CoreCourseProvider.COMPLETION_COMPLETE) {
@@ -649,17 +650,17 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
         this.courseHelper.calculateSectionsStatus(this.sections, this.course.id, false, false);
     }
 
-    unauthorized(section){
+    unauthorized(section) {
         this.warningSectionUnavailable = true;
-        setTimeout(()=>{
+        setTimeout(() => {
             this.warningSectionUnavailable = false;
         }, 3000)
     }
 
-    get sectionsWithContent(){
-        return this.sections.filter(section=>
-            section.name!="Test" || 
-            (section.modules.length>0 && 
-                section.modules.filter(module=>module.completionstatus.state==0).length>0))
+    get sectionsWithContent() {
+        return this.sections.filter(section =>
+            section.name != "Test" ||
+            (section.modules.length > 0 &&
+                section.modules.filter(module => module.completionstatus.state == 0).length > 0))
     }
 }

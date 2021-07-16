@@ -14,33 +14,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'all-courses.html',
 })
 export class AllCoursesPage {
-  categories: any[]; 
+  categories: any[];
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.categories = navParams.get("categories");
-    // this.categories.push({name: "Artic"})
-    // this.categories.push({name: "Assenzio"})
-    // this.categories.push({name: "Malibu"})
-    // this.categories.push({name: "Skyy"})
-    // this.categories.push({name: "Beer"})
-    // this.categories.push({name: "GinMare"})
-    // this.categories.push({name: "Jägermeister"})
-    // this.categories.push({name: "Calua"})
-    // this.categories.push({name: "Cognac"})
-    // this.categories.push({name: "Estrella"})
-    // this.categories.push({name: "Gin"})
-    // this.categories.push({name: "Johnny Walker"})
-    // this.categories.push({name: "Absolut"})
-    // this.categories.push({name: "Jim Beam"})
-    // this.categories.push({name: "JackDaniels"})
-    // this.categories.push({name: "Campari"})
-    // this.categories.push({name: "Cynar"})
-    // this.categories.push({name: "Jim Beam"})
-    this.categories = this.categories.sort((a:any,b:any)=>a.name>b.name ? 1:-1)
+    // this.categories.push({ name: "Artic", coursecount: "2" });
+    // this.categories.push({ name: "Assenzio", coursecount: "2" });
+    // this.categories.push({ name: "Malibu", coursecount: "2" });
+    // this.categories.push({ name: "Skyy", coursecount: "2" });
+    // this.categories.push({ name: "Beer", coursecount: "2" });
+    // this.categories.push({ name: "GinMare", coursecount: "2" });
+    // this.categories.push({ name: "Jägermeister", coursecount: "2" });
+    // this.categories.push({ name: "Calua", coursecount: "2" });
+    // this.categories.push({ name: "Cognac", coursecount: "2" });
+    // this.categories.push({ name: "Estrella", coursecount: "2" });
+    // this.categories.push({ name: "Gin", coursecount: "2" });
+    // this.categories.push({ name: "Johnny Walker", coursecount: "2" });
+    // this.categories.push({ name: "Absolut", coursecount: "2" });
+    // this.categories.push({ name: "Jim Beam", coursecount: "2" });
+    // this.categories.push({ name: "JackDaniels", coursecount: "2" });
+    // this.categories.push({ name: "Campari", coursecount: "2" });
+    // this.categories.push({ name: "Cynar", coursecount: "2" });
+    // this.categories.push({ name: "Jim Beam", coursecount: "2" });
+    this.categories = this.categories.sort((a: any, b: any) => a.name > b.name ? 1 : -1);
   }
 
   ionViewDidLoad() {
   }
-  goToCourse(item){
-    this.navCtrl.push('CoursePage', {category: item})
+  goToCourse(item) {
+    this.navCtrl.push('CoursePage', { category: item });
   }
 }

@@ -2,114 +2,146 @@
   <ion-navbar core-back-button>
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
-  </button>
-  <ion-buttons end>
-    <button ion-button icon-only (click)="logout()">
-      <ion-icon name="log-out" item-start aria-hidden="true"></ion-icon>
-  </button>
-  </ion-buttons>
-    
+    </button>
+
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="notifications-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out" item-start aria-hidden="true"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-refresher [enabled]="userLoaded" (ionRefresh)="refreshUser($event)">
-      <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
+    <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
   </ion-refresher>
   <core-loading [hideUntil]="userLoaded">
-      <ion-list *ngIf="user && !isDeleted && isEnrolled">
-          <ion-item text-center>
-              <span class="text-small">{{ 'core.user.myDashboard' | translate}}</span>
-              <h2><b class="text-red">{{ user.fullname }}</b></h2>
-              <ion-avatar core-user-avatar class="item-avatar-center" [user]="user" [userId]="user.id" [linkProfile]="false" [checkOnline]="true">
-                  <ion-icon name="create" class="core-icon-foreground" *ngIf="canChangeProfilePicture" (click)="changeProfilePicture()"></ion-icon>
-                  <!-- <img class="badge-on-icon" *ngIf="!!badges && badges.length>0" [src]="badges[badges.length-1].badgeurl" [alt]="badges[badges.length-1].name" item-start core-external-content> -->
-              </ion-avatar>
-              <h1><b class="text-red">{{points}}</b></h1>
-              <p *ngIf="user.address">{{ user.address }}</p>
-              <p *ngIf="user.roles" text-wrap>
-                  <strong>{{ 'core.user.roles' | translate}}</strong>{{'core.labelsep' | translate}}
-                  {{ user.roles }}
-              </p>
-          </ion-item>
+    <ion-list *ngIf="user && !isDeleted && isEnrolled">
+      <ion-item text-center>
+        <span class="text-small">{{ 'core.user.myDashboard' | translate}}</span>
+        <h2><b class="text-red">{{ user.fullname }}</b></h2>
+        <ion-avatar core-user-avatar class="item-avatar-center" [user]="user" [userId]="user.id" [linkProfile]="false"
+          [checkOnline]="true">
+          <ion-icon name="create" class="core-icon-foreground" *ngIf="canChangeProfilePicture"
+            (click)="changeProfilePicture()"></ion-icon>
+          <img class="badge-on-icon" *ngIf="!!badges && badges.length>0" [src]="badges[badges.length-1].badgeurl"
+            [alt]="badges[badges.length-1].name" item-start core-external-content>
+        </ion-avatar>
+        <h1><b class="text-red">{{points}}</b></h1>
+        <p *ngIf="user.address">{{ user.address }}</p>
+        <p *ngIf="user.roles" text-wrap>
+          <strong>{{ 'core.user.roles' | translate}}</strong>{{'core.labelsep' | translate}}
+          {{ user.roles }}
+        </p>
+      </ion-item>
 
-          <ion-item text-center>
-            <h1><strong>I tuoi numeri</strong></h1>
-            <ion-grid>
-              <ion-row>
-                <ion-col col-6>
-                  <ion-card>
-                    <ion-card-header>
-                      <h1><b class="text-red">{{ongoingCourses}}</b></h1>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Corsi in avanzamento
-                    </ion-card-content>
-                  </ion-card>
-                </ion-col>
-                <ion-col col-6>
-                  <ion-card>
-                    <ion-card-header>
-                      <h1><b class="text-red">{{completedCourses}}</b></h1>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Corsi completati
-                    </ion-card-content>
-                  </ion-card>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col col-6>
-                  <ion-card>
-                    <ion-card-header>
-                      <h1><b class="text-red">{{completedActivities}}</b></h1>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Livelli sbloccati
-                    </ion-card-content>
-                  </ion-card>
-                </ion-col>
-                <ion-col col-6>
-                  <ion-card>
-                    <ion-card-header>
-                      <h1><b class="text-red">{{timeSpent*1000 | date:'HH':'UTC'}}</b><small class="text-red">h</small><b class="text-red"> {{timeSpent*1000 | date:'mm':'UTC'}}</b><small class="text-red">m</small></h1>
-                    </ion-card-header>
-                    <ion-card-content>
-                      La tua formazione
-                    </ion-card-content>
-                  </ion-card>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-          <ion-item id="badges" *ngIf="badgeAlcolizzato || badgeSommelier || badgeMegadirettore || completedTest>=10">
-            <h1 text-center>
-              <b>Badges</b>
-            </h1>
-            <ion-grid>
-              <ion-row>
-                <ion-col *ngIf="badgeAlcolizzato">
-                  <div>
-                    <img src="assets/img/alcolizzato.png">
-                  </div>
-                </ion-col>
-                <ion-col *ngIf="badgeSommelier">
-                  <div>
-                    <img src="assets/img/sommelier.png">
-                  </div>
-                </ion-col>
-                <ion-col *ngIf="badgeMegadirettore">
-                  <div>
-                    <img src="assets/img/megadirettore.png">
-                  </div>
-                </ion-col>
-                <ion-col *ngIf="completedTest>=10">
-                  <div>
-                    <img src="assets/img/mixology.png">
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-      </ion-list>
+      <ion-item text-center>
+        <h1><strong>I tuoi numeri</strong></h1>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-header>
+                  <h1><b class="text-red">{{ongoingCourses}}</b></h1>
+                </ion-card-header>
+                <ion-card-content>
+                  Corsi in avanzamento
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-header>
+                  <h1><b class="text-red">{{completedCourses}}</b></h1>
+                </ion-card-header>
+                <ion-card-content>
+                  Corsi completati
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-header>
+                  <h1><b class="text-red">{{completedActivities}}</b></h1>
+                </ion-card-header>
+                <ion-card-content>
+                  Livelli sbloccati
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-header>
+                  <h1><b class="text-red">{{timeSpent*1000 | date:'HH':'UTC'}}</b><small class="text-red">h</small><b
+                      class="text-red"> {{timeSpent*1000 | date:'mm':'UTC'}}</b><small class="text-red">m</small></h1>
+                </ion-card-header>
+                <ion-card-content>
+                  La tua formazione
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <!-- <ion-item id="badges" *ngIf="badgeAlcolizzato || badgeSommelier || badgeMegadirettore || completedTest>=10"> -->
+      <ion-item id="badges">
+        <h1 text-center>
+          <b>Badges</b>
+        </h1>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>
+                <!-- <img [ngClass]="{'image-badge-not-claim' : !badgeAlcolizzato}" class="image-badge-icon" -->
+                <img class="image-badge-icon" src="assets/img/alcolizzato.png">
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <img [ngClass]="{'image-badge-not-claim' : !badgeSommelier}" class="image-badge-icon"
+                  src="assets/img/sommelier.png">
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <img [ngClass]="{'image-badge-not-claim' : !badgeMegadirettore}" class="image-badge-icon"
+                  src="assets/img/megadirettore.png">
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <img [ngClass]="{'image-badge-not-claim' : completedTest<10}" class="image-badge-icon"
+                  src="assets/img/mixology.png">
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <div>
+          <img class="image-badge-icon-actual" src="assets/img/alcolizzato.png">
+          <h2 class="label-actual-badge">Alcolizzato</h2>
+        </div>
+      </ion-item>
+
+
+      <ion-item id="stats">
+        <h1 text-center>
+          <b>Statistiche</b>
+        </h1>
+
+        <img class="stats-image" src="https://qph.fs.quoracdn.net/main-qimg-cd93fed66c3c4a3dc1cda5563f6f9da8" alt="">
+
+      </ion-item>
+
+    </ion-list>
   </core-loading>
 </ion-content>

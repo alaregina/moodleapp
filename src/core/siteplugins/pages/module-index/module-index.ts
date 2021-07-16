@@ -37,8 +37,8 @@ export class CoreSitePluginsModuleIndexPage {
     loaded: boolean = false;
     related: any = [];
 
-    constructor(params: NavParams, private courseProvider: CoreCourseProvider, 
-        private courseHelper:CoreCourseHelperProvider, private navCtrl:NavController) {
+    constructor(params: NavParams, private courseProvider: CoreCourseProvider,
+        private courseHelper: CoreCourseHelperProvider, private navCtrl: NavController) {
         this.title = params.get('title');
         this.module = params.get('module');
         this.courseId = params.get('courseId');
@@ -115,7 +115,7 @@ export class CoreSitePluginsModuleIndexPage {
         return this.content.callComponentFunction('ionViewCanLeave');
     }
 
-    async nextActivity(){
+    async nextActivity() {
         this.navCtrl.pop()
     }
 }

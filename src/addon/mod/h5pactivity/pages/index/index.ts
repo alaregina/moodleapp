@@ -42,14 +42,14 @@ export class AddonModH5PActivityIndexPage {
     downloadEnabled = false
     loaded: boolean;
     course: any;
-    constructor(navParams: NavParams, private courseProvider: CoreCourseProvider, private coursesProvider:CoreCoursesProvider, private courseHelper:CoreCourseHelperProvider) {
+    constructor(navParams: NavParams, private courseProvider: CoreCourseProvider, private coursesProvider: CoreCoursesProvider, private courseHelper: CoreCourseHelperProvider) {
         this.module = navParams.get('module') || {};
         this.courseId = navParams.get('courseId');
         courseHelper.getCourse(this.courseId).then(course => {
-            this.course = course.course;   
+            this.course = course.course;
             this.coursesProvider.getCategories(this.course.category).then(category => {
                 this.course["categoryname"] = category[0].name
-            })         
+            })
         })
         this.courseProvider.getSections(this.courseId, false, true).then((sections) => {
             let section = sections.find(x => (x.modules as any[]).findIndex(i => i.id == this.module.id) >= 0)
@@ -95,8 +95,8 @@ export class AddonModH5PActivityIndexPage {
     /**
      * The completion of any of the modules have changed.
      */
-     onCompletionChange(completionData: any): void {
-        
+    onCompletionChange(completionData: any): void {
+
     }
 
     /**
@@ -105,6 +105,6 @@ export class AddonModH5PActivityIndexPage {
      * @param eventData
      */
     onModuleStatusChange(eventData: any): void {
-        
+
     }
 }

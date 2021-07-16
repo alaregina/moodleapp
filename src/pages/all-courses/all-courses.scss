@@ -1,3 +1,48 @@
 page-all-courses {
+    ion-item-divider[id^="scroll-letter"] {
+        padding: 0;
+        text-align: center;
+        border-radius: 5px !important;
+        font-weight: bold;
+        color: white;
+        background: #00a28f;
+    }
 
+    a[id^="sidebar-letter"] {
+        color: #00a28f;
+    }
+
+    .all-curses-item-cards {
+        background: white;
+        border-radius: 5px !important;
+        margin: 1rem 0 !important;
+        padding: 0 !important;
+        // border: 2px solid #00a28f;
+        -webkit-box-shadow: 0 1px 2px #0000004d;
+        box-shadow: 0 1px 2px #0000004d;
+
+        .item-inner {
+            padding: 0 !important;
+
+            ion-label {
+                margin: 0 !important;
+
+                .all-curses-item-cards__name {
+                    text-align: center;
+                    font-weight: 500;
+                    padding: 8px;
+                }
+
+                .all-curses-item-cards__divider {
+                    width: 100%;
+                    border: 1px solid #00a28f7d;
+                }
+
+                .all-curses-item-cards__coursecount {
+                    text-align: center;
+                    padding: 5px;
+                }
+            }
+        }
+    }
 }

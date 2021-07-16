@@ -1,33 +1,54 @@
 page-course {
+    .course-general-info {
+        p:first-child {
+            margin: 0;
+        }
+        p:nth-child(2) {
+            text-align: justify !important;
+            padding: 0 1rem;
+        }
+    }
 
-    .section{
+    .section {
         height: 100%;
         background-color: $gray-lighter;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
     }
-    .subsections{
+    .subsections {
         padding-top: 2rem;
-        .subsection-container{
+        .subsection-container {
             margin: 3%;
             background-color: unset;
             display: block;
         }
-        .core-subsection{
+        .core-subsection {
             align-items: flex-start;
             min-height: 52px;
-            background-color: $white;
-            .core-subsection-title{
+            // background-color: $white;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px #0000004d;
+            box-shadow: 0 1px 2px #0000004d;
+            .core-subsection-title {
                 font-weight: bold;
                 font-size: large;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .item-inner {
+                display: flex;
+                align-items: center;
+                border: 0;
             }
         }
     }
-    .core-adapted-img-container{
-        margin: 0px!important;
-        img{
-            width: unset!important;
-            margin:0px!important;
+    .core-adapted-img-container {
+        margin: 0px !important;
+        img {
+            width: unset !important;
+            margin: 0px !important;
         }
     }
 }

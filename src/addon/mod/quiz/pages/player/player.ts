@@ -76,12 +76,12 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
     protected reloadNavigaton = false; // Whether navigation needs to be reloaded because some data was sent to server.
 
     constructor(navParams: NavParams, logger: CoreLoggerProvider, protected translate: TranslateService,
-            protected eventsProvider: CoreEventsProvider, protected sitesProvider: CoreSitesProvider,
-            protected syncProvider: CoreSyncProvider, protected domUtils: CoreDomUtilsProvider, popoverCtrl: PopoverController,
-            protected timeUtils: CoreTimeUtilsProvider, protected quizProvider: AddonModQuizProvider,
-            protected quizHelper: AddonModQuizHelperProvider, protected quizSync: AddonModQuizSyncProvider,
-            protected questionHelper: CoreQuestionHelperProvider, protected cdr: ChangeDetectorRef,
-            modalCtrl: ModalController, protected navCtrl: NavController,  protected app: IonicApp) {
+        protected eventsProvider: CoreEventsProvider, protected sitesProvider: CoreSitesProvider,
+        protected syncProvider: CoreSyncProvider, protected domUtils: CoreDomUtilsProvider, popoverCtrl: PopoverController,
+        protected timeUtils: CoreTimeUtilsProvider, protected quizProvider: AddonModQuizProvider,
+        protected quizHelper: AddonModQuizHelperProvider, protected quizSync: AddonModQuizSyncProvider,
+        protected questionHelper: CoreQuestionHelperProvider, protected cdr: ChangeDetectorRef,
+        modalCtrl: ModalController, protected navCtrl: NavController, protected app: IonicApp) {
 
         this.quizId = navParams.get('quizId');
         this.courseId = navParams.get('courseId');
@@ -92,16 +92,18 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
 
         // Create the auto save instance.
         this.autoSave = new AddonModQuizAutoSave('addon-mod_quiz-player-form', '#addon-mod_quiz-connection-error-button',
-                logger, popoverCtrl, questionHelper, quizProvider);
+            logger, popoverCtrl, questionHelper, quizProvider);
 
         // Create the navigation modal.
         this.navigationModal = modalCtrl.create('AddonModQuizNavigationModalPage', {
             page: this
-        }, { cssClass: 'core-modal-lateral',
+        }, {
+            cssClass: 'core-modal-lateral',
             showBackdrop: true,
             enableBackdropDismiss: true,
             enterAnimation: 'core-modal-lateral-transition',
-            leaveAnimation: 'core-modal-lateral-transition' });
+            leaveAnimation: 'core-modal-lateral-transition'
+        });
     }
 
     /**
@@ -367,7 +369,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      */
     finishAttempt(userFinish?: boolean, timeUp?: boolean): Promise<void> {
         let promise;
-
+        console.log("invia tutto e termina function");
         // Show confirm if the user clicked the finish button and the quiz is in progress.
         if (!timeUp && this.attempt.state == AddonModQuizProvider.ATTEMPT_IN_PROGRESS) {
             promise = this.domUtils.showConfirm(this.translate.instant('addon.mod_quiz.confirmclose'));
@@ -440,7 +442,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
         if (this.attemptAccessInfo.endtime > 0) {
             // Quiz has an end time. Check if time left should be shown.
             if (this.quizProvider.shouldShowTimeLeft(this.quizAccessInfo.activerulenames, this.attempt,
-                    this.attemptAccessInfo.endtime)) {
+                this.attemptAccessInfo.endtime)) {
                 this.endTime = this.attemptAccessInfo.endtime;
             } else {
                 delete this.endTime;
@@ -517,9 +519,9 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
 
             // Log summary as viewed.
             this.quizProvider.logViewAttemptSummary(this.attempt.id, this.preflightData, this.quizId, this.quiz.name)
-                    .catch((error) => {
-                // Ignore errors.
-            });
+                .catch((error) => {
+                    // Ignore errors.
+                });
         });
     }
 
@@ -574,7 +576,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
     // Prepare the answers to be sent for the attempt.
     protected prepareAnswers(): Promise<any> {
         return this.questionHelper.prepareAnswers(this.questions, this.getAnswers(), this.offline, this.component,
-                this.quiz.coursemodule);
+            this.quiz.coursemodule);
     }
 
     /**
@@ -596,25 +598,25 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
         return promise.then((answers) => {
             // Send the answers.
             return this.quizProvider.processAttempt(this.quiz, this.attempt, answers, this.preflightData, userFinish, timeUp,
-                    this.offline).catch((error) => {
+                this.offline).catch((error) => {
 
-                if (error && error.errorcode == 'submissionoutofsequencefriendlymessage') {
-                    // There was an error with the sequence check. Try to ammend it.
-                    return this.fixSequenceChecks().then((): any => {
-                        if (retrying) {
-                            // We're already retrying, don't send the data again because it could cause an infinite loop.
+                    if (error && error.errorcode == 'submissionoutofsequencefriendlymessage') {
+                        // There was an error with the sequence check. Try to ammend it.
+                        return this.fixSequenceChecks().then((): any => {
+                            if (retrying) {
+                                // We're already retrying, don't send the data again because it could cause an infinite loop.
+                                return Promise.reject(error);
+                            }
+
+                            // Sequence checks updated, try to send the data again.
+                            return this.processAttempt(userFinish, timeUp, true);
+                        }, () => {
                             return Promise.reject(error);
-                        }
+                        });
+                    }
 
-                        // Sequence checks updated, try to send the data again.
-                        return this.processAttempt(userFinish, timeUp, true);
-                    }, () => {
-                        return Promise.reject(error);
-                    });
-                }
-
-                return Promise.reject(error);
-            });
+                    return Promise.reject(error);
+                });
         }).then(() => {
             // Answers saved, cancel auto save.
             this.autoSave.cancelAutoSave();
@@ -679,31 +681,31 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
         const attempt = this.newAttempt ? undefined : this.lastAttempt;
         // Get the preflight data and start attempt if needed.
         return this.quizHelper.getAndCheckPreflightData(this.quiz, this.quizAccessInfo, this.preflightData, attempt, this.offline,
-                false, 'addon.mod_quiz.startattempt').then((attempt) => {
+            false, 'addon.mod_quiz.startattempt').then((attempt) => {
 
-            // Re-fetch attempt access information with the right attempt (might have changed because a new attempt was created).
-            return this.quizProvider.getAttemptAccessInformation(this.quiz.id, attempt.id, {
-                cmId: this.quiz.coursemodule,
-                readingStrategy: this.offline ? CoreSitesReadingStrategy.PreferCache : 2,
-            }).then((info) => {
-                this.attemptAccessInfo = info;
-                this.attempt = attempt;
+                // Re-fetch attempt access information with the right attempt (might have changed because a new attempt was created).
+                return this.quizProvider.getAttemptAccessInformation(this.quiz.id, attempt.id, {
+                    cmId: this.quiz.coursemodule,
+                    readingStrategy: this.offline ? CoreSitesReadingStrategy.PreferCache : 2,
+                }).then((info) => {
+                    this.attemptAccessInfo = info;
+                    this.attempt = attempt;
 
-                return this.loadNavigation();
-            }).then(() => {
-                if (this.attempt.state != AddonModQuizProvider.ATTEMPT_OVERDUE && !this.attempt.finishedOffline) {
-                    // Attempt not overdue and not finished in offline, load page.
-                    return this.loadPage(this.attempt.currentpage).then(() => {
-                        this.initTimer();
-                    });
-                } else {
-                    // Attempt is overdue or finished in offline, we can only load the summary.
-                    return this.loadSummary();
-                }
+                    return this.loadNavigation();
+                }).then(() => {
+                    if (this.attempt.state != AddonModQuizProvider.ATTEMPT_OVERDUE && !this.attempt.finishedOffline) {
+                        // Attempt not overdue and not finished in offline, load page.
+                        return this.loadPage(this.attempt.currentpage).then(() => {
+                            this.initTimer();
+                        });
+                    } else {
+                        // Attempt is overdue or finished in offline, we can only load the summary.
+                        return this.loadSummary();
+                    }
+                });
+            }).catch((error) => {
+                this.domUtils.showErrorModalDefault(error, 'addon.mod_quiz.errorgetquestions', true);
             });
-        }).catch((error) => {
-            this.domUtils.showErrorModalDefault(error, 'addon.mod_quiz.errorgetquestions', true);
-        });
     }
 
     /**

@@ -8,20 +8,23 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <ion-refresher [enabled]="content && content.ptrEnabled && content.content && content.content.dataLoaded" (ionRefresh)="refreshData($event)">
+    <ion-refresher [enabled]="content && content.ptrEnabled && content.content && content.content.dataLoaded"
+        (ionRefresh)="refreshData($event)">
         <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
     </ion-refresher>
-    <core-site-plugins-module-index [module]="module" [courseId]="courseId" [pageTitle]="title"></core-site-plugins-module-index>
-    <button class="nextActivity" (click)="nextActivity()">
+    <core-site-plugins-module-index [module]="module" [courseId]="courseId" [pageTitle]="title">
+    </core-site-plugins-module-index>
+    <button class="nextActivity" (click)="nextActivity()" *ngIf="loaded">
         <div>Prosegui</div>
     </button>
-    <section class="related-module">
+    <section class="related-module" *ngIf="related && related.length>0">
         <h3 text-center>
             <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
         </h3>
         <core-loading [hideUntil]="loaded">
             <ng-container>
-                <core-course-module *ngFor="let item of related" [module]="item" [courseId]="courseId" [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
+                <core-course-module *ngFor="let item of related" [module]="item" [courseId]="courseId"
+                    [downloadEnabled]="downloadEnabled" [section]="section"></core-course-module>
             </ng-container>
         </core-loading>
     </section>

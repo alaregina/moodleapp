@@ -1,96 +1,125 @@
 courses {
-    div.header{
-        margin-top:0.5rem!important;
-        margin-bottom:0rem!important;
-        #modal-icon{
-            color:$gray-dark;
+    div.header {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0rem !important;
+        #modal-icon {
+            color: $gray-dark;
         }
     }
-    background-color: transparent!important;
-    ion-slides{
-        height: auto!important;
+    background-color: transparent !important;
+    ion-slides {
+        height: auto !important;
     }
 
-    div.modal-courses{
+    div.modal-courses {
         background-color: $gray-lighter;
         border-top-left-radius: 5%;
         border-top-right-radius: 5%;
     }
 
-    ion-col.view-all{
+    ion-col.view-all {
         text-align: center;
         align-self: center;
-        span{
-            color:#00a18f;
-            font-size: 1.3rem;       
+        span {
+            color: #00a18f;
+            font-size: 1.3rem;
+            font-weight: 500;
         }
     }
 
-    ion-row.header{
-        ion-col h4{
-            margin:0px;
+    ion-row.header {
+        ion-col h4 {
+            margin: 0px;
             font-size: 1.4rem;
             font-weight: bold;
         }
     }
 
-    ion-col.close-button{
-        text-align:center;
-        h3{
+    ion-col.close-button {
+        text-align: center;
+        h3 {
             margin: 0px;
             width: 100%;
         }
     }
 
-    .swiper-pagination-bullet{
+    .swiper-pagination-bullet {
         display: none;
-     }
+    }
 
-     .course-list .course-list-item {
-        
-        background-color: $gray-lighter;
-        .item-inner{
-            border:0px!important;
-            .input-wrapper ion-label{
-                margin:0px!important;
-            }
-        } 
+    // .course-list .course-list-item {
+    //     background-color: $gray-lighter;
+    //     .item-inner {
+    //         border: 0px !important;
+    //         .input-wrapper ion-label {
+    //             margin: 0px !important;
+    //         }
+    //     }
 
-        ion-card{
-            min-height: 80px;
-            border-radius: 10px!important;
-            flex-direction: row!important;
-            -webkit-flex-direction: row!important;
-            ion-item{
-                display: none!important;
-            }
-            
-            .core-course-thumb{
-                padding-top:0%!important;
-                min-width: 30%!important;
-            }
-            .core-course-more-than-title{
-                display: block!important;
-                height: fit-content;
-                width:60%!important;
-            }
-         } 
-     }
-     core-courses-course-progress{
-        .item-block{
-            min-height: unset!important;
+    //     ion-card {
+    //         min-height: 80px;
+    //         border-radius: 10px !important;
+    //         flex-direction: row !important;
+    //         -webkit-flex-direction: row !important;
+    //         ion-item {
+    //             display: none !important;
+    //         }
+
+    //         .core-course-thumb {
+    //             padding-top: 0% !important;
+    //             min-width: 30% !important;
+    //         }
+    //         .core-course-more-than-title {
+    //             display: block !important;
+    //             height: fit-content;
+    //             width: 60% !important;
+    //         }
+    //     }
+    // }
+    core-courses-course-progress {
+        .item-block {
+            min-height: unset !important;
         }
-     }
-     core-progress-bar progress{
-         height: 5px!important;
-         margin-top:4px!important;
-     }
-     
-     core-progress-bar span.core-progress-text{
-        font-size: 1.2rem!important;
-     }
+    }
+    core-progress-bar progress {
+        height: 5px !important;
+        margin-top: 4px !important;
+    }
 
-     course-progress .item-block{
-         min-height: unset!important;
-     }
+    core-progress-bar span.core-progress-text {
+        font-size: 1.2rem !important;
+    }
+
+    course-progress .item-block {
+        min-height: unset !important;
+    }
+
+    ion-card.card-brand-curser {
+        background: white;
+        // border: 2px solid #00a28f;
+        border-radius: 5px !important;
+        max-width: 200px;
+        height: 70px;
+
+        .card-brand-curser__divider {
+            border: 1px solid #00a28f7d;
+        }
+        ion-card-header {
+            padding: 8px !important;
+        }
+
+        ion-card-content {
+            padding: 5px !important;
+            border: 0;
+
+            &.card-brand-curser__all {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 500;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
 }
