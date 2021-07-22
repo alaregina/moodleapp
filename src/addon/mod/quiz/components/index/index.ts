@@ -22,6 +22,7 @@ import { AddonModQuizOfflineProvider } from '../../providers/quiz-offline';
 import { AddonModQuizSyncProvider } from '../../providers/quiz-sync';
 import { AddonModQuizPrefetchHandler } from '../../providers/prefetch-handler';
 import { CoreConstants } from '@core/constants';
+import { NavigationProvider } from '@providers/navigation/navigation';
 
 /**
  * Component that displays a quiz entry page.
@@ -63,15 +64,15 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
     protected moreAttempts: boolean; // Whether user can create/continue attempts.
     protected options: any; // Combined review options.
     protected bestGrade: any; // Best grade data.
-    protected gradebookData: {grade: number, feedback?: string}; // The gradebook grade and feedback.
+    protected gradebookData: { grade: number, feedback?: string }; // The gradebook grade and feedback.
     protected overallStats: boolean; // Equivalent to overallstats in mod_quiz_view_object in Moodle.
     protected finishedObserver: any; // It will observe attempt finished events.
     protected hasPlayed = false; // Whether the user has gone to the quiz player (attempted).
 
     constructor(injector: Injector, protected quizProvider: AddonModQuizProvider, @Optional() content: Content,
-            protected quizHelper: AddonModQuizHelperProvider, protected quizOffline: AddonModQuizOfflineProvider,
-            protected quizSync: AddonModQuizSyncProvider, protected behaviourDelegate: CoreQuestionBehaviourDelegate,
-            protected prefetchHandler: AddonModQuizPrefetchHandler, protected navCtrl: NavController) {
+        protected quizHelper: AddonModQuizHelperProvider, protected quizOffline: AddonModQuizOfflineProvider,
+        protected quizSync: AddonModQuizSyncProvider, protected behaviourDelegate: CoreQuestionBehaviourDelegate,
+        protected prefetchHandler: AddonModQuizPrefetchHandler, protected navCtrl: NavController, private navigationProv: NavigationProvider) {
         super(injector, content);
     }
 
@@ -202,7 +203,7 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
             }
 
             // Get quiz access info.
-            return this.quizProvider.getQuizAccessInformation(this.quizData.id, {cmId: this.module.id}).then((info) => {
+            return this.quizProvider.getQuizAccessInformation(this.quizData.id, { cmId: this.module.id }).then((info) => {
                 this.quizAccessInfo = info;
                 this.quizData.showReviewColumn = info.canreviewmyattempts;
                 this.accessRules = info.accessrules;
@@ -213,7 +214,7 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
                 }
 
                 // Get question types in the quiz.
-                return this.quizProvider.getQuizRequiredQtypes(this.quizData.id, {cmId: this.module.id}).then((types) => {
+                return this.quizProvider.getQuizRequiredQtypes(this.quizData.id, { cmId: this.module.id }).then((types) => {
                     this.unsupportedQuestions = this.quizProvider.getUnsupportedQuestions(types);
                     this.hasSupportedQuestions = !!types.find((type) => {
                         return type != 'random' && this.unsupportedQuestions.indexOf(type) == -1;
@@ -239,11 +240,11 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
     protected getAttempts(): Promise<void> {
 
         // Get access information of last attempt (it also works if no attempts made).
-        return this.quizProvider.getAttemptAccessInformation(this.quizData.id, 0, {cmId: this.module.id}).then((info) => {
+        return this.quizProvider.getAttemptAccessInformation(this.quizData.id, 0, { cmId: this.module.id }).then((info) => {
             this.attemptAccessInfo = info;
 
             // Get attempts.
-            return this.quizProvider.getUserAttempts(this.quizData.id, {cmId: this.module.id}).then((atts) => {
+            return this.quizProvider.getUserAttempts(this.quizData.id, { cmId: this.module.id }).then((atts) => {
 
                 return this.treatAttempts(atts).then((atts) => {
                     this.attempts = atts;
@@ -318,7 +319,7 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
     protected getResultInfo(): Promise<void> {
 
         if (this.attempts.length && this.quizData.showGradeColumn && this.bestGrade.hasgrade &&
-                typeof this.gradebookData.grade != 'undefined') {
+            typeof this.gradebookData.grade != 'undefined') {
 
             const formattedGradebookGrade = this.quizProvider.formatGrade(this.gradebookData.grade, this.quizData.decimalpoints),
                 formattedBestGrade = this.quizProvider.formatGrade(this.bestGrade.grade, this.quizData.decimalpoints);
@@ -338,18 +339,22 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
             if (this.overallStats) {
                 // Show the quiz grade. The message shown is different if the quiz is finished.
                 if (this.moreAttempts) {
-                    this.gradeResult = this.translate.instant('addon.mod_quiz.gradesofar', {$a: {
-                        method: this.quizData.gradeMethodReadable,
-                        mygrade: gradeToShow,
-                        quizgrade: this.quizData.gradeFormatted
-                    }});
+                    this.gradeResult = this.translate.instant('addon.mod_quiz.gradesofar', {
+                        $a: {
+                            method: this.quizData.gradeMethodReadable,
+                            mygrade: gradeToShow,
+                            quizgrade: this.quizData.gradeFormatted
+                        }
+                    });
                 } else {
-                    const outOfShort = this.translate.instant('addon.mod_quiz.outofshort', {$a: {
-                        grade: gradeToShow,
-                        maxgrade: this.quizData.gradeFormatted
-                    }});
+                    const outOfShort = this.translate.instant('addon.mod_quiz.outofshort', {
+                        $a: {
+                            grade: gradeToShow,
+                            maxgrade: this.quizData.gradeFormatted
+                        }
+                    });
 
-                    this.gradeResult = this.translate.instant('addon.mod_quiz.yourfinalgradeis', {$a: outOfShort});
+                    this.gradeResult = this.translate.instant('addon.mod_quiz.yourfinalgradeis', { $a: outOfShort });
                 }
             }
 
@@ -381,8 +386,8 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
         const attemptId = this.autoReview.attemptId;
 
         if (this.quizAccessInfo.canreviewmyattempts) {
-            return this.quizProvider.getAttemptReview(attemptId, {page: -1, cmId: this.module.id}).then(() => {
-                this.navCtrl.push('AddonModQuizReviewPage', {courseId: this.courseId, quizId: this.quizData.id, attemptId});
+            return this.quizProvider.getAttemptReview(attemptId, { page: -1, cmId: this.module.id }).then(() => {
+                this.navCtrl.push('AddonModQuizReviewPage', { courseId: this.courseId, quizId: this.quizData.id, attemptId });
             }).catch(() => {
                 // Ignore errors.
             });
@@ -412,6 +417,16 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
      */
     ionViewDidEnter(): void {
         super.ionViewDidEnter();
+        this.fetchContent().then(() => {
+            if (this.buttonText && !this.hasPlayed && this.navigationProv.canGoBack) {
+                this.navigationProv.canGoBack = false;
+                this.attemptQuiz();
+            }
+            else if (!this.navigationProv.canGoBack) {
+                this.navigationProv.canGoBack = true;
+                this.navCtrl.pop();
+            }
+        });
 
         if (this.hasPlayed) {
             this.hasPlayed = false;
@@ -505,7 +520,7 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
      * Open a quiz to attempt it.
      */
     protected openQuiz(): void {
-        this.navCtrl.push('AddonModQuizPlayerPage', {courseId: this.courseId, quizId: this.quiz.id, moduleUrl: this.module.url});
+        this.navCtrl.push('AddonModQuizPlayerPage', { courseId: this.courseId, quizId: this.quiz.id, moduleUrl: this.module.url });
     }
 
     /**
@@ -561,12 +576,12 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
         promises.push(this.quizProvider.loadFinishedOfflineData(attempts));
 
         // Get combined review options.
-        promises.push(this.quizProvider.getCombinedReviewOptions(this.quizData.id, {cmId: this.module.id}).then((result) => {
+        promises.push(this.quizProvider.getCombinedReviewOptions(this.quizData.id, { cmId: this.module.id }).then((result) => {
             this.options = result;
         }));
 
         // Get best grade.
-        promises.push(this.quizProvider.getUserBestGrade(this.quizData.id, {cmId: this.module.id}).then((best) => {
+        promises.push(this.quizProvider.getUserBestGrade(this.quizData.id, { cmId: this.module.id }).then((best) => {
             this.bestGrade = best;
 
             // Get gradebook grade.
@@ -596,7 +611,7 @@ export class AddonModQuizIndexComponent extends CoreCourseModuleMainActivityComp
             attempts.forEach((attempt) => {
                 // Highlight the highest grade if appropriate.
                 const shouldHighlight = this.overallStats && this.quizData.grademethod == AddonModQuizProvider.GRADEHIGHEST &&
-                        attempts.length > 1;
+                    attempts.length > 1;
 
                 this.quizHelper.setAttemptCalculatedData(this.quizData, attempt, shouldHighlight, quizGrade);
             });

@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, Optional, ElementRef, Renderer, ViewEncapsulation, forwardRef, ViewChild, Input,
-    OnDestroy } from '@angular/core';
+import {
+    Component, Optional, ElementRef, Renderer, ViewEncapsulation, forwardRef, ViewChild, Input,
+    OnDestroy
+} from '@angular/core';
 import {
     Tabs, Tab, NavController, ViewController, App, Config, Platform, DeepLinker, Keyboard, RootNode, NavOptions
 } from 'ionic-angular';
@@ -22,6 +24,7 @@ import { CoreUtilsProvider, PromiseDefer } from '@providers/utils/utils';
 import { CoreAppProvider } from '@providers/app';
 import { CoreDomUtilsProvider } from '@providers/utils/dom';
 import { TranslateService } from '@ngx-translate/core';
+import { NavigationProvider } from '@providers/navigation/navigation';
 
 /**
  * Equivalent to ion-tabs. It has several improvements:
@@ -33,7 +36,7 @@ import { TranslateService } from '@ngx-translate/core';
     selector: 'core-ion-tabs',
     templateUrl: 'core-ion-tabs.html',
     encapsulation: ViewEncapsulation.None,
-    providers: [{provide: RootNode, useExisting: forwardRef(() => CoreIonTabsComponent) }]
+    providers: [{ provide: RootNode, useExisting: forwardRef(() => CoreIonTabsComponent) }]
 })
 export class CoreIonTabsComponent extends Tabs implements OnDestroy {
 
@@ -74,9 +77,9 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
     protected selectTabPromiseDefer: PromiseDefer;
 
     constructor(protected utils: CoreUtilsProvider, protected appProvider: CoreAppProvider, @Optional() parent: NavController,
-            @Optional() viewCtrl: ViewController, _app: App, config: Config, elementRef: ElementRef, _plt: Platform,
-            renderer: Renderer, _linker: DeepLinker, protected domUtils: CoreDomUtilsProvider,
-            protected translate: TranslateService, keyboard?: Keyboard) {
+        @Optional() viewCtrl: ViewController, _app: App, config: Config, elementRef: ElementRef, _plt: Platform,
+        renderer: Renderer, _linker: DeepLinker, protected domUtils: CoreDomUtilsProvider, private navigationProv: NavigationProvider,
+        protected translate: TranslateService, keyboard?: Keyboard) {
         super(parent, viewCtrl, _app, config, elementRef, _plt, renderer, _linker, keyboard);
     }
 
@@ -201,7 +204,7 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
 
                     return true;
                 }
-            } else  {
+            } else {
                 const selected = this.getSelected();
                 if (selected && this.firstSelectedTab && selected.id != this.firstSelectedTab) {
                     // All history is gone but we are not in the first selected tab.
@@ -288,6 +291,7 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
                 const tab = typeof tabOrIndex == 'number' ? this.getByIndex(tabOrIndex) : tabOrIndex;
 
                 return this.confirmGoToRoot(tab).then(() => {
+                    this.navigationProv.canGoBack = true;
                     return super.select(tabOrIndex, opts, fromUrl);
                 }, () => {
                     // User cancelled.
@@ -322,10 +326,10 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
             if (tab) {
                 return this.confirmGoToRoot(tab).then(() => {
                     // User confirmed, go to root.
-                    return tab.goToRoot({animate: tab.isSelected, updateUrl: true, isNavRoot: true}).then(() => {
+                    return tab.goToRoot({ animate: tab.isSelected, updateUrl: true, isNavRoot: true }).then(() => {
                         // Tab not previously selected. Select it after going to root.
                         if (!tab.isSelected) {
-                            return this.select(tab, {animate: false, updateUrl: true, isNavRoot: true});
+                            return this.select(tab, { animate: false, updateUrl: true, isNavRoot: true });
                         }
                     });
                 }, () => {
@@ -382,7 +386,7 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
             return Promise.resolve();
         } else {
             if (tab.tabTitle) {
-                return this.domUtils.showConfirm(this.translate.instant('core.confirmgotabroot', {name: tab.tabTitle}));
+                return this.domUtils.showConfirm(this.translate.instant('core.confirmgotabroot', { name: tab.tabTitle }));
             } else {
                 return this.domUtils.showConfirm(this.translate.instant('core.confirmgotabrootdefault'));
             }

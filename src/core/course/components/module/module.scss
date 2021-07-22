@@ -1,7 +1,7 @@
 ion-app.app-root core-course-module {
-    .item-md{
-        .item-inner{
-            border:0px;
+    .item-md {
+        .item-inner {
+            border: 0px;
         }
         // padding: 3%;
         background-color: white;
@@ -10,6 +10,38 @@ ion-app.app-root core-course-module {
     margin: 3%;
     background-color: unset;
 
+    .custom-ion-item-course {
+        display: flex;
+        align-items: center !important;
+        border-radius: 5px;
+        margin: 0;
+        padding: 5px;
+
+        img.core-module-icon {
+            width: 30px !important;
+            height: 30px !important;
+            padding: 0 !important;
+            margin: 0 10px !important;
+            min-width: auto !important;
+        }
+
+        div.item-inner {
+            border: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+
+            ion-label {
+                .core-module-title {
+                    align-items: center !important;
+                }
+
+                core-format-text {
+                    padding: 0 !important;
+                    margin: 0 !important;
+                }
+            }
+        }
+    }
 
     //background: white;
     display: block;
@@ -76,10 +108,10 @@ ion-app.app-root core-course-module {
 
     .core-module-more-info {
         ion-badge {
-            @include text-align('start');
+            @include text-align("start");
         }
 
-        .core-module-availabilityinfo  {
+        .core-module-availabilityinfo {
             font-size: 90%;
             ul {
                 margin-block-start: 0.5em;
@@ -113,7 +145,7 @@ ion-app.app-root core-course-module {
             &.item-ios.activated,
             &.item-md:active,
             &.item-md.activated {
-              background-color: $core-dark-background-color;
+                background-color: $core-dark-background-color;
             }
         }
 
@@ -126,7 +158,7 @@ ion-app.app-root core-course-module {
 
 ion-app.app-root.md core-course-module {
     .core-module-description {
-        *{
+        * {
             font-size: small;
         }
         @include padding(null, $label-md-margin-end, null, null);

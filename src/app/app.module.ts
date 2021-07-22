@@ -169,6 +169,7 @@ import { QuizFeedbackModalPageModule } from '../pages/quiz-feedback-modal/quiz-f
 import { FaqPageModule } from '../pages/faq/faq.module';
 import { TutorialPageModule } from '../pages/tutorial/tutorial.module';
 import { VideotimeProvider } from '../providers/videotime/videotime';
+import { NavigationProvider } from '../providers/navigation/navigation';
 
 // For translate loader. AoT requires an exported function for factories.
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
@@ -373,6 +374,7 @@ export const WP_PROVIDER: any = null;
         {provide: LocationStrategy, useClass: MockLocationStrategy},
     LoginMidaProvider,
     VideotimeProvider,
+    NavigationProvider,
     ]
 })
 export class AppModule {

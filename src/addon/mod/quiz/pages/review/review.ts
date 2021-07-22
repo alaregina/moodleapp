@@ -57,10 +57,10 @@ export class AddonModQuizReviewPage implements OnInit {
     protected options: any; // Review options.
 
     constructor(navParams: NavParams, private modalCtrl: ModalController, protected translate: TranslateService,
-            protected domUtils: CoreDomUtilsProvider, protected timeUtils: CoreTimeUtilsProvider,
-            protected quizProvider: AddonModQuizProvider, protected quizHelper: AddonModQuizHelperProvider,
-            protected questionHelper: CoreQuestionHelperProvider, protected textUtils: CoreTextUtilsProvider, 
-            private courseProvider:CoreCourseProvider) {
+        protected domUtils: CoreDomUtilsProvider, protected timeUtils: CoreTimeUtilsProvider,
+        protected quizProvider: AddonModQuizProvider, protected quizHelper: AddonModQuizHelperProvider,
+        protected questionHelper: CoreQuestionHelperProvider, protected textUtils: CoreTextUtilsProvider,
+        private courseProvider: CoreCourseProvider) {
 
         this.quizId = navParams.get('quizId');
         this.courseId = navParams.get('courseId');
@@ -72,11 +72,13 @@ export class AddonModQuizReviewPage implements OnInit {
         this.navigationModal = modalCtrl.create('AddonModQuizNavigationModalPage', {
             isReview: true,
             page: this
-        }, { cssClass: 'core-modal-lateral',
+        }, {
+            cssClass: 'core-modal-lateral',
             showBackdrop: true,
             enableBackdropDismiss: true,
             enterAnimation: 'core-modal-lateral-transition',
-            leaveAnimation: 'core-modal-lateral-transition' });
+            leaveAnimation: 'core-modal-lateral-transition'
+        });
     }
 
     /**
@@ -84,7 +86,7 @@ export class AddonModQuizReviewPage implements OnInit {
      */
     ngOnInit(): void {
         this.fetchData().then(() => {
-            this.courseProvider.getModuleBasicInfoByInstance(this.attempt.quiz, "quiz").then(val=>console.log(val))
+            this.courseProvider.getModuleBasicInfoByInstance(this.attempt.quiz, "quiz").then(val => console.log(val))
             this.quizProvider.logViewAttemptReview(this.attemptId, this.quizId, this.quiz.name).catch((error) => {
                 // Ignore errors.
             });
@@ -106,6 +108,7 @@ export class AddonModQuizReviewPage implements OnInit {
      * @param slot Slot of the question to scroll to.
      */
     changePage(page: number, fromModal?: boolean, slot?: number): void {
+        console.log("🚀 ~ file: review.ts ~ line 109 ~ AddonModQuizReviewPage ~ changePage ~ page", page)
         if (typeof slot != 'undefined' && (this.attempt.currentpage == -1 || page == this.currentPage)) {
             // Scrol to a certain question in the current page.
             this.scrollToQuestion(slot);
@@ -143,7 +146,7 @@ export class AddonModQuizReviewPage implements OnInit {
             this.quiz = quizData;
             this.componentId = this.quiz.coursemodule;
 
-            return this.quizProvider.getCombinedReviewOptions(this.quizId, {cmId: this.quiz.coursemodule}).then((result) => {
+            return this.quizProvider.getCombinedReviewOptions(this.quizId, { cmId: this.quiz.coursemodule }).then((result) => {
                 this.options = result;
 
                 // Load the navigation data.
@@ -164,7 +167,7 @@ export class AddonModQuizReviewPage implements OnInit {
      * @return Promise resolved when done.
      */
     protected loadPage(page: number): Promise<void> {
-        return this.quizProvider.getAttemptReview(this.attemptId, {page, cmId: this.quiz.coursemodule}).then((data) => {
+        return this.quizProvider.getAttemptReview(this.attemptId, { page, cmId: this.quiz.coursemodule }).then((data) => {
             this.attempt = data.attempt;
             this.attempt.currentpage = page;
             this.currentPage = page;
@@ -196,7 +199,7 @@ export class AddonModQuizReviewPage implements OnInit {
      */
     protected loadNavigation(): Promise<void> {
         // Get all questions in single page to retrieve all the questions.
-        return this.quizProvider.getAttemptReview(this.attemptId, {page: -1, cmId: this.quiz.coursemodule}).then((data) => {
+        return this.quizProvider.getAttemptReview(this.attemptId, { page: -1, cmId: this.quiz.coursemodule }).then((data) => {
             const lastQuestion = data.questions[data.questions.length - 1];
 
             data.questions.forEach((question) => {
@@ -262,17 +265,19 @@ export class AddonModQuizReviewPage implements OnInit {
 
             // Treat grade.
             if (this.options.someoptions.marks >= AddonModQuizProvider.QUESTION_OPTIONS_MARK_AND_MAX &&
-                    this.quizProvider.quizHasGrades(this.quiz)) {
+                this.quizProvider.quizHasGrades(this.quiz)) {
 
                 if (data.grade === null || typeof data.grade == 'undefined') {
                     this.attempt.readableGrade = this.quizProvider.formatGrade(data.grade, this.quiz.decimalpoints);
                 } else {
                     // Show raw marks only if they are different from the grade (like on the entry page).
                     if (this.quiz.grade != this.quiz.sumgrades) {
-                        this.attempt.readableMark = this.translate.instant('addon.mod_quiz.outofshort', {$a: {
-                            grade: this.quizProvider.formatGrade(this.attempt.sumgrades, this.quiz.decimalpoints),
-                            maxgrade: this.quizProvider.formatGrade(this.quiz.sumgrades, this.quiz.decimalpoints)
-                        }});
+                        this.attempt.readableMark = this.translate.instant('addon.mod_quiz.outofshort', {
+                            $a: {
+                                grade: this.quizProvider.formatGrade(this.attempt.sumgrades, this.quiz.decimalpoints),
+                                maxgrade: this.quizProvider.formatGrade(this.quiz.sumgrades, this.quiz.decimalpoints)
+                            }
+                        });
                     }
 
                     // Now the scaled grade.
@@ -283,9 +288,9 @@ export class AddonModQuizReviewPage implements OnInit {
 
                     if (this.quiz.grade != 100) {
                         gradeObject.percent = this.textUtils.roundToDecimals(this.attempt.sumgrades * 100 / this.quiz.sumgrades, 0);
-                        this.attempt.readableGrade = this.translate.instant('addon.mod_quiz.outofpercent', {$a: gradeObject});
+                        this.attempt.readableGrade = this.translate.instant('addon.mod_quiz.outofpercent', { $a: gradeObject });
                     } else {
-                        this.attempt.readableGrade = this.translate.instant('addon.mod_quiz.outof', {$a: gradeObject});
+                        this.attempt.readableGrade = this.translate.instant('addon.mod_quiz.outof', { $a: gradeObject });
                     }
                 }
             }

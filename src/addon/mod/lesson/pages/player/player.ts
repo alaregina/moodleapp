@@ -80,14 +80,14 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
     protected lessonPages: any[]; // Lesson pages (for the lesson menu).
 
     constructor(protected navParams: NavParams, protected translate: TranslateService,
-            protected eventsProvider: CoreEventsProvider, protected sitesProvider: CoreSitesProvider,
-            protected syncProvider: CoreSyncProvider, protected domUtils: CoreDomUtilsProvider, popoverCtrl: PopoverController,
-            protected timeUtils: CoreTimeUtilsProvider, protected lessonProvider: AddonModLessonProvider,
-            protected lessonHelper: AddonModLessonHelperProvider, protected lessonSync: AddonModLessonSyncProvider,
-            protected lessonOfflineProvider: AddonModLessonOfflineProvider, protected cdr: ChangeDetectorRef,
-            modalCtrl: ModalController, protected navCtrl: NavController, protected appProvider: CoreAppProvider,
-            protected utils: CoreUtilsProvider, protected urlUtils: CoreUrlUtilsProvider, protected fb: FormBuilder,
-            protected mmApp: MoodleMobileApp) {
+        protected eventsProvider: CoreEventsProvider, protected sitesProvider: CoreSitesProvider,
+        protected syncProvider: CoreSyncProvider, protected domUtils: CoreDomUtilsProvider, popoverCtrl: PopoverController,
+        protected timeUtils: CoreTimeUtilsProvider, protected lessonProvider: AddonModLessonProvider,
+        protected lessonHelper: AddonModLessonHelperProvider, protected lessonSync: AddonModLessonSyncProvider,
+        protected lessonOfflineProvider: AddonModLessonOfflineProvider, protected cdr: ChangeDetectorRef,
+        modalCtrl: ModalController, protected navCtrl: NavController, protected appProvider: CoreAppProvider,
+        protected utils: CoreUtilsProvider, protected urlUtils: CoreUrlUtilsProvider, protected fb: FormBuilder,
+        protected mmApp: MoodleMobileApp) {
 
         this.lessonId = navParams.get('lessonId');
         this.courseId = navParams.get('courseId');
@@ -101,11 +101,13 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
         // Create the navigation modal.
         this.menuModal = modalCtrl.create('AddonModLessonMenuModalPage', {
             page: this
-        }, { cssClass: 'core-modal-lateral',
+        }, {
+            cssClass: 'core-modal-lateral',
             showBackdrop: true,
             enableBackdropDismiss: true,
             enterAnimation: 'core-modal-lateral-transition',
-            leaveAnimation: 'core-modal-lateral-transition' });
+            leaveAnimation: 'core-modal-lateral-transition'
+        });
     }
 
     /**
@@ -144,7 +146,7 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
         if (this.question && !this.eolData && !this.processData && this.originalData) {
             // Question shown. Check if there is any change.
             if (!this.utils.basicLeftCompare(this.questionForm.getRawValue(), this.originalData, 3)) {
-                 await this.domUtils.showConfirm(this.translate.instant('core.confirmcanceledit'));
+                await this.domUtils.showConfirm(this.translate.instant('core.confirmcanceledit'));
             }
         }
 
@@ -178,7 +180,7 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
     protected callFunction(func: Function, args: any[], options: any): Promise<any> {
         return func.apply(func, args).catch((error) => {
             if (!this.offline && !this.review && this.lessonProvider.isLessonOffline(this.lesson) &&
-                    !this.utils.isWebServiceError(error)) {
+                !this.utils.isWebServiceError(error)) {
                 // If it fails, go offline.
                 this.offline = true;
 
@@ -209,6 +211,8 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
      * @param ignoreCurrent If true, allow loading current page.
      */
     changePage(pageId: number, ignoreCurrent?: boolean): void {
+        console.log("🚀 ~ file: player.ts ~ line 212 ~ AddonModLessonPlayerPage ~ changePage ~ pageId", pageId)
+
         if (!ignoreCurrent && !this.eolData && this.currentPage == pageId) {
             // Page already loaded, stop.
             return;
@@ -253,7 +257,7 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
             };
 
             return this.callFunction(this.lessonProvider.getAccessInformation.bind(this.lessonProvider),
-                    [this.lesson.id, options], options);
+                [this.lesson.id, options], options);
         }).then((info) => {
             const promises = [];
 
@@ -284,9 +288,9 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
                     readingStrategy: this.offline ? CoreSitesReadingStrategy.PreferCache : CoreSitesReadingStrategy.OnlyNetwork,
                 };
                 promises.push(this.callFunction(this.lessonProvider.getLessonWithPassword.bind(this.lessonProvider),
-                        [this.lesson.id, options], options).then((lesson) => {
-                    this.lesson = lesson;
-                }));
+                    [this.lesson.id, options], options).then((lesson) => {
+                        this.lesson = lesson;
+                    }));
             }
 
             if (this.offline) {
@@ -630,7 +634,7 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
                 this.processData.buttons = [];
 
                 if (this.lesson.review && !result.correctanswer && !result.noanswer && !result.isessayquestion &&
-                       !result.maxattemptsreached && !result.reviewmode) {
+                    !result.maxattemptsreached && !result.reviewmode) {
                     // User can try again, show button to do so.
                     this.processData.buttons.push({
                         label: 'addon.mod_lesson.reviewquestionback',
@@ -640,7 +644,7 @@ export class AddonModLessonPlayerPage implements OnInit, OnDestroy {
 
                 // Button to continue.
                 if (this.lesson.review && !result.correctanswer && !result.noanswer && !result.isessayquestion &&
-                       !result.maxattemptsreached) {
+                    !result.maxattemptsreached) {
                     /* If both the "Yes, I'd like to try again" and "No, I just want to go on to the next question" point to the
                        same page then don't show the "No, I just want to go on to the next question" button. It's confusing. */
                     if (this.pageData.page.id != result.newpageid) {

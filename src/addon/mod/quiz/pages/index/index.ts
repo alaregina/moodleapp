@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, Navbar, NavController, NavParams } from 'ionic-angular';
 import { AddonModQuizIndexComponent } from '../../components/index/index';
 
 /**
@@ -26,12 +26,12 @@ import { AddonModQuizIndexComponent } from '../../components/index/index';
 })
 export class AddonModQuizIndexPage {
     @ViewChild(AddonModQuizIndexComponent) quizComponent: AddonModQuizIndexComponent;
-
+    @ViewChild('navbar') navBar: Navbar;
     title: string;
     module: any;
     courseId: number;
 
-    constructor(navParams: NavParams) {
+    constructor(navParams: NavParams, private navCtrl: NavController) {
         this.module = navParams.get('module') || {};
         this.courseId = navParams.get('courseId');
         this.title = this.module.name;
@@ -51,6 +51,11 @@ export class AddonModQuizIndexPage {
      */
     ionViewDidEnter(): void {
         this.quizComponent.ionViewDidEnter();
+        this.navBar.backButtonClick = (e: UIEvent) => {
+            // trovami back
+            console.log('cliccato su back', e);
+            this.navCtrl.pop({});
+        }
     }
 
     /**

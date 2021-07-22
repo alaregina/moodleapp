@@ -187,6 +187,8 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      * @param button Clicked button.
      */
     behaviourButtonClicked(button: any): void {
+        console.log("🚀 ~ file: player.ts ~ line 190 ~ AddonModQuizPlayerPage ~ behaviourButtonClicked ~ button", button)
+
         // Confirm that the user really wants to do it.
         this.domUtils.showConfirm(this.translate.instant('core.areyousure')).then(() => {
             const modal = this.domUtils.showModalLoading('core.sending', true);
@@ -230,6 +232,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      * @param slot Slot of the question to scroll to.
      */
     changePage(page: number, fromModal?: boolean, slot?: number): void {
+        console.log("🚀 ~ file: player.ts ~ line 233 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
         if (page != -1 && (this.attempt.state == AddonModQuizProvider.ATTEMPT_OVERDUE || this.attempt.finishedOffline)) {
             // We can't load a page if overdue or the local attempt is finished.
             return;
@@ -368,14 +371,16 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      * @return Promise resolved when done.
      */
     finishAttempt(userFinish?: boolean, timeUp?: boolean): Promise<void> {
-        let promise;
+        // let promise; //rimosso e sostituito con quest sotto
+        let promise = Promise.resolve();
         console.log("invia tutto e termina function");
+        // tolto allert di conferma dell'invia
         // Show confirm if the user clicked the finish button and the quiz is in progress.
-        if (!timeUp && this.attempt.state == AddonModQuizProvider.ATTEMPT_IN_PROGRESS) {
-            promise = this.domUtils.showConfirm(this.translate.instant('addon.mod_quiz.confirmclose'));
-        } else {
-            promise = Promise.resolve();
-        }
+        // if (!timeUp && this.attempt.state == AddonModQuizProvider.ATTEMPT_IN_PROGRESS) {
+        //     promise = this.domUtils.showConfirm(this.translate.instant('addon.mod_quiz.confirmclose'));
+        // } else {
+        //     promise = Promise.resolve();
+        // }
 
         return promise.then(() => {
             const modal = this.domUtils.showModalLoading('core.sending', true);
