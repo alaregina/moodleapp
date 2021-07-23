@@ -30,8 +30,7 @@ export class CoreCoursesMyCoursesPage {
 
     constructor(params: NavParams, private navCtrl: NavController) {
         this.type = params.get('type');
-        console.log(this.type)
-     }
+    }
 
     /**
      * Go to search courses.

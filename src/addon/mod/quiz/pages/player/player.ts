@@ -190,7 +190,9 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
         console.log("🚀 ~ file: player.ts ~ line 190 ~ AddonModQuizPlayerPage ~ behaviourButtonClicked ~ button", button)
 
         // Confirm that the user really wants to do it.
-        this.domUtils.showConfirm(this.translate.instant('core.areyousure')).then(() => {
+        let promise = Promise.resolve();
+        // this.domUtils.showConfirm(this.translate.instant('core.areyousure')).then(() => {
+        promise.then(() => {
             const modal = this.domUtils.showModalLoading('core.sending', true);
 
             // Get the answers.
@@ -232,20 +234,23 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      * @param slot Slot of the question to scroll to.
      */
     changePage(page: number, fromModal?: boolean, slot?: number): void {
-        console.log("🚀 ~ file: player.ts ~ line 233 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
         if (page != -1 && (this.attempt.state == AddonModQuizProvider.ATTEMPT_OVERDUE || this.attempt.finishedOffline)) {
+            console.log("🚀 ~ file: player.ts ~ line 236 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
             // We can't load a page if overdue or the local attempt is finished.
             return;
         } else if (page == this.attempt.currentpage && !this.showSummary && typeof slot != 'undefined') {
+            console.log("🚀 ~ file: player.ts ~ line 240 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
             // Navigating to a question in the current page.
             this.scrollToQuestion(slot);
 
             return;
         } else if ((page == this.attempt.currentpage && !this.showSummary) || (fromModal && this.quiz.isSequential && page != -1)) {
+            console.log("🚀 ~ file: player.ts ~ line 246 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
             // If the user is navigating to the current page we do nothing.
             // Also, in sequential quizzes we don't allow navigating using the modal except for finishing the quiz (summary).
             return;
         } else if (page === -1 && this.showSummary) {
+            console.log("🚀 ~ file: player.ts ~ line 251 ~ AddonModQuizPlayerPage ~ changePage ~ page", page)
             // Summary already shown.
             return;
         }
@@ -268,8 +273,10 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
 
             if (page === -1) {
                 subPromise = this.loadSummary();
+                console.log("🚀 ~ file: player.ts ~ line 274 ~ AddonModQuizPlayerPage ~ promise.then ~ subPromise", subPromise)
             } else {
                 subPromise = this.loadPage(page);
+                console.log("🚀 ~ file: player.ts ~ line 277 ~ AddonModQuizPlayerPage ~ promise.then ~ subPromise", subPromise)
             }
 
             return subPromise.catch((error) => {
@@ -472,6 +479,7 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
 
             this.questions = data.questions;
             this.nextPage = data.nextpage;
+            console.log("🚀 ~ file: player.ts ~ line 478 ~ AddonModQuizPlayerPage ~ loadPage ~ data", data);
             this.previousPage = this.quiz.isSequential ? -1 : page - 1;
             this.showSummary = false;
 

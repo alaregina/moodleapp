@@ -61,14 +61,14 @@ export class CoreLoginCredentialsPage implements OnDestroy {
     protected valueChangeSubscription: Subscription;
 
     constructor(private navCtrl: NavController,
-            navParams: NavParams,
-            fb: FormBuilder,
-            private appProvider: CoreAppProvider,
-            private sitesProvider: CoreSitesProvider,
-            private loginHelper: CoreLoginHelperProvider,
-            private domUtils: CoreDomUtilsProvider,
-            private translate: TranslateService,
-            private eventsProvider: CoreEventsProvider) {
+        navParams: NavParams,
+        fb: FormBuilder,
+        private appProvider: CoreAppProvider,
+        private sitesProvider: CoreSitesProvider,
+        private loginHelper: CoreLoginHelperProvider,
+        private domUtils: CoreDomUtilsProvider,
+        private translate: TranslateService,
+        private eventsProvider: CoreEventsProvider) {
 
         this.siteUrl = navParams.get('siteUrl');
         this.siteName = navParams.get('siteName') || null;
@@ -196,7 +196,7 @@ export class CoreLoginCredentialsPage implements OnDestroy {
             const disabledFeatures = this.loginHelper.getDisabledFeatures(this.siteConfig);
             this.identityProviders = this.loginHelper.getValidIdentityProviders(this.siteConfig, disabledFeatures);
             this.canSignup = this.siteConfig.registerauth == 'email' &&
-                    !this.loginHelper.isEmailSignupDisabled(this.siteConfig, disabledFeatures);
+                !this.loginHelper.isEmailSignupDisabled(this.siteConfig, disabledFeatures);
             this.showForgottenPassword = !this.loginHelper.isForgottenPasswordDisabled(this.siteConfig, disabledFeatures);
 
             if (!this.eventThrown && !this.viewLeft) {
@@ -318,7 +318,7 @@ export class CoreLoginCredentialsPage implements OnDestroy {
         this.domUtils.showAlertWithOptions({
             title: this.translate.instant('core.login.faqwhereisqrcode'),
             message: this.translate.instant('core.login.faqwhereisqrcodeanswer',
-                {$image: CoreLoginHelperProvider.FAQ_QRCODE_IMAGE_HTML}),
+                { $image: CoreLoginHelperProvider.FAQ_QRCODE_IMAGE_HTML }),
             buttons: [
                 {
                     text: this.translate.instant('core.cancel'),
@@ -354,7 +354,7 @@ export class CoreLoginCredentialsPage implements OnDestroy {
             const scheme = CoreUrlUtils.instance.getUrlProtocol(text);
 
             if (scheme && scheme != 'http' && scheme != 'https') {
-                this.domUtils.showErrorModal(this.translate.instant('core.errorurlschemeinvalidscheme', {$a: text}));
+                this.domUtils.showErrorModal(this.translate.instant('core.errorurlschemeinvalidscheme', { $a: text }));
             } else {
                 this.domUtils.showErrorModal('core.login.errorqrnoscheme', true);
             }
@@ -368,8 +368,8 @@ export class CoreLoginCredentialsPage implements OnDestroy {
         this.valueChangeSubscription && this.valueChangeSubscription.unsubscribe();
     }
 
-    goToMIDALogin(){
+    goToMIDALogin(): void {
         const params = { siteUrl: this.siteUrl };
-        this.navCtrl.push('LoginMidaPage', params)
+        this.navCtrl.push('LoginMidaPage', params);
     }
 }

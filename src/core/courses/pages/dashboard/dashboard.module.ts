@@ -21,7 +21,6 @@ import { CoreDirectivesModule } from '@directives/directives.module';
 import { CoreCoursesComponentsModule } from '../../components/components.module';
 import { CoreSiteHomeComponentsModule } from '@core/sitehome/components/components.module';
 import { CoreBlockComponentsModule } from '@core/block/components/components.module';
-import { JuicehomeComponent } from '@components/juicehome/juicehome'
 
 @NgModule({
     declarations: [
@@ -37,4 +36,4 @@ import { JuicehomeComponent } from '@components/juicehome/juicehome'
         TranslateModule.forChild()
     ],
 })
-export class CoreCoursesDashboardPageModule {}
+export class CoreCoursesDashboardPageModule { }

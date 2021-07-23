@@ -83,16 +83,21 @@
         <!-- Go to next or previous page. -->
         <ion-grid text-wrap *ngIf="questions && questions.length && !quizAborted && !showSummary">
             <ion-row>
-                <ion-col *ngIf="previousPage >= 0">
+                <ion-col *ngIf="previousPage >= 0 && !questions[0].behaviourButtons">
                     <button ion-button block icon-start color="light" (click)="changePage(previousPage)">
                         <ion-icon name="arrow-back" md="ios-arrow-back"></ion-icon>
                         {{ 'core.previous' | translate }}
                     </button>
                 </ion-col>
-                <ion-col *ngIf="nextPage >= -1">
+                <ion-col *ngIf="nextPage > -1 && !questions[0].behaviourButtons">
                     <button ion-button block icon-end (click)="changePage(nextPage)">
                         {{ 'core.next' | translate }}
                         <ion-icon name="arrow-forward" md="ios-arrow-forward"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col *ngIf="nextPage == -1 &&  !questions[0].behaviourButtons">
+                    <button ion-button block icon-end (click)="finishAttempt(true)">
+                        {{ 'addon.mod_lesson.finish' | translate }}
                     </button>
                 </ion-col>
             </ion-row>
