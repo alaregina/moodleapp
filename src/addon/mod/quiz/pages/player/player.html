@@ -95,7 +95,7 @@
                         <ion-icon name="arrow-forward" md="ios-arrow-forward"></ion-icon>
                     </button>
                 </ion-col>
-                <ion-col *ngIf="nextPage == -1 &&  !questions[0].behaviourButtons">
+                <ion-col *ngIf="nextPage == -1 && !questions[0].behaviourButtons">
                     <button ion-button block icon-end (click)="finishAttempt(true)">
                         {{ 'addon.mod_lesson.finish' | translate }}
                     </button>

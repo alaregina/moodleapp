@@ -187,7 +187,6 @@ export class AddonModQuizPlayerPage implements OnInit, OnDestroy {
      * @param button Clicked button.
      */
     behaviourButtonClicked(button: any): void {
-        console.log("🚀 ~ file: player.ts ~ line 190 ~ AddonModQuizPlayerPage ~ behaviourButtonClicked ~ button", button)
 
         // Confirm that the user really wants to do it.
         let promise = Promise.resolve();
