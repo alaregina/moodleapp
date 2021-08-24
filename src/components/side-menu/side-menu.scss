@@ -1,64 +1,84 @@
 side-menu {
-    .user-fullname{
+    .scroll-content {
+        min-width: 30vw !important;
+    }
+    .user-fullname {
         font-weight: bold;
         color: black;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
-    ion-list{
+    ion-list {
         width: fit-content;
     }
     ion-menu {
-        .menu-inner{
+        .menu-inner {
             width: fit-content;
         }
-        .scroll-content{
+        .scroll-content {
             width: fit-content;
             background-color: $background-color;
         }
     }
     .icon-link {
-        text-align:center;
-        width:fit-content;
-        margin-bottom: 30%!important;
-        img{
+        text-align: center;
+        width: fit-content;
+        // margin-bottom: 30% !important;
+        margin: 0 !important;
+        padding: 10% !important;
+        border: 0 !important;
+        ion-label {
+            margin: 0 !important;
+        }
+        img {
             border-radius: 50%;
         }
     }
-    .item-md{
-        padding-right:16px!important;
+    .item-md {
+        padding-right: 16px !important;
     }
-    .sidemenu-item{
+    .sidemenu-item {
         font-weight: 100;
         font-size: x-small;
         text-align: center;
-        margin-bottom: 10%!important;
+        // margin-bottom: 10%!important;
+        margin: 10% 0 !important;
+        padding: 5% !important;
+        border: 0 !important;
+        ion-label {
+            margin: 0 !important;
+        }
     }
 
-    span.sidemenu-item-title{
+    span.sidemenu-item-title {
         margin-top: 1rem;
         font-weight: 100;
         font-size: x-small;
     }
 
-    .sidemenu-item-icon{
-        margin-bottom:10px;
+    .sidemenu-item-icon {
+        margin-bottom: 10px;
         min-width: 50px;
         min-height: 50px;
     }
-    .dashboard-icon{
-        background: url('#{$assets-path}/img/icons/dashboard.svg') round;
+    .dashboard-icon {
+        background: url("#{$assets-path}/img/icons/dashboard.svg") round;
     }
-    .customer-care-icon{
-        background: url('#{$assets-path}/img/icons/customer-care.svg') round;
+    .customer-care-icon {
+        background: url("#{$assets-path}/img/icons/customer-care.svg") round;
     }
-    .tutorial-icon{
-        background: url('#{$assets-path}/img/icons/tutorial.svg') round;
+    .tutorial-icon {
+        background: url("#{$assets-path}/img/icons/tutorial.svg") round;
     }
-    .faq-icon{
-        background: url('#{$assets-path}/img/icons/faq.svg') round;
+    .faq-icon {
+        background: url("#{$assets-path}/img/icons/faq.svg") round;
     }
-    .item-inner{
-        background-image: unset!important;
-        padding: 0px!important;
-        border:0px!important;
+    .item-inner {
+        background-image: unset !important;
+        padding: 0px !important;
+        border: 0px !important;
     }
 }

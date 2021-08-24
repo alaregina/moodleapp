@@ -33,6 +33,9 @@ juicehome {
     h1.name {
         margin-bottom: 0.75rem;
         margin-top: 0px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         b {
             font-size: xx-large;
         }
