@@ -5,7 +5,6 @@ ion-app.app-root ion-badge.core-course-download-section-progress {
 }
 
 ion-app.app-root core-course-format {
-
     .core-format-progress-list {
         margin-bottom: 0;
 
@@ -45,7 +44,7 @@ ion-app.app-root core-course-format {
         }
     }
 
-    .item-divider  {
+    .item-divider {
         .label {
             margin-top: 0;
             margin-bottom: 0;
@@ -60,7 +59,7 @@ ion-app.app-root core-course-format {
             margin-bottom: 9px;
         }
 
-        &.core-section-download .label{
+        &.core-section-download .label {
             @include margin(null, 0, null, null);
         }
     }
@@ -82,15 +81,15 @@ ion-app.app-root core-course-format {
         }
     }
 
-    .course-general-info{
+    .course-general-info {
         margin-top: 16px;
         margin-left: 16px;
-        div:not(.course-title){
-            *{
-                margin:0px;
+        div:not(.course-title) {
+            * {
+                margin: 0px;
             }
         }
-        .course-title{
+        .course-title {
             overflow: visible;
             width: 140px;
             white-space: nowrap;
@@ -105,99 +104,99 @@ ion-app.app-root core-course-format {
         }
     }
 
-    .section-button{
-        border-radius: 8px;
-        border: 1px solid $gray-dark;
+    .section-button {
+        border-radius: 5px;
+        border: 2px solid $gray-dark;
         font-size: large;
-        p{
+        p {
             margin: 3px;
         }
     }
 
-    .section-button[selected='true']{
-        border-radius: 10px;
+    .section-button[selected="true"] {
+        border-radius: 5px;
         background-color: $ottanium;
-        border: 1px solid $ottanium;
+        border: 2px solid $ottanium;
         color: $white;
     }
 
-    .content-slide[selected='true']{
-        .selection-bar{
+    .content-slide[selected="true"] {
+        .selection-bar {
             border-radius: 15%;
             height: 5px;
-            width:100%;
+            width: 100%;
             background-color: $ottanium;
-            z-index:10001;
+            z-index: 10001;
         }
         font-weight: bold;
     }
 
-    .content-slide{
-        .selection-bar{
+    .content-slide {
+        .selection-bar {
             height: 5px;
-            width:100%;
+            width: 100%;
             background-color: $gray-light;
         }
-        .selection-bar-first{
+        .selection-bar-first {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             height: 5px;
-            width:100%;
+            width: 100%;
             background-color: $gray-light;
         }
-        .selection-bar-last{
+        .selection-bar-last {
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
             height: 5px;
-            width:100%;
+            width: 100%;
             background-color: $gray-light;
         }
     }
 
-    .content-selection-text{
+    .content-selection-text {
         font-size: small;
     }
-    .section-slider{
+    .section-slider {
         margin: 20px;
     }
 
-    .section{
+    .section {
         height: 100%;
         background-color: $gray-lighter;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
     }
 
-    .item-md{
+    .item-md {
         background-color: unset;
     }
 
-    .swiper-pagination-bullet{
+    .swiper-pagination-bullet {
         display: none;
-     }
-
-    p.episodes{
-        margin-top:0px;
     }
-    .subsections{
+
+    p.episodes {
+        margin-top: 0px;
+    }
+    .subsections {
         padding-top: 2rem;
-        .subsection-container{
+        .subsection-container {
             margin: 3%;
             background-color: unset;
             display: block;
         }
-        .core-subsection{
+        .core-subsection {
             align-items: flex-start;
             min-height: 52px;
             background-color: $white;
-            .core-subsection-title{
+            .core-subsection-title {
                 font-weight: bold;
                 font-size: large;
             }
         }
     }
 
-    .notification-badge{
+    .notification-badge {
         position: absolute;
         top: 3px;
         right: 3px;
@@ -208,19 +207,19 @@ ion-app.app-root core-course-format {
         font-size: 1.2rem;
     }
 
-    .pending-test-badge{
+    .pending-test-badge {
         margin: 5px;
-        display:flex;
+        display: flex;
         justify-content: space-between;
         background-color: $ottanium;
         border-radius: 10px;
-        span{
+        span {
             padding: 10px;
         }
-        button{
+        button {
             background-color: transparent;
-            padding: .75rem 1.25rem;
-            ion-icon{
+            padding: 0.75rem 1.25rem;
+            ion-icon {
                 font-weight: bold;
                 font-size: 1.6em;
             }

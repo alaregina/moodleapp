@@ -1549,3 +1549,12 @@ core-site-plugins-plugin-content {
     display: none;
   }
 }
+
+// lne-height custom to multiple quiz text
+.line-height-25 {
+  core-format-text {
+    p {
+      line-height: 25px;
+    }
+  }
+}

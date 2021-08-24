@@ -51,11 +51,11 @@ export class AddonModQuizIndexPage {
      */
     ionViewDidEnter(): void {
         this.quizComponent.ionViewDidEnter();
-        this.navBar.backButtonClick = (e: UIEvent) => {
-            // trovami back
-            console.log('cliccato su back', e);
-            this.navCtrl.pop({});
-        }
+        // this.navBar.backButtonClick = (e: UIEvent) => {
+        //     // trovami back
+        //     console.log('cliccato su back', e);
+        //     this.navCtrl.pop({});
+        // }
     }
 
     /**
