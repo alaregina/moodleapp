@@ -52,16 +52,16 @@ export class CoreLoginInitPage {
                     if (redirectData.siteId != CoreConstants.NO_SITE_ID) {
                         // The redirect is pointing to a site, load it.
                         return this.sitesProvider.loadSite(redirectData.siteId, redirectData.page, redirectData.params)
-                                .then((loggedIn) => {
+                            .then((loggedIn) => {
 
-                            if (loggedIn) {
-                                return this.loginHelper.goToSiteInitialPage(this.navCtrl, redirectData.page, redirectData.params,
+                                if (loggedIn) {
+                                    return this.loginHelper.goToSiteInitialPage(this.navCtrl, redirectData.page, redirectData.params,
                                         { animate: false });
-                            }
-                        }).catch(() => {
-                            // Site doesn't exist.
-                            return this.loadPage();
-                        });
+                                }
+                            }).catch(() => {
+                                // Site doesn't exist.
+                                return this.loadPage();
+                            });
                     } else {
                         // No site to load, open the page.
                         return this.loginHelper.goToNoSitePage(this.navCtrl, redirectData.page, redirectData.params);
@@ -74,7 +74,7 @@ export class CoreLoginInitPage {
             // If we hide the splash screen now, the init view is still seen for an instant. Wait a bit to make sure it isn't seen.
             setTimeout(() => {
                 this.splashScreen.hide();
-            }, 100);
+            }, 1000);
         });
     }
 

@@ -4,7 +4,7 @@ $core-splash-bgcolor: $core-color-init-screen !default;
 
 ion-app.app-root page-core-login-init {
     .scroll-content {
-        background: $core-splash-bgcolor; /* Change this to add a bg image or change color */
+        background: $red; /* Change this to add a bg image or change color */
         overflow: hidden;
         position: absolute;
         @include position(0, 0, 0, 0);
@@ -19,14 +19,24 @@ ion-app.app-root page-core-login-init {
 
         background-image: url("#{$assets-path}/img/splash.png");
         background-repeat: no-repeat;
-        background-size: 100%;
-        background-size: $core-splash-bgsize;
-        background-position: center;
+        background-size: contain;
+        background-position: center center;
         width: 100%;
         height: 100%;
 
-        .spinner circle, .spinner line {
-            stroke: $core-splash-spinner-color;
+        ion-spinner {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -80%);
+
+            svg {
+                width: 35px !important;
+                height: 35px !important;
+                circle {
+                    stroke: #ffffff;
+                }
+            }
         }
     }
 }

@@ -1,88 +1,116 @@
 <ion-content>
-    <ion-refresher [enabled]="categoriesLoaded" (ionRefresh)="refreshCategories($event)">
-        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
-    </ion-refresher>
-    <core-loading [hideUntil]="userLoaded">
-      <ion-grid style="padding: 4%;">
+  <ion-refresher [enabled]="categoriesLoaded" (ionRefresh)="refreshCategories($event)">
+    <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}"></ion-refresher-content>
+  </ion-refresher>
+  <core-loading [hideUntil]="userLoaded">
+
+    <ion-grid class="grid-utente-home">
+
+      <ion-avatar core-user-avatar class="item-avatar-center" [user]="user" [userId]="user.id" [linkProfile]="false">
+      </ion-avatar>
+      <ion-row style="margin-left: 10px;">
+        <ion-col class="header">
+          <h1 class="name">{{ user.fullname }}</h1>
+          <img [src]="badge" item-start class="goccia-rossa">
+        </ion-col>
+      </ion-row>
+      <ion-row style="margin-left: auto;">
+        <ion-col class="header">
+          <div class="points">
+            <span>POINTS</span>
+            <h2 class="red-text">{{points}}</h2>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </core-loading>
+  <!-- <div>
+    <ion-grid class="categories">
+      <ion-row>
+        <ion-col col-12>
+          <div class="select-category">
+            <b>Vai alla pagina docenti</b>
+          </div>
+        </ion-col>
+        <ion-col col-6 col-md-3 col-lg-2>
+          <ion-card class="course-card" text-center (click)="goToDocentiPage()">
+            <ion-card-header>
+              <h1><strong>DOCENTI</strong></h1>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div> -->
+  <core-loading [hideUntil]="categoriesLoaded">
+    <div *ngIf="macrocategories?.length > 0">
+      <ion-grid class="categories">
         <ion-row>
-          <ion-col class="header">
-            <h1 class="name"><b>{{ user.fullname }}</b></h1>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="header">
-              <img *ngIf="!!badge" [src]="badge" item-start  class="goccia-rossa">
-            <div class="points">
-              <h2 class="red-text"><b>{{points}}</b></h2>
+          <ion-col col-12>
+            <div class="select-category">
+              <b>MACROAREE</b>
             </div>
+          </ion-col>
+          <ion-col col-6 col-md-3 col-lg-2 *ngFor="let macrocategory of macrocategories" style="min-width: 100%;">
+            <ion-card class="course-card" text-center (click)="selectMacroCategory(macrocategory.id)"
+              [attr.selected]="macrocategory.id==selectedMacrocategory">
+              <ion-card-header>
+                <h1><strong>{{macrocategory.name | uppercase}}</strong></h1>
+                <div class="pipe-divide"></div>
+                <div class="number-cors-card">12 corsi</div>
+              </ion-card-header>
+            </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </core-loading>
-    <core-loading [hideUntil]="categoriesLoaded">
-      <div *ngIf="macrocategories?.length > 0">
-        <ion-grid class="categories">
-            <ion-row>
-            <ion-col col-12>
-                <div class="select-category">
-                    <b>Seleziona una macroarea</b>
-                </div>
-            </ion-col>
-            <ion-col col-6 col-md-3 col-lg-2 *ngFor="let macrocategory of macrocategories">
-                <ion-card class="course-card" text-center (click)="selectMacroCategory(macrocategory.id)" [attr.selected]="macrocategory.id==selectedMacrocategory">
-                    <ion-card-header>
-                      <h1><strong>{{macrocategory.name | uppercase}}</strong></h1>
-                    </ion-card-header>
-                  </ion-card>
-            </ion-col>
+    </div>
+    <div *ngIf="categories?.length > 0">
+      <ion-grid class="categories">
+        <ion-row>
+          <ion-col col-12>
+            <div class="select-category">
+              <b>Seleziona una categoria</b>
+            </div>
+          </ion-col>
+          <ion-col col-6 col-md-3 col-lg-2 *ngFor="let category of categories">
+            <ion-card class="course-card" text-center (click)="openCategory(category)"
+              [attr.selected]="category.id==selectedCategory?.id">
+              <ion-card-header>
+                <h1><strong>{{category.name | uppercase}}</strong></h1>
+              </ion-card-header>
+              <ion-card-content [class]="category.name | lowercase">
+                {{getCount(category)}} Corsi
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
         </ion-row>
-        </ion-grid>
+      </ion-grid>
     </div>
-        <div *ngIf="categories?.length > 0">
-            <ion-grid class="categories">
-                <ion-row>
-                <ion-col col-12>
-                    <div class="select-category">
-                        <b>Seleziona una categoria</b>
-                    </div>
-                </ion-col>
-                <ion-col col-6 col-md-3 col-lg-2 *ngFor="let category of categories">
-                    <ion-card class="course-card" text-center (click)="openCategory(category)" [attr.selected]="category.id==selectedCategory?.id">
-                        <ion-card-header>
-                          <h1><strong>{{category.name | uppercase}}</strong></h1>
-                        </ion-card-header>
-                        <ion-card-content [class]="category.name | lowercase">
-                          {{getCount(category)}} Corsi
-                        </ion-card-content>
-                      </ion-card>
-                </ion-col>
-            </ion-row>
-            </ion-grid>
-        </div>
-    </core-loading>
-    <div *ngIf="courses && !selectedCategory && !selectedMacrocategory">
-      <div style="padding: 0 4%;" *ngIf="highlighted(courses).length>0">
-        <h4>{{'core.courses.evidence' | translate}}</h4>
-        <ion-slides #slides pager spaceBetween="0" [slidesPerView]="highlighted(courses).length==1 ? 1:1.3">
-          <ion-slide *ngFor="let course of highlighted(courses)">
-            <course-progress [course]="course" class="core-courseoverview" showAll="true">
-            </course-progress>
-          </ion-slide>
-          
-        </ion-slides>
-      </div>
-      <div style="padding: 0 4%;" *ngIf="resume(courses).length>0">
-        <h4>{{'core.courses.resume' | translate}}</h4>
-        <ion-slides #slides pager spaceBetween="0" [slidesPerView]="resume(courses).length==1 ? 1:1.3">
-          <ion-slide *ngFor="let course of resume(courses)">
-            <course-progress [course]="course" class="core-courseoverview" showAll="true">
-            </course-progress>
-          </ion-slide>
-          
-        </ion-slides>
-      </div>
+  </core-loading>
+  <div *ngIf="courses && !selectedCategory && !selectedMacrocategory">
+    <div style="padding: 0 4%;" *ngIf="highlighted(courses).length>0">
+      <h4>{{'core.courses.evidence' | translate}}</h4>
+      <ion-slides #slides pager spaceBetween="0" [slidesPerView]="highlighted(courses).length==1 ? 1:1.3">
+        <ion-slide *ngFor="let course of highlighted(courses)">
+          <course-progress [course]="course" class="core-courseoverview" showAll="true">
+          </course-progress>
+        </ion-slide>
+
+      </ion-slides>
     </div>
-    <courses [categoryId]="selectedCategory?.id" [coursesCategory]="coursesCategory" (close)="dismiss($event)" *ngIf="!!selectedCategory && selectedCategory?.id!=-1">
-      
-    </courses>
+    <div style="padding: 0 4%;" *ngIf="resume(courses).length>0">
+      <h4>{{'core.courses.resume' | translate}}</h4>
+      <ion-slides #slides pager spaceBetween="0" [slidesPerView]="resume(courses).length==1 ? 1:1.3">
+        <ion-slide *ngFor="let course of resume(courses)">
+          <course-progress [course]="course" class="core-courseoverview" showAll="true">
+          </course-progress>
+        </ion-slide>
+
+      </ion-slides>
+    </div>
+  </div>
+  <courses [categoryId]="selectedCategory?.id" [coursesCategory]="coursesCategory" (close)="dismiss($event)"
+    *ngIf="!!selectedCategory && selectedCategory?.id!=-1">
+
+  </courses>
 </ion-content>

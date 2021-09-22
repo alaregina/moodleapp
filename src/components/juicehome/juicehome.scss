@@ -3,6 +3,11 @@ juicehome {
         padding: 0 4% !important;
     }
 
+    ion-grid.grid-utente-home {
+        flex-direction: row;
+        align-items: center;
+    }
+
     ion-col.header {
         padding: 0 5px !important;
     }
@@ -16,14 +21,22 @@ juicehome {
     }
 
     h2.red-text {
-        margin-top: 0;
-        b {
+        margin: 0;
+        color: $red;
+        font-size: 26px;
+    }
+
+    div.points {
+        text-align: end;
+        span {
             color: $red;
+            font-size: 10px;
+            font-weight: 600;
         }
     }
 
     div.points h1 {
-        margin-top: 0px;
+        margin: 0;
         b {
             font-size: xx-large;
             color: $red;
@@ -31,14 +44,11 @@ juicehome {
     }
 
     h1.name {
-        margin-bottom: 0.75rem;
-        margin-top: 0px;
+        margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        b {
-            font-size: xx-large;
-        }
+        font-size: 14px;
     }
 
     h1 strong {
@@ -47,9 +57,30 @@ juicehome {
 
     ion-card.course-card {
         width: 100% !important;
-        border-radius: 4% !important;
+        border-radius: 4px !important;
         background-color: white !important;
         margin: 0px !important;
+        box-shadow: 0 0 5px 0px #ececee !important;
+
+        .card-header-ios,
+        .card-header-md {
+            padding: 10px 15px !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .pipe-divide {
+                border: 1px solid #ececee;
+                position: absolute;
+                height: calc(100% - 10px);
+                top: 5px;
+                right: 90px;
+            }
+
+            .number-cors-card {
+                color: $red;
+            }
+        }
     }
     ion-card[selected="true"] {
         background-color: $ottanium !important;

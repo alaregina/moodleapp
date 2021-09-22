@@ -1,0 +1,46 @@
+page-teachers {
+    .container-ion-card-teacher {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .ion-card-teacher {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 0 3px 1px #c3bebe;
+            padding: 5px 10px;
+            margin-bottom: 15px;
+            width: 48%;
+
+            @media (min-width: 451px) {
+                &:nth-child(4n),
+                &:nth-child(4n-1) {
+                    background: #e4e4e4;
+                }
+            }
+
+            @media (max-width: 450px) {
+                width: 100%;
+                &:nth-child(even) {
+                    background: #e4e4e4;
+                }
+            }
+
+            ion-avatar {
+                img {
+                    width: 70px !important;
+                    height: 70px !important;
+                    border-radius: 50%;
+                }
+            }
+
+            .ion-card-teacher-name {
+                margin-left: 15px;
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+    }
+}

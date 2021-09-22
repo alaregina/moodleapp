@@ -256,6 +256,8 @@ export class CoreIonTabsComponent extends Tabs implements OnDestroy {
                 originalTabsEl = this.originalTabsRef.nativeElement;
 
             this._tabs.forEach((tab, index) => {
+                if (index == 2) tab.tabIcon = "apps";
+                if (index == 3) tab.tabIcon = "bookmark";
                 const originalIndex = Array.prototype.indexOf.call(originalTabsEl.children, tab.getNativeElement());
                 if (originalIndex != -1) {
                     newTabs[originalIndex] = tab;

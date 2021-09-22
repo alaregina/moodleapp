@@ -1,6 +1,6 @@
 side-menu {
     .scroll-content {
-        min-width: 30vw !important;
+        min-width: 70vw !important;
     }
     .user-fullname {
         font-weight: bold;
@@ -20,7 +20,10 @@ side-menu {
         }
         .scroll-content {
             width: fit-content;
-            background-color: $background-color;
+            background-color: #ffffff;
+            * {
+                background-color: #ffffff;
+            }
         }
     }
     .icon-link {
@@ -65,6 +68,9 @@ side-menu {
         min-height: 50px;
     }
     .dashboard-icon {
+        background: url("#{$assets-path}/img/icons/dashboard.svg") round;
+    }
+    .teachers-icon {
         background: url("#{$assets-path}/img/icons/dashboard.svg") round;
     }
     .customer-care-icon {

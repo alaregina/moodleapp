@@ -663,4 +663,12 @@ export class CoreCourseFormatComponent implements OnInit, OnChanges, OnDestroy {
             (section.modules.length > 0 &&
                 section.modules.filter(module => module.completionstatus.state == 0).length > 0))
     }
+
+    goToTeacher(teacher: any) {
+        this.navCtrl.push('TeacherDetailPage', teacher);
+    }
+
+    goToTeachearsOfCourse(teachers: any[], course: any) {
+        this.navCtrl.push('TeachersPage', { teachers: teachers, course: course });
+    }
 }

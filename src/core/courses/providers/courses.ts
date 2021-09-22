@@ -53,7 +53,7 @@ export class CoreCoursesProvider {
 
     protected ROOT_CACHE_KEY = 'mmCourses:';
     protected logger;
-    protected userCoursesIds: {[id: number]: boolean}; // Use an object to make it faster to search.
+    protected userCoursesIds: { [id: number]: boolean }; // Use an object to make it faster to search.
 
     constructor(logger: CoreLoggerProvider, private sitesProvider: CoreSitesProvider, private eventsProvider: CoreEventsProvider) {
         this.logger = logger.getInstance('CoreCoursesProvider');
@@ -66,7 +66,7 @@ export class CoreCoursesProvider {
      */
     canGetAdminAndNavOptions(): boolean {
         return this.sitesProvider.wsAvailableInCurrentSite('core_course_get_user_navigation_options') &&
-                this.sitesProvider.wsAvailableInCurrentSite('core_course_get_user_administration_options');
+            this.sitesProvider.wsAvailableInCurrentSite('core_course_get_user_administration_options');
     }
 
     /**
@@ -128,7 +128,7 @@ export class CoreCoursesProvider {
 
                 // Sort the course IDs.
                 courseIds.sort((a, b) => {
-                   return b - a;
+                    return b - a;
                 });
 
                 return courseIds;
@@ -172,7 +172,7 @@ export class CoreCoursesProvider {
 
                     // Sort the course IDs.
                     courseIds.sort((a, b) => {
-                       return b - a;
+                        return b - a;
                     });
 
                     return courseIds;
@@ -309,8 +309,8 @@ export class CoreCoursesProvider {
     getCourseEnrolmentMethods(id: number, siteId?: string): Promise<any[]> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    courseid: id
-                },
+                courseid: id
+            },
                 preSets = {
                     cacheKey: this.getCourseEnrolmentMethodsCacheKey(id),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -340,8 +340,8 @@ export class CoreCoursesProvider {
     getCourseGuestEnrolmentInfo(instanceId: number, siteId?: string): Promise<any> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    instanceid: instanceId
-                },
+                instanceid: instanceId
+            },
                 preSets = {
                     cacheKey: this.getCourseGuestEnrolmentInfoCacheKey(instanceId),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -381,10 +381,10 @@ export class CoreCoursesProvider {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
             const data = {
-                    options: {
-                        ids: ids
-                    }
-                },
+                options: {
+                    ids: ids
+                }
+            },
                 preSets = {
                     cacheKey: this.getCoursesCacheKey(ids),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -414,7 +414,7 @@ export class CoreCoursesProvider {
      * @param siteId Site ID. If not defined, use current site.
      * @return Promise resolved with the field and value to use.
      */
-    protected fixCoursesByFieldParams(field?: string, value?: any, siteId?: string): Promise<{field: string, value: any}> {
+    protected fixCoursesByFieldParams(field?: string, value?: any, siteId?: string): Promise<{ field: string, value: any }> {
 
         if (field == 'id' || field == 'ids') {
             const courseIds: any[] = String(value).split(',');
@@ -422,14 +422,14 @@ export class CoreCoursesProvider {
             // Use the same optimization as in get admin and nav options. This will return the course IDs to use.
             return this.getCourseIdsForAdminAndNavOptions(courseIds, siteId).then((courseIds) => {
                 if (courseIds.length > 1) {
-                    return {field: 'ids', value: courseIds.join(',')};
+                    return { field: 'ids', value: courseIds.join(',') };
                 } else {
-                    return {field: 'id', value: Number(courseIds[0])};
+                    return { field: 'id', value: Number(courseIds[0]) };
                 }
             });
         } else {
             // Nothing to do.
-            return Promise.resolve({field: field, value: value});
+            return Promise.resolve({ field: field, value: value });
         }
     }
 
@@ -485,15 +485,16 @@ export class CoreCoursesProvider {
             return this.sitesProvider.getSite(siteId);
         }).then((site) => {
             const data = {
-                    field: field || '',
-                    value: field ? value : ''
-                },
+                field: field || '',
+                value: field ? value : ''
+            },
                 preSets = {
                     cacheKey: this.getCoursesByFieldCacheKey(field, value),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
                 };
 
             return site.read('core_course_get_courses_by_field', data, preSets).then((courses) => {
+                console.log("🚀 ~ file: courses.ts ~ line 497 ~ CoreCoursesProvider ~ returnsite.read ~ courses", courses)
                 if (courses.courses) {
                     if (field == 'ids' && hasChanged) {
                         // The list of courses requestes was changed to optimize it.
@@ -562,10 +563,10 @@ export class CoreCoursesProvider {
     getEnrolledCoursesByCustomField(customFieldName: string, customFieldValue: string, siteId?: string): Promise<any[]> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const data = {
-                    classification: 'customfield',
-                    customfieldname: customFieldName,
-                    customfieldvalue: customFieldValue
-                },
+                classification: 'customfield',
+                customfieldname: customFieldName,
+                customfieldvalue: customFieldValue
+            },
                 preSets = {
                     getFromCache: false
                 };
@@ -676,8 +677,8 @@ export class CoreCoursesProvider {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    courseids: courseIds
-                },
+                courseids: courseIds
+            },
                 preSets = {
                     cacheKey: this.getUserAdministrationOptionsCacheKey(courseIds),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -723,8 +724,8 @@ export class CoreCoursesProvider {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    courseids: courseIds
-                },
+                courseids: courseIds
+            },
                 preSets = {
                     cacheKey: this.getUserNavigationOptionsCacheKey(courseIds),
                     updateFrequency: CoreSite.FREQUENCY_RARELY
@@ -1067,11 +1068,11 @@ export class CoreCoursesProvider {
 
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params = {
-                    criterianame: 'search',
-                    criteriavalue: text,
-                    page: page,
-                    perpage: perPage
-                },
+                criterianame: 'search',
+                criteriavalue: text,
+                page: page,
+                perpage: perPage
+            },
                 preSets = {
                     getFromCache: false
                 };
@@ -1096,9 +1097,9 @@ export class CoreCoursesProvider {
         return this.sitesProvider.getSite(siteId).then((site) => {
 
             const params: any = {
-                    courseid: courseId,
-                    password: password
-                };
+                courseid: courseId,
+                password: password
+            };
 
             if (instanceId) {
                 params.instanceid = instanceId;
@@ -1141,17 +1142,17 @@ export class CoreCoursesProvider {
     setFavouriteCourse(courseId: number, favourite: boolean, siteId?: string): Promise<any> {
         return this.sitesProvider.getSite(siteId).then((site) => {
             const params: any = {
-                    courses: [
-                        {
-                            id: courseId,
-                            favourite: favourite ? 1 : 0
-                        }
-                    ]
-                };
+                courses: [
+                    {
+                        id: courseId,
+                        favourite: favourite ? 1 : 0
+                    }
+                ]
+            };
 
             return site.write('core_course_set_favourite_courses', params);
         });
     }
 }
 
-export class CoreCourses extends makeSingleton(CoreCoursesProvider) {}
+export class CoreCourses extends makeSingleton(CoreCoursesProvider) { }

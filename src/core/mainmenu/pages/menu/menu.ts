@@ -26,7 +26,7 @@ import { CoreContentLinksHelperProvider } from '@core/contentlinks/providers/hel
 /**
  * Page that displays the main menu of the app.
  */
-@IonicPage({segment: 'core-mainmenu'})
+@IonicPage({ segment: 'core-mainmenu' })
 @Component({
     selector: 'page-core-mainmenu',
     templateUrl: 'menu.html',
@@ -51,15 +51,15 @@ export class CoreMainMenuPage implements OnDestroy {
     @ViewChild('mainTabs') mainTabs: CoreIonTabsComponent;
 
     constructor(protected menuDelegate: CoreMainMenuDelegate,
-            protected sitesProvider: CoreSitesProvider,
-            navParams: NavParams,
-            protected navCtrl: NavController,
-            protected eventsProvider: CoreEventsProvider,
-            protected cdr: ChangeDetectorRef,
-            protected mainMenuProvider: CoreMainMenuProvider,
-            protected linksDelegate: CoreContentLinksDelegate,
-            protected linksHelper: CoreContentLinksHelperProvider,
-            ) {
+        protected sitesProvider: CoreSitesProvider,
+        navParams: NavParams,
+        protected navCtrl: NavController,
+        protected eventsProvider: CoreEventsProvider,
+        protected cdr: ChangeDetectorRef,
+        protected mainMenuProvider: CoreMainMenuProvider,
+        protected linksDelegate: CoreContentLinksDelegate,
+        protected linksHelper: CoreContentLinksHelperProvider,
+    ) {
 
         this.mainMenuId = CoreApp.instance.getMainMenuId();
 
@@ -91,6 +91,7 @@ export class CoreMainMenuPage implements OnDestroy {
             if (!this.loaded) {
                 // View isn't ready yet, wait for it to be ready.
                 this.pendingRedirect = data;
+                this.ionViewDidLoad();
             } else {
                 delete this.pendingRedirect;
                 this.handleRedirect(data);

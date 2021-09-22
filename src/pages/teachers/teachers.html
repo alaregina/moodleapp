@@ -1,0 +1,31 @@
+<ion-header>
+  <!-- <ion-navbar>
+    <ion-title>Teachers</ion-title>
+  </ion-navbar> -->
+
+  <ion-navbar core-back-button>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!-- come from side menu -->
+  <h3 style="text-align: center;" *ngIf="!course">Tutti i docenti</h3>
+
+  <!-- come from course -->
+  <h3 style="text-align: center;" *ngIf="course">Corso: {{course['fullname']}}</h3>
+
+  <div class="container-ion-card-teacher">
+    <div *ngFor="let doc of teachers_list; index as i;" class="ion-card-teacher" (click)="goToTeacher(doc);">
+      <ion-avatar core-user-avatar>
+        <img src="https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png">
+      </ion-avatar>
+      <div class="ion-card-teacher-name">{{doc.fullname}}</div>
+    </div>
+  </div>
+
+</ion-content>

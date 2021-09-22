@@ -27,7 +27,7 @@ export class LoginMidaPage {
   protected siteId: string;
   protected urlToOpen: string;
 
-  constructor(public navCtrl: NavController,    
+  constructor(public navCtrl: NavController,
     private appProvider: CoreAppProvider,
     fb: FormBuilder,
     private sitesProvider: CoreSitesProvider,
@@ -35,64 +35,68 @@ export class LoginMidaPage {
     public navParams: NavParams,
     private loginHelper: CoreLoginHelperProvider,
     private loginMidaProvider: LoginMidaProvider) {
-      this.siteUrl = navParams.get('siteUrl');
-      this.urlToOpen = navParams.get('urlToOpen');
-        this.credForm = fb.group({
-        username: [navParams.get('username') || '', Validators.required],
-        password: ['', Validators.required]
+    this.siteUrl = navParams.get('siteUrl');
+    this.urlToOpen = navParams.get('urlToOpen');
+    this.credForm = fb.group({
+      username: [navParams.get('username') || '', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
   ionViewDidLoad() {
   }
 
-  login(){
+  login() {
     this.appProvider.closeKeyboard();
 
-        // Get input data.
-        const siteUrl = this.siteUrl;
-        const username = this.credForm.value.username || "1_ag01@cdc.ag";
-        const password = this.credForm.value.password || "12345678";
-        if (!username) {
-            this.domUtils.showErrorModal('core.login.usernamerequired', true);
+    // Get input data.
+    const siteUrl = this.siteUrl;
+    const username = this.credForm.value.username || "1_ag01@cdc.ag";
+    const password = this.credForm.value.password || "12345678";
+    if (!username) {
+      this.domUtils.showErrorModal('core.login.usernamerequired', true);
 
-            return;
+      return;
+    }
+    if (!password) {
+      this.domUtils.showErrorModal('core.login.passwordrequired', true);
+
+      return;
+    }
+
+    if (!this.appProvider.isOnline()) {
+      this.domUtils.showErrorModal('core.networkerrormsg', true);
+
+      return;
+    }
+    const modal = this.domUtils.showModalLoading();
+    this.loginMidaProvider.loginMIDA(username, password).then((data) => {
+      var systemToken = "9810399b65db8309f8b3c80a346261f6";//mettere in un config
+      console.log(data.access_token)
+      console.log(systemToken)
+      console.log(siteUrl)
+      this.loginMidaProvider.loginMoodle(data.access_token, systemToken, siteUrl).then((tokenresponse) => {
+        const modal2 = this.domUtils.showModalLoading();
+        console.log(tokenresponse)
+        if (!!tokenresponse.token) {
+          return this.sitesProvider.newSite(tokenresponse.siteUrl, tokenresponse.token, tokenresponse.privateToken).then((id) => {
+            // Reset fields so the data is not in the view anymore.
+            this.credForm.controls['username'].reset();
+            this.credForm.controls['password'].reset();
+
+            this.siteId = id;
+            modal2.dismiss();
+            return this.loginHelper.goToSiteInitialPage(undefined, undefined, undefined, undefined, this.urlToOpen);
+          });
         }
-        if (!password) {
-            this.domUtils.showErrorModal('core.login.passwordrequired', true);
+      }).catch(err => console.log(err))
+    }).catch((error) => {
+      console.log("🚀 ~ file: login-mida.ts ~ line 93 ~ LoginMidaPage ~ this.loginMidaProvider.loginMIDA ~ error", error);
+    }).finally(() => {
+      modal.dismiss();
 
-            return;
-        }
+      this.domUtils.triggerFormSubmittedEvent(this.formElement, true);
+    });
 
-        if (!this.appProvider.isOnline()) {
-            this.domUtils.showErrorModal('core.networkerrormsg', true);
-
-            return;
-        }
-        const modal = this.domUtils.showModalLoading();
-        this.loginMidaProvider.loginMIDA(username, password).then((data) => {
-          var systemToken = "9810399b65db8309f8b3c80a346261f6";//mettere in un config
-          console.log(data.access_token)
-          console.log(systemToken)
-          console.log(siteUrl)
-          this.loginMidaProvider.loginMoodle(data.access_token, systemToken, siteUrl).then((tokenresponse)=>{
-            console.log(tokenresponse)
-            if(!!tokenresponse.token){
-              return this.sitesProvider.newSite(tokenresponse.siteUrl, tokenresponse.token, tokenresponse.privateToken).then((id) => {
-                // Reset fields so the data is not in the view anymore.
-                this.credForm.controls['username'].reset();
-                this.credForm.controls['password'].reset();
-  
-                this.siteId = id;
-                return this.loginHelper.goToSiteInitialPage(undefined, undefined, undefined, undefined, this.urlToOpen);
-              });
-            }
-          }).catch(err=>console.log(err))
-      }).catch((error) => {
-          console.log(error)
-      }).finally(() => {
-          modal.dismiss();
-      });
-        
   }
 }

@@ -26,84 +26,92 @@ export class SideMenuComponent {
   avatarUrl?: string;
   user: any;
 
-  constructor(private sitesProvider: CoreSitesProvider, eventsProvider: CoreEventsProvider, 
-    private menuCtrl:MenuController, 
-    private userProvider:CoreUserProvider) {
+  constructor(private sitesProvider: CoreSitesProvider, eventsProvider: CoreEventsProvider,
+    private menuCtrl: MenuController,
+    private userProvider: CoreUserProvider) {
 
     this.langObserver = eventsProvider.on(CoreEventsProvider.LANGUAGE_CHANGED, this.loadSiteInfo.bind(this));
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.SITE_UPDATED, this.loadSiteInfo.bind(this));
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.LOGIN, this.loadSiteInfo.bind(this));
     this.loadSiteInfo();
-    
+
   }
 
-  loadAvatar(){
+  loadAvatar() {
     this.userProvider.getProfile(this.siteInfo.userid, null).then((user) => {
-      this.user=user;
-        
+      this.user = user;
+
       const profileUrl = (this.user && (this.user.profileimageurl || this.user.userprofileimageurl ||
         this.user.userpictureurl || this.user.profileimageurlsmall || (this.user.urls && this.user.urls.profileimage)));
 
       if (typeof profileUrl == 'string') {
-          this.avatarUrl = profileUrl;
+        this.avatarUrl = profileUrl;
       }
     })
   }
 
-    /**
-     * Load the site info required by the view.
-     */
-    protected loadSiteInfo(): void {
-      const currentSite = this.sitesProvider.getCurrentSite();
-      if (!!currentSite) {
-        this.siteInfo = currentSite.getInfo();
-        this.siteName = currentSite.getSiteName();
-        this.siteUrl = currentSite.getURL();
-        if(!!this.siteInfo.userid)
-          this.loadAvatar()
-      }
+  /**
+   * Load the site info required by the view.
+   */
+  protected loadSiteInfo(): void {
+    const currentSite = this.sitesProvider.getCurrentSite();
+    if (!!currentSite) {
+      this.siteInfo = currentSite.getInfo();
+      this.siteName = currentSite.getSiteName();
+      this.siteUrl = currentSite.getURL();
+      if (!!this.siteInfo.userid)
+        this.loadAvatar()
+    }
   }
 
   /**
      * Function executed image clicked.
      */
-    gotoProfile(event: any): void {
-      if (this.siteInfo.userid) {
-          event.preventDefault();
-          event.stopPropagation();
-          if(this.navCtrl.getActive().id=="UserProfilePage"){
-            this.menuCtrl.close();
-            return;
-          }
-          this.navCtrl.setRoot('UserProfilePage',{ userId: this.siteInfo.userid, courseId: this.siteInfo.courseId })
-          this.menuCtrl.close();
+  gotoProfile(event: any): void {
+    if (this.siteInfo.userid) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.navCtrl.getActive().id == "UserProfilePage") {
+        this.menuCtrl.close();
+        return;
       }
+      this.navCtrl.setRoot('UserProfilePage', { userId: this.siteInfo.userid, courseId: this.siteInfo.courseId })
+      this.menuCtrl.close();
+    }
   }
 
-  goTo(page:string){
-    switch(page){
+  goTo(page: string) {
+    switch (page) {
       case "dashboard":
-        if(this.navCtrl.getActive().id=="CoreMainMenuPage"){
+        if (this.navCtrl.getActive().id == "CoreMainMenuPage") {
           this.menuCtrl.close();
           return;
         }
-        this.navCtrl.setRoot('CoreMainMenuPage')
+        this.navCtrl.setRoot('CoreMainMenuPage');
+        this.menuCtrl.close();
+        break;
+      case "teachers":
+        if (this.navCtrl.getActive().id == "TeachersPage") {
+          this.menuCtrl.close();
+          return;
+        }
+        this.navCtrl.setRoot('TeachersPage');
         this.menuCtrl.close();
         break;
       case "tutorial":
-        if(this.navCtrl.getActive().id=="TutorialPage"){
+        if (this.navCtrl.getActive().id == "TutorialPage") {
           this.menuCtrl.close();
           return;
         }
-        this.navCtrl.setRoot('TutorialPage')
+        this.navCtrl.setRoot('TutorialPage');
         this.menuCtrl.close();
         break;
       case "faq":
-        if(this.navCtrl.getActive().id=="FaqPage"){
+        if (this.navCtrl.getActive().id == "FaqPage") {
           this.menuCtrl.close();
           return;
         }
-        this.navCtrl.setRoot('FaqPage')
+        this.navCtrl.setRoot('FaqPage');
         this.menuCtrl.close();
         break;
     }

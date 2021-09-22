@@ -45,14 +45,14 @@ export class CoreIframeComponent implements OnChanges {
     protected initialized = false;
 
     constructor(logger: CoreLoggerProvider,
-            protected iframeUtils: CoreIframeUtilsProvider,
-            protected domUtils: CoreDomUtilsProvider,
-            protected sanitizer: DomSanitizer,
-            protected navCtrl: NavController,
-            protected urlUtils: CoreUrlUtilsProvider,
-            protected utils: CoreUtilsProvider,
-            @Optional() protected svComponent: CoreSplitViewComponent,
-            ) {
+        protected iframeUtils: CoreIframeUtilsProvider,
+        protected domUtils: CoreDomUtilsProvider,
+        protected sanitizer: DomSanitizer,
+        protected navCtrl: NavController,
+        protected urlUtils: CoreUrlUtilsProvider,
+        protected utils: CoreUtilsProvider,
+        @Optional() protected svComponent: CoreSplitViewComponent,
+    ) {
 
         this.logger = logger.getInstance('CoreIframe');
         this.loaded = new EventEmitter<HTMLIFrameElement>();
@@ -100,7 +100,8 @@ export class CoreIframeComponent implements OnChanges {
     /**
      * Detect changes on input properties.
      */
-    async ngOnChanges(changes: {[name: string]: SimpleChange }): Promise<void> {
+    async ngOnChanges(changes: { [name: string]: SimpleChange }): Promise<void> {
+        console.log("🚀 ~ file: iframe.ts ~ line 104 ~ CoreIframeComponent ~ ngOnChanges ~ changes", changes)
         if (changes.src) {
             const url = this.urlUtils.getYoutubeEmbedUrl(changes.src.currentValue) || changes.src.currentValue;
 

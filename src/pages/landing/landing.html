@@ -9,29 +9,41 @@
   <ion-navbar>
     <ion-buttons end>
       <button ion-button icon-only attr.aria-label="login" (click)="goToLogin()">
-          <core-icon name="fa-sign-in"></core-icon>
+        <core-icon name="fa-sign-in"></core-icon>
       </button>
-  </ion-buttons>
+    </ion-buttons>
     <ion-title>Landing Page</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <div>
-    <img src="assets/img/background.png"/>
-    <div class="project">      
+    <img src="assets/img/background.png" />
+    <div class="project">
       <h1 class="red-text">
         <b>
           Il progetto
         </b>
       </h1>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis, est nec tincidunt laoreet, ex tellus imperdiet felis, at volutpat diam elit sed felis. Sed.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis, est nec tincidunt laoreet, ex tellus
+        imperdiet felis, at volutpat diam elit sed felis. Sed.
       </p>
     </div>
   </div>
 
-  <button class="enter-button" (click)="goToLogin()">
-    Entra su JUICE
-  </button>
+  <div class="enter-button">
+
+    <button class="enter-button__child" (click)="goToMIDALogin()">
+      <img src="../../assets/img/students-cap.png" alt="">
+      <span>Sono uno studente</span>
+    </button>
+
+    <button class="enter-button__child" (click)="goToLogin()">
+      <img src="../../assets/img/teacher.png" alt="">
+      <span>Sono un docente</span>
+    </button>
+
+  </div>
+
 </ion-content>

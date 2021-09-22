@@ -16,11 +16,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LandingPage implements OnInit {
   siteUrl: string;
-  constructor(public navCtrl: NavController, 
-      public navParams: NavParams, 
-      private siteProvider: CoreSitesProvider) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private siteProvider: CoreSitesProvider) {
     this.siteUrl = navParams.get('siteUrl');
-    
+
   }
   ngOnInit(): void {
   }
@@ -28,9 +28,14 @@ export class LandingPage implements OnInit {
   ionViewDidLoad() {
   }
 
-  goToLogin(){
+  goToLogin() {
     const params = { siteUrl: this.siteUrl };
-    this.navCtrl.push('CoreLoginCredentialsPage', params)
+    this.navCtrl.push('CoreLoginCredentialsPage', params);
+  }
+
+  goToMIDALogin(): void {
+    const params = { siteUrl: this.siteUrl };
+    this.navCtrl.push('LoginMidaPage', params);
   }
 
 }
