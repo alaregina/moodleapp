@@ -262,6 +262,7 @@ export class CoreLoginCredentialsPage implements OnDestroy {
         // Start the authentication process.
         this.sitesProvider.getUserToken(siteUrl, username, password).then((data) => {
             return this.sitesProvider.newSite(data.siteUrl, data.token, data.privateToken).then((id) => {
+                localStorage.setItem('token', data.token);
                 // Reset fields so the data is not in the view anymore.
                 this.credForm.controls['username'].reset();
                 this.credForm.controls['password'].reset();

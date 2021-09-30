@@ -1,37 +1,18 @@
 page-teacher-detail {
-    .container-ion-card-teacher-details {
+    .img-biografie {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-        ion-avatar {
-            text-align: center;
+        img {
+            max-width: 250px;
         }
+    }
 
-        .ion-card-teacher-details-info {
-            display: flex;
-            flex-direction: column;
-            background: white;
-            border-radius: 5px;
-            border: 2px solid #6c6c6c;
-
-            .ion-card-teacher-details-info-box {
-                display: flex;
-                justify-content: space-between;
-                font-size: 15px;
-                padding: 15px 10px;
-
-                &:not(:last-child()) {
-                    border-bottom: 2px solid #6c6c6c;
-                }
-
-                div:last-child() {
-                    font-weight: 500;
-                }
-
-                &:nth-child(even) {
-                    background: #e4e4e4;
-                }
-            }
-        }
+    .ambassador-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: $red;
+        margin-bottom: 20px;
     }
 }

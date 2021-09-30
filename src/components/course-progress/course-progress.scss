@@ -1,10 +1,11 @@
 course-progress {
     ion-card.card {
-        border-radius: 10px!important;
+        border-radius: 10px !important;
         display: flex;
         flex-direction: column;
         align-self: stretch;
-        background-color: $light;
+        background: $gray-light;
+        box-shadow: none;
         @for $i from 0 to length($core-course-image-background) {
             &[course-color="#{$i}"] {
                 .core-course-thumb {
@@ -12,12 +13,12 @@ course-progress {
                 }
             }
         }
-        .item-block{
-            background-color: $light;
+        .item-block {
+            background: $gray-light !important;
         }
         .core-course-thumb {
             margin: 3%;
-            width: auto!important;
+            width: auto !important;
             border-radius: 10px;
             padding-top: 40%;
             width: 100%;
@@ -38,7 +39,7 @@ course-progress {
                 top: 0;
                 bottom: 0;
                 margin: auto;
-                max-height:unset!important;
+                max-height: unset !important;
             }
         }
 
@@ -69,9 +70,9 @@ course-progress {
                 }
                 h2 {
                     font-size: small;
-                    core-format-text{
+                    core-format-text {
                         font-size: 1.4rem;
-                        font-weight:bold;
+                        font-weight: bold;
                     }
                 }
                 &.core-course-with-buttons {
@@ -118,7 +119,6 @@ course-progress {
     }
 }
 
-
 ion-app.app-root .core-horizontal-scroll core-courses-course-progress {
     @include horizontal_scroll_item(80%, 250px, 300px);
 
@@ -150,6 +150,7 @@ ion-app.app-root .core-horizontal-scroll core-courses-course-progress {
             .core-button-spinner {
                 min-height: 40px;
                 min-width: 40px;
+                display: none !important;
 
                 ion-spinner {
                     width: 20px;
@@ -162,11 +163,10 @@ ion-app.app-root .core-horizontal-scroll core-courses-course-progress {
                 font-size: 1.5rem;
                 padding: 8px;
             }
-
         }
     }
 }
 
-body.version-3-1 .core-course-thumb{
+body.version-3-1 .core-course-thumb {
     display: none;
 }

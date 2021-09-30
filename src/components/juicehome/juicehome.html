@@ -52,12 +52,12 @@
             </div>
           </ion-col>
           <ion-col col-6 col-md-3 col-lg-2 *ngFor="let macrocategory of macrocategories" style="min-width: 100%;">
-            <ion-card class="course-card" text-center (click)="selectMacroCategory(macrocategory.id)"
+            <ion-card class="course-card" text-center (click)="selectMacroCategory(macrocategory)"
               [attr.selected]="macrocategory.id==selectedMacrocategory">
               <ion-card-header>
                 <h1><strong>{{macrocategory.name | uppercase}}</strong></h1>
                 <div class="pipe-divide"></div>
-                <div class="number-cors-card">12 corsi</div>
+                <div class="number-cors-card">{{count_course(macrocategory)}} corsi</div>
               </ion-card-header>
             </ion-card>
           </ion-col>

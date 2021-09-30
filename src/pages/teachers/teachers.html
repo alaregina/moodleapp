@@ -8,24 +8,48 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
+    <ion-title>Biografie</ion-title>
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
+  <div class="img-biografie">
+    <img src="assets/img/biografie.png" alt="">
+  </div>
+
+  <div class="label-biografie">
+    <div>I Nostri Ambassador</div>
+    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor
+      incididunt ut labore et dolore
+      magna aliqua</div>
+  </div>
+
   <!-- come from side menu -->
-  <h3 style="text-align: center;" *ngIf="!course">Tutti i docenti</h3>
+  <!-- <h3 style="text-align: center;" *ngIf="!course">Tutti i docenti</h3> -->
 
   <!-- come from course -->
-  <h3 style="text-align: center;" *ngIf="course">Corso: {{course['fullname']}}</h3>
+  <!-- <h3 style="text-align: center;" *ngIf="course">Corso: {{course['fullname']}}</h3> -->
 
-  <div class="container-ion-card-teacher">
+  <ion-grid class="cards-ambassador">
+    <ion-row>
+      <ion-col col-6 *ngFor="let doc of teachers_list; index as i;" (click)="goToTeacher(doc);">
+        <img [src]="doc.image && doc.image!='' ? doc.image : 'assets/img/ambassador-no-image.png'">
+        <div class="cards-ambassador__name">{{doc.fullname}}</div>
+        <div class="cards-ambassador__titolo">{{doc.titolo}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- <div class="container-ion-card-teacher">
     <div *ngFor="let doc of teachers_list; index as i;" class="ion-card-teacher" (click)="goToTeacher(doc);">
       <ion-avatar core-user-avatar>
         <img src="https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png">
       </ion-avatar>
       <div class="ion-card-teacher-name">{{doc.fullname}}</div>
     </div>
-  </div>
+  </div> -->
 
 </ion-content>

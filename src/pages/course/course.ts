@@ -19,18 +19,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CoursePage {
   category: any;
+  categoryName: string;
   courseIds: string;
   prefetchIconInitialized: boolean;
   downloadAllCoursesEnabled: any;
   courses: any;
   prefetchCoursesData: any;
   coursesLoaded: boolean = false;
+  token: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private coursesProvider: CoreCoursesProvider, private coursesHelper: CoreCoursesHelperProvider,
     private courseHelper: CoreCourseHelperProvider,
     private domUtils: CoreDomUtilsProvider) {
     this.category = navParams.get('category');
+    this.categoryName = navParams.get('categoryName');
+    this.token = localStorage.getItem('token');
     this.fetchCourses().finally(() => {
       this.coursesLoaded = true;
     })

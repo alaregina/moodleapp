@@ -1,6 +1,6 @@
 side-menu {
     .scroll-content {
-        min-width: 70vw !important;
+        min-width: 75vw !important;
     }
     .user-fullname {
         font-weight: bold;
@@ -27,39 +27,47 @@ side-menu {
         }
     }
     .icon-link {
-        text-align: center;
-        width: fit-content;
-        // margin-bottom: 30% !important;
-        margin: 0 !important;
-        padding: 10% !important;
+        margin: 20% 0 calc(20% + 10px) !important;
+        padding: 0 !important;
         border: 0 !important;
         ion-label {
             margin: 0 !important;
+            display: flex !important;
+            align-items: center;
         }
         img {
             border-radius: 50%;
+            width: 75px;
+            margin-right: 10px;
         }
     }
     .item-md {
         padding-right: 16px !important;
     }
     .sidemenu-item {
-        font-weight: 100;
-        font-size: x-small;
-        text-align: center;
-        // margin-bottom: 10%!important;
-        margin: 10% 0 !important;
-        padding: 5% !important;
+        margin: 10% 1% !important;
+        padding: 0 !important;
         border: 0 !important;
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+            font-size: 30px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        span.sidemenu-item-title {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
         ion-label {
             margin: 0 !important;
         }
-    }
-
-    span.sidemenu-item-title {
-        margin-top: 1rem;
-        font-weight: 100;
-        font-size: x-small;
     }
 
     .sidemenu-item-icon {

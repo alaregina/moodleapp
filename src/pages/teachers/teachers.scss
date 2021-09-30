@@ -1,45 +1,48 @@
 page-teachers {
-    .container-ion-card-teacher {
+    .img-biografie {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
 
-        .ion-card-teacher {
-            display: flex;
-            align-items: center;
-            background: #ffffff;
-            border-radius: 4px;
-            box-shadow: 0 0 3px 1px #c3bebe;
-            padding: 5px 10px;
-            margin-bottom: 15px;
-            width: 48%;
+        img {
+            max-width: 250px;
+        }
+    }
 
-            @media (min-width: 451px) {
-                &:nth-child(4n),
-                &:nth-child(4n-1) {
-                    background: #e4e4e4;
-                }
+    .label-biografie {
+        padding: 0 5px;
+
+        div:nth-child(1) {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        div:nth-child(2) {
+            color: #b9b9b9;
+            text-align: justify;
+        }
+    }
+
+    ion-grid.cards-ambassador {
+        padding: 0 !important;
+        margin-top: 20px;
+
+        ion-col {
+            text-align: center;
+
+            img {
+                background: #bbbbbb;
+                border-radius: 5px;
             }
 
-            @media (max-width: 450px) {
-                width: 100%;
-                &:nth-child(even) {
-                    background: #e4e4e4;
-                }
+            div.cards-ambassador__name {
+                text-align: left;
+                font-weight: bold;
             }
 
-            ion-avatar {
-                img {
-                    width: 70px !important;
-                    height: 70px !important;
-                    border-radius: 50%;
-                }
-            }
-
-            .ion-card-teacher-name {
-                margin-left: 15px;
-                font-weight: 600;
-                font-size: 18px;
+            div.cards-ambassador__titolo {
+                color: #b9b9b9;
+                text-align: left;
             }
         }
     }

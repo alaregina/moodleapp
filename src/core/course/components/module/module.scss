@@ -16,6 +16,8 @@ ion-app.app-root core-course-module {
         border-radius: 5px;
         margin: 0;
         padding: 5px;
+        background: #ffffff;
+        box-shadow: 0 0 5px 1px $gray-light;
 
         img.core-module-icon {
             width: 30px !important;

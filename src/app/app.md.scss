@@ -5,7 +5,8 @@ ion-app.app-root.md {
 
   // Light buttons color.
   .button-md-light {
-    color: color($colors, primary, base);
+    // color: color($colors, primary, base);
+    color: $yellow;
   }
 
   .col[align-self-stretch] .card-md {
@@ -53,8 +54,8 @@ ion-app.app-root.md {
   }
 
   .core-avoid-header ion-content {
-      top: $navbar-md-height;
-      height: calc(100% - #{($navbar-md-height)});
+    top: $navbar-md-height;
+    height: calc(100% - #{($navbar-md-height)});
   }
 
   // Different levels of padding.

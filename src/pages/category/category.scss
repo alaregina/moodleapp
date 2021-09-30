@@ -1,4 +1,4 @@
-juicehome {
+page-category {
     ion-grid {
         padding: 0 4% !important;
     }
@@ -62,37 +62,46 @@ juicehome {
         background-color: white !important;
         margin: 0px !important;
         box-shadow: 0 0 5px 0px #ececee !important;
+        opacity: 0.5;
+
+        &[selected="true"] {
+            opacity: 1;
+
+            .card-header-ios,
+            .card-header-md {
+                &.spirits {
+                    border-bottom: 4px solid $yellow;
+                }
+
+                &.wine {
+                    border-bottom: 4px solid $purple;
+                }
+
+                &.beer {
+                    border-bottom: 4px solid $red;
+                }
+            }
+        }
 
         .card-header-ios,
         .card-header-md {
-            padding: 10px 15px !important;
+            padding: 15px !important;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-
-            .pipe-divide {
-                border: 1px solid #ececee;
-                position: absolute;
-                height: calc(100% - 10px);
-                top: 5px;
-                right: 90px;
-            }
-
-            .number-cors-card {
-                color: $red;
-            }
+            justify-content: center;
+            border-bottom: 4px solid $gray-light;
         }
     }
-    ion-card[selected="true"] {
-        background-color: $ottanium !important;
-        color: white;
-        ion-card-header h1 strong {
-            color: white;
-        }
-        ion-card-content {
-            border-bottom: 0px;
-        }
-    }
+    // ion-card[selected="true"] {
+    //     background-color: $ottanium !important;
+    //     color: white;
+    //     ion-card-header h1 strong {
+    //         color: white;
+    //     }
+    //     ion-card-content {
+    //         border-bottom: 0px;
+    //     }
+    // }
 
     ion-card-content {
         border-top: 1px solid $gray;

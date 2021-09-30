@@ -1,6 +1,11 @@
 <ion-menu [content]="content" swipeEnabled="false" style="width: fit-content;">
+  <!-- <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
   <ion-content>
-    <ion-list style="width: 100%; padding: 10px 0 0 15px;">
+    <ion-list>
       <a class="icon-link" *ngIf="!!siteInfo" ion-item text-wrap (click)="gotoProfile($event)" menuClose>
         <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="'core.pictureof' | translate:{$a: siteInfo.fullname}"
           core-external-content onError="this.src='assets/img/user-avatar.png'" role="presentation" [siteId]="null"
@@ -10,26 +15,26 @@
           (click)="gotoProfile($event)">
         <h2 class="user-fullname">{{siteInfo.fullname}}</h2>
       </a>
-      <div class="sidemenu-item" (click)="goTo('dashboard')">
-        <ion-icon name="contact"></ion-icon>
+      <button ion-item class="sidemenu-item" (click)="goTo('dashboard')">
+        <div class="sidemenu-item-icon dashboard-icon"></div>
         <span class="sidemenu-item-title">DASHBOARD</span>
-      </div>
-      <div class="sidemenu-item" (click)="goTo('tutorial')">
-        <ion-icon name="book"></ion-icon>
+      </button>
+      <button ion-item class="sidemenu-item" (click)="goTo('teachers')">
+        <div class="sidemenu-item-icon teachers-icon"></div>
+        <span class="sidemenu-item-title">DOCENTI</span>
+      </button>
+      <button ion-item class="sidemenu-item" (click)="goTo('tutorial')">
+        <div class="sidemenu-item-icon tutorial-icon"></div>
         <span class="sidemenu-item-title">TUTORIAL</span>
-      </div>
-      <div class="sidemenu-item" (click)="goTo('customer-care')">
-        <ion-icon name="headset"></ion-icon>
+      </button>
+      <button ion-item class="sidemenu-item" (click)="goTo('customer-care')">
+        <div class="sidemenu-item-icon customer-care-icon"></div>
         <span class="sidemenu-item-title">CUSTOMER CARE</span>
-      </div>
-      <div class="sidemenu-item" (click)="goTo('teachers')">
-        <ion-icon name="people"></ion-icon>
-        <span class="sidemenu-item-title">BIOGRAFIE</span>
-      </div>
-      <div class="sidemenu-item" (click)="goTo('faq')">
-        <ion-icon name="help"></ion-icon>
+      </button>
+      <button ion-item class="sidemenu-item" (click)="goTo('faq')">
+        <div class="sidemenu-item-icon faq-icon"></div>
         <span class="sidemenu-item-title">FAQ</span>
-      </div>
+      </button>
     </ion-list>
   </ion-content>
 </ion-menu>

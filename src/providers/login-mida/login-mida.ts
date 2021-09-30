@@ -12,28 +12,28 @@ import { CoreSitesProvider, CoreSiteUserTokenResponse } from '@providers/sites';
 @Injectable()
 export class LoginMidaProvider {
 
-  constructor(public http: HttpClient, 
+  constructor(public http: HttpClient,
     protected translate: TranslateService) {
   }
 
   loginMIDA(username: string, password: string)
-  : Promise<any> {
+    : Promise<any> {
     var body = {
-      client_id:"JUICE",
-      api_key:"JUICE.b09e30861a684b7e9eb90053e147a181"
+      client_id: "JUICE",
+      api_key: "JUICE.b09e30861a684b7e9eb90053e147a181"
     }
     var param = {
-      user_name:username,//1_ag01@cdc.ag
-      user_pwd:password,//12345678
-      api_key:"JUICE.b09e30861a684b7e9eb90053e147a181"
+      user_name: username,//1_ag01@cdc.ag
+      user_pwd: password,//12345678
+      api_key: "JUICE.b09e30861a684b7e9eb90053e147a181"
     }
-    return this.http.post("https://stage.compagniadeicaraibi.com/api/oauth/loginjwt", body, {params: param}).toPromise()
+    return this.http.post("https://stage.compagniadeicaraibi.com/api/oauth/loginjwt", body, { params: param }).toPromise()
 
   }
 
-  
-  loginMoodle(tokenMIDA: string, tokenMoodle: string, siteUrl:string)
-  : Promise<any> {
+
+  loginMoodle(tokenMIDA: string, tokenMoodle: string, siteUrl: string)
+    : Promise<any> {
     var body = {
       moodlewsrestformat: 'json',
       wsfunction: 'auth_hnauth_login',
@@ -45,13 +45,13 @@ export class LoginMidaProvider {
       console.log(data)
       if (typeof data == 'undefined') {
         return Promise.reject(this.translate.instant('core.cannotconnecttrouble'));
-      }else if(!data.success){
+      } else if (!data.success) {
         return Promise.reject(data);
-      }else{
+      } else {
         if (typeof data.token != 'undefined') {
-            return { token: data.token, siteUrl: siteUrl, privateToken: data.privatetoken };
+          return { token: data.token, siteUrl: siteUrl, privateToken: data.privatetoken };
         }
       }
-    }).catch(err=>{console.log(err); return Promise.reject(err)})
+    }).catch(err => { console.log(err); return Promise.reject(err) })
   }
 }

@@ -22,27 +22,45 @@ export class TeachersPage {
     this.teachers_list = [
       {
         id: 1,
-        fullname: 'Nome1 Cognome1'
+        image: '',
+        fullname: 'Nome1 Cognome1',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
       {
         id: 2,
-        fullname: 'Nome2 Cognome2'
+        image: '',
+        fullname: 'Nome2 Cognome2',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
       {
         id: 3,
-        fullname: 'Nome3 Cognome3'
+        image: '',
+        fullname: 'Nome3 Cognome3',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
       {
         id: 4,
-        fullname: 'Nome4 Cognome4'
+        image: '',
+        fullname: 'Nome4 Cognome4',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
       {
         id: 5,
-        fullname: 'Nome5 Cognome5'
+        image: '',
+        fullname: 'Nome5 Cognome5',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
       {
         id: 6,
-        fullname: 'Nome6 Cognome6'
+        image: '',
+        fullname: 'Nome6 Cognome6',
+        titolo: 'Titolo Specializzazione',
+        faq: "<span><b>Dove sei Nato?</b></span><br><span>A Napoli nel 1982</span><br><br><span><b>Ci racconti il tuo mestiere?</b></span><br><span>Sono Brand Ambassador......</span><br><br>"
       },
     ];
     let data = navParams.data;

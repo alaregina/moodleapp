@@ -1,11 +1,22 @@
 page-course {
     .course-general-info {
-        p:first-child {
+        p {
             margin: 0;
-        }
-        p:nth-child(2) {
-            text-align: justify !important;
             padding: 0 1rem;
+
+            &:first-child {
+                padding: 0;
+                text-align: center !important;
+                margin: 1rem 0;
+
+                img {
+                    max-width: 300px;
+                }
+            }
+
+            a.core-image-viewer-icon {
+                display: none;
+            }
         }
     }
 
@@ -21,6 +32,42 @@ page-course {
             margin: 3%;
             background-color: unset;
             display: block;
+
+            .subsection-container__child {
+                display: flex;
+                align-items: center;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 2px $gray-light;
+                padding: 5px;
+
+                div:nth-child(1) {
+                    min-width: 40%;
+                    margin-right: 10px;
+                    width: 40%;
+                    img {
+                        border-radius: 6px;
+                        display: block;
+                    }
+                }
+
+                div:nth-child(2) {
+                    overflow: hidden;
+                    * {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    h4 {
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                    span p {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
         }
         .core-subsection {
             align-items: flex-start;

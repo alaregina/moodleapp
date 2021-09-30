@@ -25,6 +25,7 @@ import { CoreAutoRowsDirective } from './auto-rows';
 import { CoreLongPressDirective } from './long-press';
 import { CoreBackButtonDirective } from './back-button';
 import { CoreSupressEventsDirective } from './supress-events';
+import { DynamicColDirective } from './dynamic-col/dynamic-col';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import { CoreSupressEventsDirective } from './supress-events';
         CoreAutoRowsDirective,
         CoreLongPressDirective,
         CoreBackButtonDirective,
-        CoreSupressEventsDirective
+        CoreSupressEventsDirective,
+    DynamicColDirective
     ],
     imports: [],
     exports: [
@@ -54,7 +56,8 @@ import { CoreSupressEventsDirective } from './supress-events';
         CoreAutoRowsDirective,
         CoreLongPressDirective,
         CoreBackButtonDirective,
-        CoreSupressEventsDirective
+        CoreSupressEventsDirective,
+    DynamicColDirective
     ]
 })
 export class CoreDirectivesModule {}

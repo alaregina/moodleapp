@@ -79,6 +79,7 @@ export class LoginMidaPage {
         const modal2 = this.domUtils.showModalLoading();
         console.log(tokenresponse)
         if (!!tokenresponse.token) {
+          localStorage.setItem('token', tokenresponse.token);
           return this.sitesProvider.newSite(tokenresponse.siteUrl, tokenresponse.token, tokenresponse.privateToken).then((id) => {
             // Reset fields so the data is not in the view anymore.
             this.credForm.controls['username'].reset();

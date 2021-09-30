@@ -1,6 +1,5 @@
 import { AddonBadgesProvider } from '@addon/badges/providers/badges';
 import { AfterViewInit, Component } from '@angular/core';
-import { CoreCourseHelperProvider } from '@core/course/providers/helper';
 import { CoreCoursesProvider } from '@core/courses/providers/courses';
 import { CoreCoursesHelperProvider } from '@core/courses/providers/helper';
 import { CoreGradesProvider } from '@core/grades/providers/grades';
@@ -8,20 +7,14 @@ import { CoreUserProvider } from '@core/user/providers/user';
 import { CoreSitesProvider } from '@providers/sites';
 import { CoreDomUtilsProvider } from '@providers/utils/dom';
 import { CoreUtilsProvider } from '@providers/utils/utils';
-import { Modal, ModalController, NavController } from 'ionic-angular';
-import { CoursesModalPage } from '../../pages/courses-modal/courses-modal';
-/**
- * Generated class for the JuicehomeComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
-@Component({
-  selector: 'juicehome',
-  templateUrl: 'juicehome.html'
-})
-export class JuicehomeComponent implements AfterViewInit {
+import { IonicPage, Modal, ModalController, NavController, NavParams } from 'ionic-angular';
 
+@IonicPage()
+@Component({
+  selector: 'page-category',
+  templateUrl: 'category.html',
+})
+export class CategoryPage {
   text: string;
   categories: any[] = [];
   currentCategory: any;
@@ -36,16 +29,19 @@ export class JuicehomeComponent implements AfterViewInit {
   badgeReady: boolean = false;
   points: number = 0;
   macrocategories: any[];
+  macrocategory: {
+    coursecount: number, depth: number, description: string, descriptionformat: number, id: number, name: string, parent: number, path: string, sortorder: any
+  };
   selectedMacrocategory;
   allCategories: any[];
   badgeAlcolizzato: boolean;
   badgeSommelier: boolean;
   badgeMegadirettore: boolean;
-  badge: string = null;
-  coursesCategory: any[];
-  managementCount: number = 0;
+  badge: string = null
+  coursesCategory: any[]
 
   constructor(private navCtrl: NavController,
+    private navParams: NavParams,
     private domUtils: CoreDomUtilsProvider,
     private utils: CoreUtilsProvider,
     private sitesProvider: CoreSitesProvider,
@@ -55,7 +51,7 @@ export class JuicehomeComponent implements AfterViewInit {
     private badgesProvider: AddonBadgesProvider,
     private gradesProvider: CoreGradesProvider,
     private coursesHelper: CoreCoursesHelperProvider) {
-
+    this.macrocategory = this.navParams.data;
   }
   ngAfterViewInit(): void {
     this.fetchUser().finally(() => {
@@ -68,8 +64,13 @@ export class JuicehomeComponent implements AfterViewInit {
     });
     this.fetchCategories().finally(() => {
       this.categoriesLoaded = true;
+    }).then(() => {
+      this.categories = this.allCategories.filter(x => x.parent == this.macrocategory.id);
+      // if (this.categories.length == 1) this.openCategory(this.categories[0]);
+      this.openCategory(this.categories[0]);
     });
     this.fetchCourses();
+
   }
   protected fetchUser(): Promise<any> {
     var userId = this.sitesProvider.getCurrentSite().getUserId();
@@ -87,6 +88,7 @@ export class JuicehomeComponent implements AfterViewInit {
     //passando 0 e true vengono prese TUTTE le categorie. Diventa pesante se aumentano i corsi.
     //L'alternativa è costruire l'albero fino al 3°/4° livello e poi costruire il resto on demand
     return this.coursesProvider.getCategories(0, true).then((cats) => {
+      console.log("🚀 ~ file: category.ts ~ line 86 ~ CategoryPage ~ returnthis.coursesProvider.getCategories ~ cats", cats)
       this.currentCategory = undefined;
       cats.sort((a, b) => {
         if (a.depth == b.depth) {
@@ -188,7 +190,6 @@ export class JuicehomeComponent implements AfterViewInit {
       }))
       return Promise.all(promises).then(() => {
         this.courses = courses;
-        console.log(courses);
         //this.initPrefetchCoursesIcon();
       });
     }).catch((error) => {
@@ -204,32 +205,18 @@ export class JuicehomeComponent implements AfterViewInit {
     return courses.filter(c => c.lastaccess != null && (c.completed == false || c.progress < 100))
   }
 
-  selectMacroCategory(macrocategory) {
-    if (this.count_course(macrocategory) > 0) this.navCtrl.push('CategoryPage', macrocategory);
-    // if (this.selectedMacrocategory == macrocategory) {
-    //   this.selectedMacrocategory = null;
-    //   this.selectedCategory = null;
-    //   this.categories = null
-    // } else {
-    //   this.selectedMacrocategory = macrocategory;
-    //   this.selectedCategory = null;
-    //   this.categories = this.allCategories.filter(x => x.parent == macrocategory)
-    //   if (this.categories.length == 1)
-    //     this.openCategory(this.categories[0])
-    // }
-  }
   /**
    * Open a category.
    *
    * @param categoryId The category ID.
    */
   openCategory(category) {
-    if (this.selectedCategory && this.selectedCategory.id == category.id) {
-      this.selectedCategory = null;
-    } else {
-      this.selectedCategory = category;
-      this.coursesCategory = this.allCategories.filter(x => x.parent == category.id)
-    }
+    // if (this.selectedCategory && this.selectedCategory.id == category.id) {
+    //   this.selectedCategory = null;
+    // } else {
+    this.selectedCategory = category;
+    this.coursesCategory = this.allCategories.filter(x => x.parent == category.id)
+    // }
   }
 
   dismiss($event) {
@@ -266,19 +253,4 @@ export class JuicehomeComponent implements AfterViewInit {
     return this.allCategories.filter(c => c.parent == category.id).length;
   }
 
-
-  count(arr, id, children = [], filtered = []) {
-    let child = arr.filter(x => x.parent == id);
-    if (child && child.length > 0) child.map((x, i, s) => this.count(arr, x.id, s, filtered));
-    else filtered.push(children);
-    return [].concat(...filtered).filter((item, index, self) => self.indexOf(item) == index); //.concat -> unisce i vari array all'interno dell'array padre //.filter -> rimuove i doppioni
-  }
-
-  count_course(category) {
-    return this.courses.map(r => this.count(this.allCategories, category.id).findIndex(x => x.id == r.category)).filter(x => x >= 0).length;
-  }
-
-  // goToDocentiPage() {
-  //   this.navCtrl.push('TeachersPage');
-  // }
 }

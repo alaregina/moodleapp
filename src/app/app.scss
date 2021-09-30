@@ -19,11 +19,11 @@
 
 @font-face {
   font-family: Golden Sans;
-  src: url("../assets/fonts/artill-golden-sans/artill\ -\ Golden\ Sans\ Black.otf");
+  src: url("../assets/fonts/artill-golden-sans/artill\ -\ Golden\ Sans.otf");
 }
 @font-face {
   font-family: Golden Sans;
-  src: url("../assets/fonts/artill-golden-sans/artill\ -\ Golden\ Sans\ Bold.otf");
+  src: url("../assets/fonts/artill-golden-sans/artill\ -\ Golden\ Sans\ Black.otf");
   font-weight: bold;
 }
 
@@ -127,6 +127,10 @@ ion-app.app-root {
     }
   }
 
+  .swiper-pagination {
+    display: none !important;
+  }
+
   .item[detail-push] {
     cursor: pointer;
   }
@@ -152,6 +156,10 @@ ion-app.app-root {
     display: inline-block !important;
     margin: 0;
     width: auto;
+  }
+
+  ion-title {
+    text-transform: uppercase;
   }
 
   .core-oauth-icon,
@@ -187,6 +195,7 @@ ion-app.app-root {
     min-height: 44px;
     min-width: 50px;
     text-align: center;
+    // display: none;
 
     .spinner {
       margin-top: 8px;
@@ -1475,9 +1484,25 @@ ion-header ion-navbar button span {
 ion-header ion-navbar .toolbar-content * {
   color: black !important;
 }
+
 .toolbar-background {
   background: unset !important;
-  border: 0 !important; //remove border-bottom header
+  border: 0 !important; //remove border-bottom header}
+
+  &::after {
+    content: "";
+    background: #cfcbcb;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 90%;
+    left: 5%;
+    height: 2px;
+  }
+}
+
+ion-nav.menu-content-open {
+  filter: blur(2px);
 }
 
 .tabs-ios .tabbar,
@@ -1569,8 +1594,7 @@ addon-mod-resource-index {
 
 button.nextActivity {
   font-size: x-large;
-  font-weight: bold;
-  background-color: $ottanium;
+  background-color: $yellow;
   border-radius: 5px;
   width: 80%;
   padding: 5px;
@@ -1595,6 +1619,10 @@ core-site-plugins-plugin-content {
       line-height: 25px;
     }
   }
+}
+
+.--yellow {
+  background-color: $yellow !important;
 }
 
 // ion-buttons {

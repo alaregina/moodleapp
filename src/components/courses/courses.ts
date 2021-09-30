@@ -18,6 +18,7 @@ import { NavController, NavParams, Slides, ViewController } from 'ionic-angular'
 export class CoursesComponent implements OnChanges {
   @ViewChild(Slides) slides: Slides;
   @Input("categoryId") categoryId: number;
+  @Input("categoryName") categoryName: string;
   @Input("coursesCategory") coursesCategory: any[];
   @Output() close = new EventEmitter<string>();
   courses: any[] = [];
@@ -28,159 +29,166 @@ export class CoursesComponent implements OnChanges {
   downloadAllCoursesEnabled: any;
   modalDragStart: { active: boolean; value: number; };
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private courseHelper: CoreCourseHelperProvider,
-    private domUtils: CoreDomUtilsProvider, 
+    private domUtils: CoreDomUtilsProvider,
     private coursesProvider: CoreCoursesProvider,
     private coursesHelper: CoreCoursesHelperProvider) {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.coursesCategory){
+    if (changes.coursesCategory) {
       console.log(this.coursesCategory)
-      this.coursesCategory.forEach(category=>{
-        this.fetchCategories(category.id).then(sub=>{
+      this.coursesCategory.forEach(category => {
+        this.fetchCategories(category.id).then(sub => {
           category.subcategories = sub
         })
       })
     }
-    if(changes.categoryId)
-      this.fetchCourses().finally(()=>{
+    if (changes.categoryId)
+      this.fetchCourses().finally(() => {
         this.coursesLoaded = true;
       })
   }
 
   ionViewDidEnter() {
     // this.slides.centeredSlides = true;
-    this.fetchCourses().finally(()=>{
+    this.fetchCourses().finally(() => {
       this.coursesLoaded = true;
     })
   }
 
-/**
-     * Fetch the categories.
-     *
-     * @return Promise resolved when done.
-     */
- protected fetchCategories(categoryId): Promise<any> {
-   return new Promise((resolve, reject)=>{
-    this.coursesProvider.getCategories(categoryId, true).then((cats) => {
-      resolve(cats.filter(c=>c.id!=categoryId))
-    }).catch((error) => {
+  /**
+       * Fetch the categories.
+       *
+       * @return Promise resolved when done.
+       */
+  protected fetchCategories(categoryId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.coursesProvider.getCategories(categoryId, true).then((cats) => {
+        resolve(cats.filter(c => c.id != categoryId))
+      }).catch((error) => {
         this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcategories', true);
         reject(error)
-    });
-   })
-}
+      });
+    })
+  }
 
+  getImageFromDescriptionCourse(course: { description: string }) {
+    let token = localStorage.getItem('token') || '';
+    let img = course.description.split('<img src=\"')[1] || '';
+    if (img != '') img = img.split('"')[0] + '?token=' + token;
+    return img;
+  }
 
-  favourite(courses){
-    return this.courses.filter(c=>c.isfavourite).length==0 ? this.courses:this.courses.filter(c=>c.isfavourite)
+  favourite(courses) {
+    return this.courses.filter(c => c.isfavourite).length == 0 ? this.courses : this.courses.filter(c => c.isfavourite)
   }
-  thematicRoutes(courses){
-    return this.courses.filter(c=>c.thematicRoutes)
+  thematicRoutes(courses) {
+    return this.courses.filter(c => c.thematicRoutes)
   }
-  standardCourses(courses){
-    return this.courses.filter(c=>!c.thematicRoutes)
+  standardCourses(courses) {
+    return this.courses.filter(c => !c.thematicRoutes)
   }
-  highlighted(courses){
-    return this.courses.filter(c=>c.highlight).length==0 ? this.courses:this.courses.filter(c=>c.highlight)
+  highlighted(courses) {
+    return this.courses.filter(c => c.highlight).length == 0 ? this.courses : this.courses.filter(c => c.highlight)
   }
   /**
      * Fetch the user courses.
      *
      * @return Promise resolved when done.
      */
-    protected fetchCourses(): Promise<any> {
-      return this.coursesProvider.getUserCourses().then((courses) => {
-        var categoriesIds = this.coursesCategory.map(cc=>cc.id)
-        courses.filter(c=>categoriesIds.includes(c.category))
-          const promises = [],
-              courseIds = courses.map((course) => {
-              return course.id;
+  protected fetchCourses(): Promise<any> {
+    return this.coursesProvider.getUserCourses().then((courses) => {
+      var categoriesIds = this.coursesCategory.map(cc => cc.id)
+      courses.filter(c => categoriesIds.includes(c.category))
+      const promises = [],
+        courseIds = courses.map((course) => {
+          return course.id;
+        });
+
+      this.courseIds = courseIds.join(',');
+
+      promises.push(this.coursesHelper.loadCoursesExtraInfo(courses));
+
+      if (this.coursesProvider.canGetAdminAndNavOptions()) {
+        promises.push(this.coursesProvider.getCoursesAdminAndNavOptions(courseIds).then((options) => {
+          courses.forEach((course) => {
+            course.navOptions = options.navOptions[course.id];
+            course.admOptions = options.admOptions[course.id];
           });
-
-          this.courseIds = courseIds.join(',');
-
-          promises.push(this.coursesHelper.loadCoursesExtraInfo(courses));
-
-          if (this.coursesProvider.canGetAdminAndNavOptions()) {
-              promises.push(this.coursesProvider.getCoursesAdminAndNavOptions(courseIds).then((options) => {
-                  courses.forEach((course) => {
-                      course.navOptions = options.navOptions[course.id];
-                      course.admOptions = options.admOptions[course.id];
-                  });
-              }));
-          }
-          promises.push(courses.forEach(course=>{
-            this.coursesProvider.getCourseByField('id', course.id).then((c) => {
-              let hightlight = (c.customfields as any[]).find(x=>x.shortname=="highlight")
-              course.highlight = !!hightlight ? (+hightlight.valueraw) : false
-              let percorso_tematico = (c.customfields as any[]).find(x=>x.shortname=="percorso_tematico")
-              course.thematicRoutes = !!percorso_tematico ? (+percorso_tematico.valueraw) : false
-            });
-          }))
-          return Promise.all(promises).then(() => {
-              this.courses = courses;
-              this.initPrefetchCoursesIcon();
-          });
-      }).catch((error) => {
-          this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcourses', true);
+        }));
+      }
+      promises.push(courses.forEach(course => {
+        this.coursesProvider.getCourseByField('id', course.id).then((c) => {
+          let hightlight = (c.customfields as any[]).find(x => x.shortname == "highlight")
+          course.highlight = !!hightlight ? (+hightlight.valueraw) : false
+          let percorso_tematico = (c.customfields as any[]).find(x => x.shortname == "percorso_tematico")
+          course.thematicRoutes = !!percorso_tematico ? (+percorso_tematico.valueraw) : false
+        });
+      }))
+      return Promise.all(promises).then(() => {
+        this.courses = courses;
+        this.initPrefetchCoursesIcon();
       });
+    }).catch((error) => {
+      this.domUtils.showErrorModalDefault(error, 'core.courses.errorloadcourses', true);
+    });
   }
 
   /**
      * Initialize the prefetch icon for the list of courses.
      */
-    protected initPrefetchCoursesIcon(): void {
-      if (this.prefetchIconInitialized || !this.downloadAllCoursesEnabled) {
-          // Already initialized.
-          return;
+  protected initPrefetchCoursesIcon(): void {
+    if (this.prefetchIconInitialized || !this.downloadAllCoursesEnabled) {
+      // Already initialized.
+      return;
+    }
+
+    this.prefetchIconInitialized = true;
+
+    if (!this.courses || this.courses.length < 2) {
+      // Not enough courses.
+      this.prefetchCoursesData.icon = '';
+
+      return;
+    }
+
+    this.courseHelper.determineCoursesStatus(this.courses).then((status) => {
+      let icon = this.courseHelper.getCourseStatusIconAndTitleFromStatus(status).icon;
+      if (icon == 'spinner') {
+        // It seems all courses are being downloaded, show a download button instead.
+        icon = 'cloud-download';
       }
-
-      this.prefetchIconInitialized = true;
-
-      if (!this.courses || this.courses.length < 2) {
-          // Not enough courses.
-          this.prefetchCoursesData.icon = '';
-
-          return;
-      }
-
-      this.courseHelper.determineCoursesStatus(this.courses).then((status) => {
-          let icon = this.courseHelper.getCourseStatusIconAndTitleFromStatus(status).icon;
-          if (icon == 'spinner') {
-              // It seems all courses are being downloaded, show a download button instead.
-              icon = 'cloud-download';
-          }
-          this.prefetchCoursesData.icon = icon;
-      });
+      this.prefetchCoursesData.icon = icon;
+    });
   }
 
-  dismiss(){
+  dismiss() {
     this.close.emit("close")
   }
 
-  viewAllCourses(subcategories){
-    if(!!subcategories)
-      this.navCtrl.push("AllCoursesPage", {categories:subcategories})
-    else{
+  viewAllCourses(subcategories) {
+    console.log('subcategories', subcategories);
+    if (!!subcategories)
+      this.navCtrl.push("AllCoursesPage", { categories: subcategories, categoryName: this.categoryName })
+    else {
       let allCategories = []
-      this.coursesCategory.forEach(c=>allCategories = allCategories.concat(c.subcategories))
+      this.coursesCategory.forEach(c => allCategories = allCategories.concat(c.subcategories))
       console.log(allCategories)
-      this.navCtrl.push("AllCoursesPage", {categories:allCategories})
+      this.navCtrl.push("AllCoursesPage", { categories: allCategories, categoryName: this.categoryName })
     }
   }
-  viewAllThematicRoutse(){
-    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"thematicRoutes"})
+  viewAllThematicRoutse() {
+    this.navCtrl.push("CoreCoursesMyCoursesPage", { type: "thematicRoutes" })
   }
-  viewAllBrand(){
-    this.navCtrl.push("CoreCoursesMyCoursesPage", {type:"brand"})
+  viewAllBrand() {
+    this.navCtrl.push("CoreCoursesMyCoursesPage", { type: "brand" })
   }
 
-  goToCourse(course){
-    this.navCtrl.push('CoursePage', {category: course})
+  goToCourse(course) {
+    this.navCtrl.push('CoursePage', { category: course, categoryName: this.categoryName })
     // this.navCtrl.setRoot('CoursePage', {category: course})
   }
 

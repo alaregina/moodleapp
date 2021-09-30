@@ -12,9 +12,9 @@ courses {
     }
 
     div.modal-courses {
-        background-color: $gray-lighter;
-        border-top-left-radius: 5%;
-        border-top-right-radius: 5%;
+        background: $gray-light;
+        border: 0;
+        margin-top: 10px;
     }
 
     ion-col.view-all {
@@ -95,22 +95,25 @@ courses {
     }
 
     ion-card.card-brand-curser {
-        background: white;
-        // border: 2px solid #00a28f;
-        border-radius: 5px !important;
-        max-width: 200px;
-        height: 70px;
+        background: $gray-light;
+        height: 150px;
+        box-shadow: none;
 
         .card-brand-curser__divider {
             border: 1px solid #00a28f7d;
         }
         ion-card-header {
-            padding: 8px !important;
+            padding: 0 !important;
+            margin: 5px 0;
+            text-align: start;
+            font-weight: 600;
         }
 
         ion-card-content {
-            padding: 5px !important;
+            padding: 0 !important;
             border: 0;
+            margin-top: -5px;
+            text-align: start;
 
             &.card-brand-curser__all {
                 display: flex;

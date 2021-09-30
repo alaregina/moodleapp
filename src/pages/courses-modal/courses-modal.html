@@ -4,47 +4,47 @@
   </h3>
 </ion-header>
 <ion-content class="modal-courses">
-    <ion-grid>
-      <!-- <ion-row>
+  <ion-grid>
+    <!-- <ion-row>
         <ion-col col-12 class="close-button">
           <h3>
               <core-icon id="modal-icon" name="fa-angle-up" item-start></core-icon>
           </h3>
         </ion-col>
       </ion-row> -->
+    <ion-row class="header">
+      <ion-col col-6>
+        <h4>{{'core.courses.evidence' | translate}}</h4>
+      </ion-col>
+      <ion-col col-2>
+      </ion-col>
+      <ion-col col-4 class="view-all">
+        <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <core-loading [hideUntil]="coursesLoaded">
+    <ion-slides #slides pager spaceBetween="0" [slidesPerView]="favourite(courses).length==1 ? 1:1.3">
+      <ion-slide *ngFor="let course of favourite(courses)">
+        <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
+        </core-courses-course-progress>
+      </ion-slide>
+
+    </ion-slides>
+    <ion-grid>
       <ion-row class="header">
-        <ion-col col-6>
-          <h4>{{'core.courses.evidence' | translate}}</h4>
-        </ion-col>
-        <ion-col col-2>
-        </ion-col>
-        <ion-col col-4 class="view-all">
-          <span (click)="viewAllCourses()">{{'core.courses.viewall' | translate}}</span>
+        <ion-col col-4>
+          <h4>{{'core.courses.courses' | translate}}</h4>
         </ion-col>
       </ion-row>
     </ion-grid>
-    
-    <core-loading [hideUntil]="coursesLoaded">
-      <ion-slides #slides pager spaceBetween="0" [slidesPerView]="favourite(courses).length==1 ? 1:1.3">
-        <ion-slide *ngFor="let course of favourite(courses)">
-          <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
-          </core-courses-course-progress>
-        </ion-slide>
-        
-      </ion-slides>
-      <ion-grid>
-        <ion-row class="header">
-          <ion-col col-4>
-            <h4>{{'core.courses.courses' | translate}}</h4>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <!-- <h4>{{'core.courses.courses' | translate}}</h4> -->
-      <ion-list class="course-list">
-        <ion-item *ngFor="let course of courses" class="course-list-item">
-          <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
-          </core-courses-course-progress>
-        </ion-item>
-      </ion-list>
+    <!-- <h4>{{'core.courses.courses' | translate}}</h4> -->
+    <ion-list class="course-list">
+      <ion-item *ngFor="let course of courses" class="course-list-item">
+        <core-courses-course-progress [course]="course" class="core-courseoverview" showAll="true">
+        </core-courses-course-progress>
+      </ion-item>
+    </ion-list>
   </core-loading>
 </ion-content>

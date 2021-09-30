@@ -34,7 +34,6 @@ export class SideMenuComponent {
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.SITE_UPDATED, this.loadSiteInfo.bind(this));
     this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.LOGIN, this.loadSiteInfo.bind(this));
     this.loadSiteInfo();
-
   }
 
   loadAvatar() {

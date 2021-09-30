@@ -8,8 +8,10 @@
 <ion-header>
     <ion-navbar core-back-button>
         <ion-title>
-            <core-format-text [text]="category?.name" contextLevel="course" [contextInstanceId]="category.id">
-            </core-format-text>
+            <!-- <core-format-text [text]="categoryName? categoryName : category?.name" contextLevel="course"
+                [contextInstanceId]="category.id">
+            </core-format-text> -->
+            {{categoryName? categoryName : category?.name}}
         </ion-title>
 
         <ion-buttons end></ion-buttons>
@@ -28,12 +30,15 @@
         <section class="section subsections">
             <ng-container *ngFor="let course of courses">
                 <div class="subsection-container" (click)="openCourse(course)">
-                    <ion-item class="core-subsection">
-                        <div class="core-subsection-title">
-                            {{course.displayname}}
-                            <ion-icon name="arrow-forward"></ion-icon>
+                    <div class="subsection-container__child">
+                        <div>
+                            <img src="{{course.overviewfiles[0]?.fileurl+'?token='+token}}" alt="">
                         </div>
-                    </ion-item>
+                        <div>
+                            <h4>{{course.displayname}}</h4>
+                            <span [innerHtml]="course.summary"></span>
+                        </div>
+                    </div>
                 </div>
             </ng-container>
         </section>

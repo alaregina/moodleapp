@@ -3,7 +3,8 @@
         <ion-title>{{ 'addon.mod_quiz.review' | translate }}</ion-title>
 
         <ion-buttons end>
-            <button *ngIf="navigation && navigation.length" ion-button icon-only [attr.aria-label]="'addon.mod_quiz.opentoc' | translate" (click)="navigationModal.present()">
+            <button *ngIf="navigation && navigation.length" ion-button icon-only
+                [attr.aria-label]="'addon.mod_quiz.opentoc' | translate" (click)="navigationModal.present()">
                 <ion-icon name="bookmark"></ion-icon>
             </button>
         </ion-buttons>
@@ -20,7 +21,8 @@
             <ion-card-header text-wrap>
                 <div class="safe-padding-horizontal">
                     <h2 *ngIf="attempt.preview">{{ 'addon.mod_quiz.reviewofpreview' | translate }}</h2>
-                    <h2 *ngIf="!attempt.preview">{{ 'addon.mod_quiz.reviewofattempt' | translate:{$a: attempt.attempt} }}</h2>
+                    <h2 *ngIf="!attempt.preview">{{ 'addon.mod_quiz.reviewofattempt' | translate:{$a: attempt.attempt}
+                        }}</h2>
                 </div>
             </ion-card-header>
             <ion-list>
@@ -54,7 +56,9 @@
                 </ion-item>
                 <ion-item text-wrap no-lines *ngFor="let data of additionalData">
                     <h2>{{ data.title }}</h2>
-                    <core-format-text [component]="component" [componentId]="componentId" [text]="data.content" contextLevel="module" [contextInstanceId]="quiz.coursemodule" [courseId]="courseId"></core-format-text>
+                    <core-format-text [component]="component" [componentId]="componentId" [text]="data.content"
+                        contextLevel="module" [contextInstanceId]="quiz.coursemodule" [courseId]="courseId">
+                    </core-format-text>
                 </ion-item>
             </ion-list>
         </ion-card>
@@ -66,10 +70,11 @@
 
             <!-- Questions. -->
             <div *ngFor="let question of questions">
-                <ion-card id="addon-mod_quiz-question-{{question.slot}}">
+                <ion-card id="addon-mod_quiz-question-{{question.slot}}" style="box-shadow: none;">
                     <!-- "Header" of the question. -->
                     <ion-item-divider>
-                        <h2 *ngIf="question.number" class="inline">{{ 'core.question.questionno' | translate:{$a: question.number} }}</h2>
+                        <h2 *ngIf="question.number" class="inline">{{ 'core.question.questionno' | translate:{$a:
+                            question.number} }}</h2>
                         <h2 *ngIf="!question.number" class="inline">{{ 'core.question.information' | translate }}</h2>
                         <ion-note text-wrap item-end *ngIf="question.status || question.readableMark">
                             <p *ngIf="question.status">{{question.status}}</p>
@@ -77,7 +82,10 @@
                         </ion-note>
                     </ion-item-divider>
                     <!-- Body of the question. -->
-                    <core-question text-wrap [question]="question" [component]="component" [componentId]="componentId" [attemptId]="attempt.id" [usageId]="attempt.uniqueid" [offlineEnabled]="false" contextLevel="module" [contextInstanceId]="quiz.coursemodule" [courseId]="courseId" [review]="true"></core-question>
+                    <core-question text-wrap [question]="question" [component]="component" [componentId]="componentId"
+                        [attemptId]="attempt.id" [usageId]="attempt.uniqueid" [offlineEnabled]="false"
+                        contextLevel="module" [contextInstanceId]="quiz.coursemodule" [courseId]="courseId"
+                        [review]="true"></core-question>
                 </ion-card>
             </div>
 
@@ -91,12 +99,14 @@
 <ng-template #navArrows>
     <ion-row align-items-center>
         <ion-col text-start>
-            <a ion-button icon-only color="light" *ngIf="previousPage >= 0" (click)="changePage(previousPage)" [title]="'core.previous' | translate">
+            <a ion-button icon-only color="light" *ngIf="previousPage >= 0" (click)="changePage(previousPage)"
+                [title]="'core.previous' | translate">
                 <ion-icon name="arrow-back" md="ios-arrow-back"></ion-icon>
             </a>
         </ion-col>
         <ion-col text-end>
-            <a ion-button icon-only color="light" *ngIf="nextPage >= -1" (click)="changePage(nextPage)" [title]="'core.next' | translate">
+            <a ion-button icon-only color="light" *ngIf="nextPage >= -1" (click)="changePage(nextPage)"
+                [title]="'core.next' | translate">
                 <ion-icon name="arrow-forward" md="ios-arrow-forward"></ion-icon>
             </a>
         </ion-col>

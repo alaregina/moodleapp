@@ -20,4 +20,13 @@ ion-app.app-root page-addon-mod-quiz-player {
     button {
         border-radius: 5px !important;
     }
+
+    ion-card[id^="addon-mod_quiz-question"] {
+        box-shadow: none;
+
+        ion-item-divider {
+            background-color: $gray-light;
+            color: $red;
+        }
+    }
 }

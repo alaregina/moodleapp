@@ -146,7 +146,7 @@
     <section ion-list
         *ngIf="!section.hiddenbynumsections && section.id != allSectionsId && section.id != stealthModulesSectionId && section.modules.length>0">
         <div class="section-slider">
-            <ion-slides #contents id="contents" pager spaceBetween="0" slidesPerView="4" loop="false">
+            <ion-slides #contents id="contents" pager spaceBetween="0" slidesPerView="2" loop="false">
                 <ion-slide class="content-slide"
                     *ngFor="let content of sectionContents; first as isFirst; last as isLast"
                     (click)="selectedContent=content" [attr.selected]="selectedContent==content">

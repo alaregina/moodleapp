@@ -7,7 +7,7 @@
 <ion-header>
   <ion-navbar core-back-button>
     <!-- <ion-title><core-format-text [text]="category?.displayname" contextLevel="course" [contextInstanceId]="category.id"></core-format-text></ion-title> -->
-
+    <ion-title>{{categoryName}}</ion-title>
     <ion-buttons end></ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -18,9 +18,13 @@
   </ion-alpha-scroll>
 </ion-content>
 <ng-template #alphaScrollItemTemplate let-item>
-  <ion-item class="all-curses-item-cards" (click)="goToCourse(item)">
-    <div class="all-curses-item-cards__name">{{item.name}}</div>
-    <div class="all-curses-item-cards__divider"></div>
-    <div class="all-curses-item-cards__coursecount">{{item.coursecount}} percorsi</div>
-  </ion-item>
+
+  <ion-card class="course-card" text-center (click)="goToCourse(item)">
+    <ion-card-header>
+      <h3><strong>{{item.name | uppercase}}</strong></h3>
+      <div class="pipe-divide"></div>
+      <div class="number-cors-card">{{item.coursecount}} corsi</div>
+    </ion-card-header>
+  </ion-card>
+
 </ng-template>
