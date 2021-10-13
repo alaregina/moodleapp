@@ -1,0 +1,22 @@
+page-help {
+    .logo-landing-page {
+        height: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 250px;
+        }
+    }
+
+    p {
+        text-align: center;
+        font-size: 16px;
+        margin: 20px 0 0;
+
+        &#p1 {
+            margin: 0 0 10px;
+        }
+    }
+}

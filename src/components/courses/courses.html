@@ -53,7 +53,7 @@
         </ion-row>
       </ion-grid>
       <div style="padding: 0 4%;" *ngIf="item.subcategories?.length>0">
-        <ion-slides pager spaceBetween="0" slidesPerView="2">
+        <ion-slides pager spaceBetween="0" slidesPerView="3">
           <ion-slide *ngFor="let course of item.subcategories | slice:0:10" (click)="goToCourse(course)">
             <ion-card class="card-brand-curser">
               <img src="{{getImageFromDescriptionCourse(course)}}">

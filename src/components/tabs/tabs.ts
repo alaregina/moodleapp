@@ -95,8 +95,8 @@ export class CoreTabsComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     protected isInTransition = false; // Weather Slides is in transition.
 
     constructor(element: ElementRef, protected content: Content, protected domUtils: CoreDomUtilsProvider,
-            protected appProvider: CoreAppProvider, private configProvider: CoreConfigProvider, platform: Platform,
-            translate: TranslateService) {
+        protected appProvider: CoreAppProvider, private configProvider: CoreConfigProvider, platform: Platform,
+        translate: TranslateService) {
         this.tabBarElement = element.nativeElement;
 
         this.direction = platform.isRTL ? 'rtl' : 'ltr';
@@ -237,7 +237,7 @@ export class CoreTabsComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }
 
         if (!this.tabsShown) {
-             if (window.innerHeight >= CoreTabsComponent.MAX_HEIGHT_TO_HIDE_TABS) {
+            if (window.innerHeight >= CoreTabsComponent.MAX_HEIGHT_TO_HIDE_TABS) {
                 // Ensure tabbar is shown.
                 this.tabsShown = true;
                 this.tabBarElement.classList.remove('tabs-hidden');

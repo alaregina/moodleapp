@@ -41,8 +41,8 @@ export class CoreUserAboutPage {
     title: string;
 
     constructor(navParams: NavParams, private userProvider: CoreUserProvider, private userHelper: CoreUserHelperProvider,
-            private domUtils: CoreDomUtilsProvider, private eventsProvider: CoreEventsProvider,
-            private sitesProvider: CoreSitesProvider, private textUtils: CoreTextUtilsProvider) {
+        private domUtils: CoreDomUtilsProvider, private eventsProvider: CoreEventsProvider,
+        private sitesProvider: CoreSitesProvider, private textUtils: CoreTextUtilsProvider) {
 
         this.userId = navParams.get('userId');
         this.courseId = navParams.get('courseId');

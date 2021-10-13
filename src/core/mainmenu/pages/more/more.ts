@@ -28,7 +28,7 @@ import { TranslateService } from '@ngx-translate/core';
 /**
  * Page that displays the list of main menu options that aren't in the tabs.
  */
-@IonicPage({segment: 'core-mainmenu-more'})
+@IonicPage({ segment: 'core-mainmenu-more' })
 @Component({
     selector: 'page-core-mainmenu-more',
     templateUrl: 'more.html',
@@ -52,23 +52,23 @@ export class CoreMainMenuMorePage implements OnDestroy {
     protected updateSiteObserver;
 
     constructor(protected menuDelegate: CoreMainMenuDelegate,
-            protected sitesProvider: CoreSitesProvider,
-            protected navCtrl: NavController,
-            protected mainMenuProvider: CoreMainMenuProvider,
-            eventsProvider: CoreEventsProvider,
-            protected loginHelper: CoreLoginHelperProvider,
-            protected utils: CoreUtilsProvider,
-            protected linkHelper: CoreContentLinksHelperProvider,
-            protected textUtils: CoreTextUtilsProvider,
-            protected urlSchemesProvider: CoreCustomURLSchemesProvider,
-            protected translate: TranslateService) {
+        protected sitesProvider: CoreSitesProvider,
+        protected navCtrl: NavController,
+        protected mainMenuProvider: CoreMainMenuProvider,
+        eventsProvider: CoreEventsProvider,
+        protected loginHelper: CoreLoginHelperProvider,
+        protected utils: CoreUtilsProvider,
+        protected linkHelper: CoreContentLinksHelperProvider,
+        protected textUtils: CoreTextUtilsProvider,
+        protected urlSchemesProvider: CoreCustomURLSchemesProvider,
+        protected translate: TranslateService) {
 
         this.langObserver = eventsProvider.on(CoreEventsProvider.LANGUAGE_CHANGED, this.loadSiteInfo.bind(this));
         this.updateSiteObserver = eventsProvider.on(CoreEventsProvider.SITE_UPDATED, this.loadSiteInfo.bind(this),
             sitesProvider.getCurrentSiteId());
         this.loadSiteInfo();
         this.showScanQR = this.utils.canScanQR() &&
-                !this.sitesProvider.getCurrentSite().isFeatureDisabled('CoreMainMenuDelegate_QrReader');
+            !this.sitesProvider.getCurrentSite().isFeatureDisabled('CoreMainMenuDelegate_QrReader');
     }
 
     /**
@@ -154,7 +154,7 @@ export class CoreMainMenuMorePage implements OnDestroy {
      * @param item Item to open.
      */
     openItem(item: CoreMainMenuCustomItem): void {
-        this.navCtrl.push('CoreViewerIframePage', {title: item.label, url: item.url});
+        this.navCtrl.push('CoreViewerIframePage', { title: item.label, url: item.url });
     }
 
     /**

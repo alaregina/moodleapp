@@ -1,27 +1,78 @@
 page-landing {
-    .enter-button {
+    .logo-landing-page {
+        height: 40%;
         display: flex;
-        gap: 10px;
+        justify-content: center;
+        align-items: center;
 
-        .enter-button__child {
-            width: 100%;
-            min-height: 40px;
-            border-radius: 5px;
-            background-color: $ottanium;
-            color: $white;
-            font-size: large;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 0;
-
-            img {
-                width: 50px;
-                height: 50px;
-                filter: invert(1);
-            }
+        img {
+            width: 250px;
         }
     }
+
+    form {
+        ion-item {
+            padding: 0 10px !important;
+
+            .item-inner {
+                border: 0 !important;
+                padding: 0 !important;
+
+                ion-input {
+                    border-bottom: 2px solid #e3e3e3;
+                }
+                span.button-inner {
+                    color: #000 !important;
+                }
+            }
+        }
+
+        button {
+            // background-color: $red !important;
+        }
+    }
+
+    .help-landing-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-icon {
+            font-weight: 600;
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+        }
+
+        span {
+            text-decoration: underline;
+            font-size: 16px;
+        }
+    }
+
+    // .enter-button {
+    //     display: flex;
+    //     gap: 10px;
+
+    //     .enter-button__child {
+    //         width: 100%;
+    //         min-height: 40px;
+    //         border-radius: 5px;
+    //         background-color: $ottanium;
+    //         color: $white;
+    //         font-size: large;
+    //         font-weight: bold;
+    //         display: flex;
+    //         justify-content: space-between;
+    //         flex-direction: column;
+    //         align-items: center;
+    //         padding: 10px 0;
+
+    //         img {
+    //             width: 50px;
+    //             height: 50px;
+    //             filter: invert(1);
+    //         }
+    //     }
+    // }
 }
