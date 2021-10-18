@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
@@ -9,7 +10,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class HelpPage {
 
   siteUrl: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private iab: InAppBrowser) {
     this.siteUrl = navParams.get('siteUrl');
   }
 
@@ -18,7 +19,8 @@ export class HelpPage {
   }
 
   contact() {
-    location.href = "mailto:" + "password@juice.it" + '?subject=' + 'Recupero Password' + '&body=' + 'Salve, ho smarrito la mia password.';
+    const browser = this.iab.create('https://mida.compagniadeicaraibi.com/midalogin?mode=CLIENTI', "self", { hidenavigationbuttons: "yes", hideurlbar: "yes", location: "no" });
+    // location.href = "mailto:" + "password@juice.it" + '?subject=' + 'Recupero Password' + '&body=' + 'Salve, ho smarrito la mia password.';
   }
 
   goToLogin() {
